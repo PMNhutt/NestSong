@@ -1,12 +1,21 @@
 import { useState } from 'react'
+import Home from './pages/Home/Home'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { publicRoutes } from './router'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
-    <div className="flex justify-center w-full items-center">
-      <h1 className="bg-red text-4xl align-middle uppercase pt-5">Vite + React</h1>
-    </div>
+    <Router>
+      <div className="">
+        <Routes>
+          {publicRoutes.map((route, index) => {
+            const Page = route.component
+            return <Route key={index} path={route.path} element={<Page />} />;
+          })}
+        </Routes>
+      </div>
+    </Router>
   )
 }
 
