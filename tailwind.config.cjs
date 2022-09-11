@@ -4,12 +4,12 @@ module.exports = {
   mode: "jit",
   theme: {
     extend: {
-      // colors: {
-      //   primary: "#00040f",
-      //   secondary: "#00f6ff",
-      //   dimWhite: "rgba(255, 255, 255, 0.7)",
-      //   dimBlue: "rgba(9, 151, 124, 0.1)",
-      // },
+      colors: {
+        primary: "#3498db",
+        secondary: "#2980b9",
+        redError: '#E52835',
+        greenSuccess: '#2ecc71'
+      },
       fontFamily: {
         poppins: ["Poppins", "sans-serif"],
         maven: ["MavenPro", "sans-serif"]

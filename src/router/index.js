@@ -4,14 +4,14 @@ import NotFound from '../pages/NotFound/NotFound'
 
 // ** public routes (no need login)
 const publicRoutes = [
-    { path: '/', component: Home },
-    { path: '/about', component: About },
-    { path: '*', component: NotFound }
+    { path: '/', component: Home, title: 'Nesty' },
+    { path: '/about', component: About, title: 'Giới thiệu' },
+    { path: '*', component: NotFound, title: '404 Page not found' }
 ]
 
 // ** private routes (need login)
 const privateRoutes = [
-    { path: '*', component: NotFound },
+    { path: '*', component: NotFound, title: '404 Page not found' },
 ]
 
 export { publicRoutes, privateRoutes }

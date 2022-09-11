@@ -6,16 +6,18 @@ import { publicRoutes } from './router'
 function App() {
 
   return (
-    <Router>
-      <div className="">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Page = route.component
-            return <Route key={index} path={route.path} element={<Page />} />;
-          })}
-        </Routes>
-      </div>
-    </Router>
+    // <Layout>
+      <Router>
+        <div className="">
+          <Routes>
+            {publicRoutes.map((route, index) => {
+              const Page = route.component
+              return <Route key={index} path={route.path} element={<Page title={route.title} />} />;
+            })}
+          </Routes>
+        </div>
+      </Router>
+    // </Layout>
   )
 }
 
