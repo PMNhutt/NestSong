@@ -14,20 +14,22 @@ const NotFound = ({ title }) => {
   }, [title])
 
   return (
-    <div className="flex flex-col justify-center w-full items-center">
-      <Lottie
-        animationData={pageNotFound}
-        loop={true}
-        controls={false}
-        className="h-[70vh]"
-      />
-      <p className="text-black mb-5 text-[20px] flex gap-3">Đường dẫn không tồn tại... <FcBadDecision className="w-[30px] h-[30px]"/></p>
-      <Link to='/'>
-        <Button styles="rounded-[50px] bg-primary">
-          Về trang chủ <TbArrowBackUp className="inline-block" />
-        </Button>
-      </Link>
-    </div>
+    <>
+      <div className="flex flex-col justify-center w-full items-center">
+        <Lottie
+          animationData={pageNotFound}
+          loop={true}
+          controls={false}
+          className="h-[70vh]"
+        />
+        <p className="text-black mb-5 text-[20px] flex gap-3">Đường dẫn không tồn tại... <FcBadDecision className="w-[30px] h-[30px]" /></p>
+        <Link to='/'>
+          <Button styles="rounded-[50px] bg-primary">
+            Về trang chủ <TbArrowBackUp className="inline-block" />
+          </Button>
+        </Link>
+      </div>
+    </>
   )
 }
 
