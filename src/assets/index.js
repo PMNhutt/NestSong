@@ -5,6 +5,11 @@ import tabLogo from './tabLogo.svg'
 import Underline_04 from './Underline_04.svg'
 import Underline_03 from './Underline_03.svg'
 import whiteLogo from './whiteLogo.svg'
+import complete from './complete.gif'
+import shopping from './shopping.gif'
+import truck from './truck.gif'
+import share from './share.gif'
+import like from './like.gif'
 
 export {
     blackLogo,
@@ -13,5 +18,10 @@ export {
     tabLogo,
     Underline_03,
     Underline_04,
-    whiteLogo
+    whiteLogo,
+    complete,
+    shopping,
+    truck,
+    share,
+    like
 }

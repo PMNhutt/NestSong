@@ -6,7 +6,7 @@ import { whiteLogo } from '../../assets'
 
 // ** Third party imports
 import { NavLink, Link } from 'react-router-dom'
-import { CgMenuCheese, CgClose } from 'react-icons/cg'
+import { CgMenuCheese, CgClose, CgShoppingCart } from 'react-icons/cg'
 import { motion, AnimatePresence } from 'framer-motion'
 
 
@@ -84,7 +84,7 @@ const Navigation = () => {
         </AnimatePresence>
       </Link>
 
-      <ul className="list-none sm:flex hidden justify-end mr-14 items-center flex-1 gap-10">
+      <ul className="list-none sm:flex hidden justify-center items-center flex-1 gap-10">
         <li className="font-maven cursor-pointer text-white text-[18px]">
           <NavLink className={(navData) => navData.isActive ? "font-bold drop-shadow-lg shadow-white" : "drop-shadow-lg shadow-black"} to='/'>Trang chủ</NavLink>
         </li>
@@ -128,11 +128,17 @@ const Navigation = () => {
 
       </div>
 
+<div className='flex items-center'>
+      <div className='text-[30px] mr-5 cursor-pointer'>
+        <CgShoppingCart />
+      </div>
+
       <Link to='/sign-in'>
-        <Button styles="bg-primary rounded-[50px]">
+        <Button styles="bg-primary rounded-[5px]">
           Đăng nhập
         </Button>
       </Link>
+</div>
 
     </nav>
   )

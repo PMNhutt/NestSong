@@ -1,7 +1,5 @@
 import { useEffect } from 'react'
-import { Hero, Trending, Policies, Clients } from './components'
-import { Navigation, Footer } from '../../share/components'
-import styles from '../../share/style'
+import { Hero, Trending, Policies, Clients, Introduce } from './components'
 
 const Home = ({ title }) => {
   useEffect(() => {
@@ -10,12 +8,11 @@ const Home = ({ title }) => {
 
   return (
     <div >
-      <Navigation />
       <Hero />
-      <Policies />
       <Trending />
+      <Introduce />
       <Clients />
-      <Footer />
+      <Policies />
     </div>
   )
 }
