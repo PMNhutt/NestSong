@@ -1,6 +1,7 @@
-import Home from '../pages/Home/Home'
-import About from '../pages/About/About'
-import NotFound from '../pages/NotFound/NotFound'
+import { lazy } from 'react'
+const Home = lazy(() => import('../pages/Home/Home'))
+const About = lazy(() => import('../pages/About/About'))
+const NotFound = lazy(() => import('../pages/NotFound/NotFound'))
 
 // ** public routes (no need login)
 const publicRoutes = [
