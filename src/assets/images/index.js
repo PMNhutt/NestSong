@@ -18,9 +18,13 @@ import saleTag from './saleTag.png'
 import border from './productBorder.png'
 import blueBorder from './blueBorder.png'
 import redBorder from './redBorder.png'
+import bannerAbout from './banner.jpg'
+import about1 from './about1.jpg'
+import about2 from './pro4.jpg'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire,introduce,
     certificate,diamond, quote,starts, customer1, customer2,customer3,
-    product,saleTag, border, blueBorder, redBorder
+    product,saleTag, border, blueBorder, redBorder, bannerAbout,
+    about1, about2
 }
