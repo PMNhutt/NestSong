@@ -39,7 +39,7 @@ const Clients = () => {
               duration: 0.8
             }
           }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
         >
           <Heading text='Đánh giá của khách hàng' icon={diamond} />
         </motion.div>
@@ -50,7 +50,7 @@ const Clients = () => {
               duration: 0.8
             }
           }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
           className='flex flex-wrap gap-8 relative'>
           {data?.map((cmt) => (
             <Comment key={cmt.id} name={cmt.name} comment={cmt.comment} address={cmt.address} ava={cmt.ava} />

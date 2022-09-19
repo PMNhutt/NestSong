@@ -14,10 +14,10 @@ const Policies = () => {
           duration: 0.8
         }
       }}
-      viewport={{ once: true, amount: 0.5 }}
+      viewport={{ once: true, amount: 0.3 }}
       className={`text-black ${styles.paddingX} ${styles.paddingY} font-maven`}>
       <div
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.3 }}
         className='flex flex-wrap gap-10 justify-between'>
         <div className='flex gap-4 items-center'>
           <div className='w-[50px] h-[50px] bg-cover' style={{ backgroundImage: `url(${shopping})` }} />

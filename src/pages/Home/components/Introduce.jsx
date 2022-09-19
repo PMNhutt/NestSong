@@ -18,7 +18,7 @@ const Introduce = () => {
               duration: 0.8
             }
           }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
           className='sm:pl-16 pl-6 flex-1 rounded-r-[5px] relative z-10'>
           <Heading text='Yến Sào Nesty' />
           <p className='font-semibold'>Chuyên phân phối tổ yến tươi, yến sào nguyên chất 100%, cam kết CHẤT LƯỢNG – KHÔNG PHA TRỘN. Với mong muốn mang đến nguồn sản phẩm NÂNG CAO SỨC KHỎE cho người dùng. <br />
@@ -38,7 +38,7 @@ const Introduce = () => {
               duration: 0.8
             }
           }}
-          viewport={{ once: true, amount: 0.5 }}
+          viewport={{ once: true, amount: 0.3 }}
           className='md:w-[750px] w-full h-[496px] bg-contain bg-no-repeat sm:mr-16 mr-6' style={{ backgroundImage: `url(${introduce})` }} />
       </div>
     </div>

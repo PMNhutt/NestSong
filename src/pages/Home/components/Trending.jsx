@@ -35,7 +35,7 @@ const Trending = () => {
             duration: 1
           }
         }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.3 }}
       >
         <Heading text={'Sản phẩm bán chạy'} icon={fire} />
       </motion.div>
@@ -46,7 +46,7 @@ const Trending = () => {
             duration: 0.8
           }
         }}
-        viewport={{ once: true, amount: 0.5 }}
+        viewport={{ once: true, amount: 0.3 }}
         className='flex'>
         <Swiper
           slidesPerView={1}

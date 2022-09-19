@@ -22,7 +22,7 @@ const About = ({ title }) => {
                 duration: 0.8
               }
             }}
-            viewport={{ once: true, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.1 }}
             className='flex-1'>
             <h1 className='text-[30px] font-semibold'>Yến Sào Nesty</h1>
             <p className='leading-[28px] my-6'>
@@ -46,7 +46,7 @@ const About = ({ title }) => {
                 duration: 0.8
               }
             }}
-            viewport={{ once: true, amount: 0.5 }}
+            viewport={{ once: true, amount: 0.1 }}
             className='sm:w-[682px] w-full h-[496px] bg-contain bg-no-repeat' style={{ backgroundImage: `url(${about1})` }} />
         </div>
 
