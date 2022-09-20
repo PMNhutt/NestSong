@@ -18,7 +18,7 @@ const Policies = () => {
       className={`text-black ${styles.paddingX} ${styles.paddingY} font-maven`}>
       <div
         viewport={{ once: true, amount: 0.3 }}
-        className='flex flex-wrap gap-10 justify-between'>
+        className='flex flex-wrap sm:gap-0 gap-10 justify-between'>
         <div className='flex gap-4 items-center'>
           <div className='w-[50px] h-[50px] bg-cover' style={{ backgroundImage: `url(${shopping})` }} />
           <p className='text-[18px]'>Yên tâm mua sắm <br /> giải tỏa lo âu</p>
