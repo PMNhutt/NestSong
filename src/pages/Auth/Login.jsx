@@ -14,7 +14,8 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
-import FormControl from '@mui/material/FormControl';
+import FormControl, { useFormControl } from '@mui/material/FormControl';
+import { useForm } from 'react-hook-form'
 
 const Login = ({ title }) => {
     useEffect(() => {
@@ -25,11 +26,10 @@ const Login = ({ title }) => {
     const [values, setValues] = useState({
         amount: '',
         password: '',
-        weight: '',
-        weightRange: '',
         showPassword: false,
     });
     const inputStyle = { WebkitBoxShadow: "0 0 0 1000px white inset", WebkitTextFillColor: '#000000' };
+
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
@@ -46,10 +46,13 @@ const Login = ({ title }) => {
     };
 
     // ** handle submit form
-    const handleSubmit = (event) => {
-
-    }
     
+    const onSubmit = (data) => console.log(data);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+      } = useForm();
 
     return (
         <div className='font-maven '>
@@ -77,8 +80,7 @@ const Login = ({ title }) => {
                         </Link>
                     </div>
                     <h1 className='font-bold text-[28px] text-black my-8'>Đăng nhập vào Nesty</h1>
-                    <div className='flex flex-col'>
-
+                    <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
                         <FormControl variant="outlined">
                             <TextField
                                 helperText=" "
@@ -88,7 +90,10 @@ const Login = ({ title }) => {
                                 type="email"
                                 size="small"
                                 className='ss:w-[40ch]'
-                                style={{color: 'black'}}
+                                style={{ color: 'black' }}
+                                autoComplete='email'
+                                {...register('email', {required: "Bắt buộc"})}
+                                error={!!error?.email}
                             />
                         </FormControl>
                         <FormControl sx={{}} variant="outlined">
@@ -114,13 +119,13 @@ const Login = ({ title }) => {
                                 label="Password"
                             />
                         </FormControl>
-                        <Button onClick={handleSubmit} styles="rounded-[5px] bg-primary w-full mt-8 mb-5">Đăng nhập</Button>
+                        <Button type="submit" styles="rounded-[5px] bg-primary w-full mt-8 mb-5">Đăng nhập</Button>
                         <p className='text-black text-center mt-6'>Bạn chưa có tài khoản?
                             <Link to='/register'>
                                 <span className='text-primary cursor-pointer ml-2'>Đăng ký</span>
                             </Link>
                         </p>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
