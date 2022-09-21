@@ -24,7 +24,6 @@ const Login = ({ title }) => {
 
     //** States */
     const [values, setValues] = useState({
-        amount: '',
         password: '',
         showPassword: false,
     });
@@ -83,40 +82,51 @@ const Login = ({ title }) => {
                     <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
                         <FormControl variant="outlined">
                             <TextField
-                                helperText=" "
                                 id="email"
                                 label="Email"
                                 inputProps={{ style: inputStyle }}
                                 type="email"
                                 size="small"
                                 className='ss:w-[40ch]'
-                                style={{ color: 'black' }}
                                 autoComplete='email'
-                                {...register('email', {required: "Bắt buộc"})}
-                                error={!!error?.email}
+                                {...register('email', {required: "Bạn cần email để đăng nhập", pattern: {
+                                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                    message: "Địa chỉ email không hợp lệ"
+                                }})}
+                                error={!!errors?.email}
+                                // helperText=" "
+                                helperText={errors?.email ? errors.email.message : " "}
                             />
                         </FormControl>
-                        <FormControl sx={{}} variant="outlined">
-                            <InputLabel htmlFor="outlined-adornment-password" size='small'>Mật khẩu</InputLabel>
-                            <OutlinedInput
-                                id="outlined-adornment-password"
+                        <FormControl variant="outlined">
+                            {/* <InputLabel htmlFor="password" size='small'>Mật khẩu</InputLabel> */}
+                            <TextField
+                                id="password"
                                 type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
+                                // value={values.password}
                                 size="small"
                                 onChange={handleChange('password')}
-                                endAdornment={
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            aria-label="toggle password visibility"
-                                            onClick={handleClickShowPassword}
-                                            onMouseDown={handleMouseDownPassword}
-                                            edge="end"
-                                        >
-                                            {values.showPassword ? <VisibilityOff /> : <Visibility />}
-                                        </IconButton>
-                                    </InputAdornment>
-                                }
-                                label="Password"
+                                InputProps={{
+                                    endAdornment:
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={handleClickShowPassword}
+                                                onMouseDown={handleMouseDownPassword}
+                                                edge="end"
+                                            >
+                                                {values.showPassword ? <VisibilityOff /> : <Visibility />}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    
+                                }}
+                                label="Mật khẩu"
+                                {...register('password', {required: "Bạn cần mật khẩu để đăng nhập", pattern: {
+                                    value: /^(?! *$)[a-zA-Z.+ '-]+$/,
+                                    message: "Mật khẩu không hợp lệ"
+                                }})}
+                                error={!!errors?.password}
+                                helperText={errors?.password ? errors.password.message : " "}
                             />
                         </FormControl>
                         <Button type="submit" styles="rounded-[5px] bg-primary w-full mt-8 mb-5">Đăng nhập</Button>
