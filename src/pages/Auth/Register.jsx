@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-const Register = () => {
+const Register = ({ title}) => {
     useEffect(() => {
         document.title = title;
     }, [title])

@@ -16,7 +16,8 @@ module.exports = {
         maven: ["MavenPro", "sans-serif"]
       },
       animation: {
-        blob: "blob 7s infinite"
+        blob: "blob 7s infinite",
+        bouncing: "bouncing 5s ease-out infinite",
       },
       keyframes: {
         blob: {
@@ -31,6 +32,14 @@ module.exports = {
           },
           "100%" : {
             transform: "translate(0px, 0px) scale(1)",
+          },
+        },
+        bouncing: {
+          "0%, 100%" : {
+            transform: "translateY(0)"
+          }, 
+          "50%" : {
+            transform: "translateY(-5%)"
           },
         }
       }

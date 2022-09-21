@@ -2,13 +2,13 @@ import { useState, useEffect } from 'react'
 import styles from '../../share/style'
 import { Button } from '../../share/components'
 // import Logo from '../../assets/nestLogo.svg'
-import { whiteLogo } from '../../assets'
+import { whiteLogo, nestLogo } from '../../assets'
 
 // ** Third party imports
 import { NavLink, Link } from 'react-router-dom'
 import { CgMenuCheese, CgClose, CgShoppingCart } from 'react-icons/cg'
 import { motion, AnimatePresence } from 'framer-motion'
-
+import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 
 const Navigation = () => {
   // ** States 
@@ -68,7 +68,7 @@ const Navigation = () => {
           animate="visible"
           className={`w-10 h-10 bg-cover cursor-pointer mb-1 ${scroll ? '' : ''} transition-all duration-200 ease-out`} style={{
             backgroundImage: `url(
-                    "${whiteLogo}"
+                    "${scroll ? nestLogo : whiteLogo}"
                 )`,
           }}>
         </motion.div>
@@ -79,20 +79,20 @@ const Navigation = () => {
               initial="hidden"
               animate="visible"
               exit="hidden"
-              className={`text-white text-[20px] tracking-[5px] uppercase select-none absolute z-10 top-10`}>Nesty</motion.span>
+              className={` ${scroll ? 'text-black' : 'text-white'} text-[20px] tracking-[5px] uppercase select-none absolute z-10 top-10`}>Nesty</motion.span>
           )}
         </AnimatePresence>
       </Link>
 
       <ul className="list-none sm:flex hidden justify-center items-center flex-1 gap-10">
-        <li className="font-maven cursor-pointer text-white text-[18px]">
-          <NavLink className={(navData) => navData.isActive ? "font-bold drop-shadow-lg shadow-white" : "drop-shadow-lg shadow-black"} to='/'>Trang chủ</NavLink>
+        <li className={`font-maven cursor-pointer ${scroll ? 'text-black' : 'text-white'} text-[18px]`}>
+          <NavLink className={(navData) => navData.isActive ? `${scroll ? 'text-primary' : 'text-white'} font-bold drop-shadow-lg shadow-white` : "drop-shadow-lg shadow-black"} to='/'>Trang chủ</NavLink>
         </li>
-        <li className="font-maven cursor-pointer text-white text-[18px]">
-          <NavLink className={(navData) => navData.isActive ? "font-bold drop-shadow-lg shadow-white" : "drop-shadow-lg shadow-black"} to='/products'>Sản phẩm</NavLink>
+        <li className={`font-maven cursor-pointer ${scroll ? 'text-black' : 'text-white'} text-[18px]`}>
+          <NavLink className={(navData) => navData.isActive ? `${scroll ? 'text-primary' : 'text-white'} font-bold drop-shadow-lg shadow-white` : "drop-shadow-lg shadow-black"} to='/products'>Sản phẩm</NavLink>
         </li>
-        <li className="font-maven cursor-pointer text-white text-[18px]">
-          <NavLink className={(navData) => navData.isActive ? "font-bold drop-shadow-lg shadow-white" : "drop-shadow-lg shadow-black"} to='/about'>Giới thiệu</NavLink>
+        <li className={`font-maven cursor-pointer ${scroll ? 'text-black' : 'text-white'} text-[18px]`}>
+          <NavLink className={(navData) => navData.isActive ? `${scroll ? 'text-primary' : 'text-white'} font-bold drop-shadow-lg shadow-white` : "drop-shadow-lg shadow-black"} to='/about'>Giới thiệu</NavLink>
         </li>
       </ul>
 
@@ -129,8 +129,8 @@ const Navigation = () => {
       </div>
 
 <div className='flex items-center'>
-      <div className='text-[30px] mr-5 cursor-pointer'>
-        <CgShoppingCart />
+      <div className={`text-[30px] mr-5 cursor-pointer ${scroll ? 'text-black' : 'text-white'}`}>
+        <ShoppingCartOutlinedIcon sx={{fontSize: '30px'}}/>
       </div>
 
       <Link to='/sign-in'>

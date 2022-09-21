@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom'
 
 const Introduce = () => {
   return (
-    <div className={`text-black ${styles.paddingY} font-maven `}>
+    <section className={`text-black ${styles.paddingY} font-maven `}>
       <div className='flex items-center flex-col md:flex-row w-full gap-12'>
         <motion.div
           initial={{ opacity: 0, x: '-2vw' }}
@@ -41,7 +41,7 @@ const Introduce = () => {
           viewport={{ once: true, amount: 0.3 }}
           className='md:w-[750px] w-full h-[496px] bg-contain bg-no-repeat sm:mr-16 mr-6' style={{ backgroundImage: `url(${introduce})` }} />
       </div>
-    </div>
+    </section>
   )
 }
 
