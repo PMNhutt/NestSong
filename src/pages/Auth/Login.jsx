@@ -122,7 +122,7 @@ const Login = ({ title }) => {
                                 }}
                                 label="Mật khẩu"
                                 {...register('password', {required: "Bạn cần mật khẩu để đăng nhập", pattern: {
-                                    value: /^(?! *$)[a-zA-Z.+ '-]+$/,
+                                    value: /^[A-Za-z0-9]*$/,
                                     message: "Mật khẩu không hợp lệ"
                                 }})}
                                 error={!!errors?.password}
