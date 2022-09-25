@@ -100,7 +100,7 @@ const Navigation = () => {
         <div
           onClick={() => setToggle(prev => !prev)}
           className="w-[28px] h-[28px] cursor-pointer ">
-          {toggle ? <CgClose className="w-full h-full text-red-500" /> : <CgMenuCheese className="w-full h-full text-black" />}
+          {toggle ? <CgClose className="w-full h-full text-red-500" /> : <CgMenuCheese className={`w-full h-full ${scroll ? 'text-black' : 'text-white'}`} />}
         </div>
         <AnimatePresence>
           {toggle && (
