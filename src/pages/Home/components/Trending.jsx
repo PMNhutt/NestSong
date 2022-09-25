@@ -14,16 +14,16 @@ import "swiper/css/navigation";
 const Trending = () => {
 
   const data = [
-    { id: 1, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 20, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 2, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 22, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 3, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 4, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 25, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 5, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 26, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 6, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 7, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 27, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 8, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 25, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 9, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20 },
-    { id: 10, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 60, price: 3650214, off_price: 3120541, discount: 20 },
+    { id: 1, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 20, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 2, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 22, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 3, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 4, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 25, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 5, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 26, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 6, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 7, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 27, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 8, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 25, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 9, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 23, price: 3650214, off_price: 3120541, discount: 20, star_value: 5 },
+    { id: 10, name: 'Yến Sào đặt biệt loại thượng hạng', sold: 60, price: 3650214, off_price: 3120541, discount: 20 , star_value: 5},
 
   ]
   return (
@@ -79,13 +79,7 @@ const Trending = () => {
         >
           {data?.map((product) => (
             <SwiperSlide key={product.id}>
-              <Product
-                price={product.price}
-                off_price={product.off_price}
-                sold={product.sold}
-                discount={product.discount}
-                name={product.name}
-              />
+              <Product data={product} />
             </SwiperSlide>
           ))}
         </Swiper>
