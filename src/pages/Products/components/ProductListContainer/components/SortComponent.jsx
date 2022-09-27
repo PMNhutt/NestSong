@@ -17,7 +17,7 @@ const SortComponent = () => {
     }
 
     return (
-        <div className='py-5 px-5 border border-solid border-gray-200 flex gap-10 justify-end flex-wrap'>
+        <div className='py-5 px-5 shadow-md rounded-[5px] mb-2 flex gap-10 justify-end flex-wrap'>
             <div className='flex items-center gap-3'>
                 <p className='font-semibold'>Sắp xếp theo:</p>
                 <Select

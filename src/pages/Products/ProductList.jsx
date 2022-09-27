@@ -24,11 +24,11 @@ const ProductList = ({ title }) => {
     return (
         <div>
             <Banner img={productListBanner} />
-            <div className='flex md:flex-row flex-col gap-[50px]'>
-                <div className='md:w-[20%] w-full'>
+            <div className='flex md:flex-row flex-col gap-[5px]'>
+                <div className='md:w-[23%] w-full'>
                     <Filter filter={data.category} />
                 </div>
-                <div className='md:w-[80%] w-full'>
+                <div className='md:w-[77%] w-full'>
                     <ProductListContainer />
                 </div>
             </div>
