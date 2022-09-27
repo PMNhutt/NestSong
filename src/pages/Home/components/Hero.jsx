@@ -1,5 +1,5 @@
 import React from 'react'
-import { bg1, img1, pro2, pro3, pro1 } from '../../../assets/images'
+import { bg1, img1, heroBanner, pro3, pro1 } from '../../../assets/images'
 import { Underline_04 } from '../../../assets'
 import styles from '../../../share/style'
 import { Button } from '../../../share/components'
@@ -77,9 +77,9 @@ const Hero = () => {
   }
 
   return (
-    <div className="w-full h-[847px] bg-cover bg-bottom" style={{
+    <div className="w-full h-[100vh] bg-cover bg-bottom" style={{
       backgroundImage: `url(
-                "${bg1}"
+                "${heroBanner}"
             )`,
     }}>
       <motion.div
@@ -109,7 +109,7 @@ const Hero = () => {
         </motion.div>
       </motion.div>
 
-      <motion.div
+      {/* <motion.div
         variants={animation}
         initial="hidden"
         animate="visible"
@@ -127,7 +127,7 @@ const Hero = () => {
         <motion.div variants={childAnimationRight}>
           <TiltComponent img={pro1} text='100% Nguyên Chất' tiltX={-5} tiltY={-10} />
         </motion.div>
-      </motion.div>
+      </motion.div> */}
 
       <motion.div
         variants={animation}

@@ -27,7 +27,7 @@ const Trending = () => {
 
   ]
   return (
-    <section className="text-black sm:pl-16 pl-6 mt-[10%]">
+    <section className="text-black sm:pl-16 pl-6 mt-[5%]">
       <motion.div
         initial={{ opacity: 0, x: '-3vw' }}
         whileInView={{

@@ -228,7 +228,8 @@
 }
 
 .side-black {
-  background: linear-gradient(77deg, rgba(225, 225, 225, .3), transparent 85%);
+  /* background: linear-gradient(77deg, rgba(225, 225, 225, .3), transparent 85%); */
+  background: linear-gradient(77deg, rgb(0 0 0 / 41%), transparent 85%);
   backdrop-filter: blur(3px);
 }
 

@@ -24,10 +24,12 @@ import about2 from './pro4.jpg'
 import authImage1 from './pro52.jpg'
 import authImage2 from './pro77.jpg'
 import productListBanner from './productBanner.jpg'
+import heroBanner from './bg2.webp'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire, introduce,
     certificate, diamond, quote, starts, customer1, customer2, customer3,
     product, saleTag, border, blueBorder, redBorder, bannerAbout,
-    about1, about2, authImage1, authImage2, productListBanner
+    about1, about2, authImage1, authImage2, productListBanner,
+    heroBanner
 }
