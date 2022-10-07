@@ -156,7 +156,7 @@ const Navigation = () => {
               <NotifyItemCart shoppingCart={cartStore?.shoppingCart} />
             </div>
           </Link>
-          {(cartStore?.shoppingCart.length > 0) &&
+          {(cartStore?.shoppingCart?.length > 0) &&
             <div
               onMouseEnter={() => handleOpenModal(true)}
               onMouseLeave={() => handleOpenModal(false)}
