@@ -1,9 +1,12 @@
-import { useState } from 'react'
-import { Product } from '../../../../../share/components'
+import React from 'react'
+import { Heading, Product } from '../../../../share/components'
 
 //** Third party components*/
-import Grid from '@mui/material/Grid';
-import Pagination from '@mui/material/Pagination';
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay, EffectCoverflow } from "swiper";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 //fake data
 const data = [
@@ -20,52 +23,48 @@ const data = [
 
 ]
 
-const ProductGrid = (props) => {
-
-    //** States */
-    const [page, setPage] = useState(1)
-
-    const handlePaginationChange = (e) => {
-        console.log(e.target.textContent);
-    }
-
-    // const handlePageNum = () => {
-    //     if (data?.length > 0) {
-
-    //     }
-    // }
-
+const RecommendSection = () => {
     return (
-        <div className='font-maven'>
-            {data?.length > 0 ?
-                <Grid container spacing={3} className="product-grid-container">
-                    {data?.length > 0 && data?.map((product, index) => (
-                        <Grid
-                            lg={3}
-                            md={4}
-                            sm={6}
-                            xs={12}
-                            item key={product.productId}
-                            className="product-grid-item"
-                        >
-                            <Product
-                                data={product}
-                            />
-                        </Grid>
-                    ))}
-                </Grid> : <p className='text-center mt-5 font-semibold'>Chưa có sản phẩm nào!</p>}
-            {data?.length > 0 ? <Pagination
-                // className={classes.root}
-                count={page}
-                color="primary"
-                onChange={handlePaginationChange}
-                hideNextButton={true}
-                hidePrevButton={true}
-                className='my-10 flex justify-center'
-            /> : <></>}
-
+        <div className='border shadow-lg rounded-[5px] py-3 px-5 my-8'>
+            <Heading text='Sản phẩm cùng loại' />
+            <div>
+                <Swiper
+                    slidesPerView={1}
+                    spaceBetween={0}
+                    breakpoints={{
+                        1200: {
+                            slidesPerView: 5
+                        },
+                        1060: {
+                            slidesPerView: 4,
+                        },
+                        768: {
+                            slidesPerView: 3,
+                        },
+                        640: {
+                            slidesPerView: 2,
+                        },
+                        480: {
+                            slidesPerView: 2,
+                        }
+                    }}
+                    grabCursor={true}
+                    loop={true}
+                    autoplay={{
+                        delay: 3500,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[Autoplay]}
+                    className='mySwiper py-[10px]'
+                >
+                    {data?.map((product) => (
+                        <SwiperSlide key={product?.productId}>
+                            <Product data={product} />
+                        </SwiperSlide>))}
+                </Swiper>
+            </div>
         </div>
     )
 }
 
-export default ProductGrid
+export default RecommendSection

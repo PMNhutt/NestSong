@@ -17,7 +17,7 @@ const SortComponent = () => {
     }
 
     return (
-        <div className='py-5 px-5 shadow-md rounded-[5px] mb-2 flex gap-10 justify-end flex-wrap'>
+        <div className='py-5 px-5 shadow-md border rounded-[5px] mb-2 flex gap-10 justify-end flex-wrap'>
             <div className='flex items-center gap-3'>
                 <p className='font-semibold'>Sắp xếp theo:</p>
                 <Select
@@ -35,16 +35,6 @@ const SortComponent = () => {
                     <MenuItem value={2} className="menu-item">
                         <p className="item-label font-maven">
                             Giá: tăng dần
-                        </p>
-                    </MenuItem>
-                    <MenuItem value={3} className="menu-item">
-                        <p className="item-label font-maven">
-                            Tên: A - Z
-                        </p>
-                    </MenuItem>
-                    <MenuItem value={4} className="menu-item">
-                        <p className="item-label font-maven">
-                            Tên: Z - A
                         </p>
                     </MenuItem>
                 </Select>

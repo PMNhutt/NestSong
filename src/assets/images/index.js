@@ -14,6 +14,7 @@ import customer1 from './customer1.jpg'
 import customer2 from './customer2.jpg'
 import customer3 from './customer3.jpg'
 import product from './product.png'
+import productBig from './productBig.jpg'
 import saleTag from './saleTag.png'
 import border from './productBorder.png'
 import blueBorder from './blueBorder.png'
@@ -25,11 +26,12 @@ import authImage1 from './pro52.jpg'
 import authImage2 from './pro77.jpg'
 import productListBanner from './productBanner.jpg'
 import heroBanner from './bg2.webp'
+import detailBanner from './bg5.webp'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire, introduce,
     certificate, diamond, quote, starts, customer1, customer2, customer3,
     product, saleTag, border, blueBorder, redBorder, bannerAbout,
     about1, about2, authImage1, authImage2, productListBanner,
-    heroBanner
+    heroBanner, productBig, detailBanner
 }

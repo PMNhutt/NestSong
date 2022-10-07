@@ -12,10 +12,13 @@ cd NestSong
 
 # install app's dependencies
 yarn install
+
+# create .env file in root directory and copy this line into it
+VITE_BASE_URL=https://localhost:5001/api/v1
 ``` 
 
 ### Usage
 ``` bash
-# serve with hot reload at http://127.0.0.1:517/
+# serve with hot reload at http://127.0.0.1:5173/
 yarn dev
 ```

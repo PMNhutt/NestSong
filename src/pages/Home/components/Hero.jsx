@@ -8,6 +8,7 @@ import TiltComponent from './TiltComponent'
 // ** Third party libraries
 import { Img } from 'react-image'
 import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
 
 const Hero = () => {
   const Image = () => (
@@ -143,8 +144,12 @@ const Hero = () => {
         <motion.div
           variants={childAnimationLeft}
           className="flex gap-[20px] absolute bottom-[-20px] sm:pl-16 pl-6">
-          <Button styles="rounded-[5px] bg-primary">Xem chi tiết</Button>
-          <Button styles="rounded-[5px] bg-redError">Đặt hàng ngay</Button>
+          <Link to='/about'>
+            <Button styles="rounded-[5px] bg-primary">Xem chi tiết</Button>
+          </Link>
+          <Link to='/products'>
+            <Button styles="rounded-[5px] bg-redError">Đặt hàng ngay</Button>
+          </Link>
         </motion.div>
       </motion.div>
 

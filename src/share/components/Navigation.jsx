@@ -3,17 +3,24 @@ import styles from '../../share/style'
 import { Button } from '../../share/components'
 // import Logo from '../../assets/nestLogo.svg'
 import { whiteLogo, nestLogo } from '../../assets'
+import { getShoppingCart, setShowModalCart } from '../../redux/actionSlice/shoppingCartSlice'
+import NotifyItemCart from './NotifyItemCart'
+import ModalShoppingCart from './Modal/ModalShoppingCart/ModalShoppingCart'
 
 // ** Third party imports
 import { NavLink, Link } from 'react-router-dom'
 import { CgMenuCheese, CgClose, CgShoppingCart } from 'react-icons/cg'
 import { motion, AnimatePresence } from 'framer-motion'
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { useDispatch, useSelector } from 'react-redux';
 
 const Navigation = () => {
   // ** States 
   const [toggle, setToggle] = useState(false)
-  const [scroll, setScroll] = useState(false);
+  const [scroll, setScroll] = useState(false)
+  // const [showModalCart, setShowModalCart] = useState(false)
+  const dispatch = useDispatch()
+  const cartStore = useSelector((state) => state.cart)
 
   // ** Consts
   const menu = {
@@ -45,6 +52,11 @@ const Navigation = () => {
     }
   }
 
+  //**  Get shopping cart
+  useEffect(() => {
+    dispatch(getShoppingCart())
+  }, [])
+
   // ** Scroll nav
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -59,6 +71,11 @@ const Navigation = () => {
       window.removeEventListener('scroll', null)
     }
   }, [])
+
+  //** handle open modal cart
+  const handleOpenModal = (isHover) => {
+    dispatch(setShowModalCart(isHover))
+  }
 
   return (
     <nav className={`${styles.paddingX} ${styles.boxWidth} font-maven flex items-center w-full ${scroll ? 'py-3 navbar' : 'py-6 navbar-not-scroll'}  justify-between fixed z-50 transition-all duration-200 ease-out`}>
@@ -128,17 +145,48 @@ const Navigation = () => {
 
       </div>
 
-<div className='flex items-center'>
-      <div className={`text-[30px] mr-5 cursor-pointer ${scroll ? 'text-black' : 'text-white'}`}>
-        <ShoppingCartOutlinedIcon sx={{fontSize: '30px'}}/>
-      </div>
+      <div className='flex items-center'>
+        <div className={`text-[30px] mr-8 relative ${scroll ? 'text-black' : 'text-white'}`}>
+          <Link to='/cart' onClick={() => dispatch(setShowModalCart(false))}>
+            <div className='cursor-pointer py-5'
+              onMouseEnter={() => handleOpenModal(true)}
+              onMouseLeave={() => handleOpenModal(false)}
+            >
+              <ShoppingCartOutlinedIcon sx={{ fontSize: '30px' }} />
+              <NotifyItemCart shoppingCart={cartStore?.shoppingCart} />
+            </div>
+          </Link>
+          {(cartStore?.shoppingCart.length > 0) &&
+            <div
+              onMouseEnter={() => handleOpenModal(true)}
+              onMouseLeave={() => handleOpenModal(false)}
+            >
+              <AnimatePresence>
+                {cartStore.showModal &&
+                  <motion.div
+                    transition={{ duration: 0.3, type: "tween" }}
+                    initial={{
+                      opacity: 0, y: '-5vh'
+                    }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{
+                      opacity: 0, y: '-5vh'
+                    }}
+                  >
+                    <ModalShoppingCart shoppingCart={cartStore?.shoppingCart} />
+                  </motion.div>
+                }
+              </AnimatePresence>
+            </div>
+          }
+        </div>
 
-      <Link to='/sign-in'>
-        <Button styles="bg-primary rounded-[5px]">
-          Đăng nhập
-        </Button>
-      </Link>
-</div>
+        <Link to='/sign-in'>
+          <Button styles="bg-primary rounded-[5px]">
+            Đăng nhập
+          </Button>
+        </Link>
+      </div>
 
     </nav>
   )

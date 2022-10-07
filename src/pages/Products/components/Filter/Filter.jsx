@@ -28,8 +28,8 @@ const Filter = (props) => {
     }
 
     return (
-        <div className='font-maven text-black md:pl-16 pl-6 md:pr-0 pr-6 mt-20 sticky top-20 mb-20'>
-            <div className='shadow-md rounded-[5px] py-3 px-5 '>
+        <div className='font-maven text-black md:pl-16 pl-6 md:pr-0 pr-6 mt-[80px] sticky top-[100px] mb-20'>
+            <div className='shadow-md rounded-[5px] py-3 px-5 border'>
                 <div className=''>
                     <h1 className='font-semibold text-[20px] mb-5'>Tìm kiếm</h1>
                     <Input placeholder='Tìm kiếm ở đây...' />
