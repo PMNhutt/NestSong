@@ -34,11 +34,13 @@ const Trending = () => {
   useEffect(() => {
     const fetch = async () => {
       const res = await instances.get('/products/trending')
-      setTrending(res?.data?.data)
+      // console.log(res?.data?.result);
+      setTrending(res?.data?.result)
     }
 
     fetch()
   }, [])
+
 
   return (
     <section className="text-black sm:pl-16 pl-6 mt-[5%]">
@@ -91,14 +93,17 @@ const Trending = () => {
           modules={[Autoplay]}
           className='mySwiper py-[10px]'
         >
-          {trending ? trending?.map((product) => (
-            <SwiperSlide key={product?.productId}>
-              <Product data={product} />
-            </SwiperSlide>
-          )) : data?.map((product) => (
-            <SwiperSlide key={product?.productId}>
-              <Product data={product} />
-            </SwiperSlide>))}
+          {
+            trending ? trending?.map((product) => (
+              <SwiperSlide key={product?.productId}>
+                <Product data={product} />
+              </SwiperSlide>
+            ))
+              : data?.map((product) => (
+                <SwiperSlide key={product?.productId}>
+                  <Product data={product} />
+                </SwiperSlide>))
+          }
         </Swiper>
       </motion.div>
     </section>

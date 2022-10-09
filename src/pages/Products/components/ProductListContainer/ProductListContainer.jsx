@@ -1,13 +1,23 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import SortComponent from './components/SortComponent'
 import ProductGrid from './components/ProductGrid'
+import instances from '../../../../utils/plugin/axios'
+import { setProductList } from '../../../../redux/actionSlice/productSlice'
 
-const ProductListContainer = () => {
+//** Third party components*/
+import { useDispatch } from 'react-redux'
+
+const ProductListContainer = (props) => {
 
     return (
         <div className='font-maven text-black mt-20 md:pr-16 pr-6 md:pl-16 pl-6'>
-            <SortComponent />
-            <ProductGrid />
+            <SortComponent
+                setSize={props?.setSize}
+                setSort={props?.setSort}
+            />
+            <ProductGrid
+                setPage={props?.setPage}
+            />
         </div>
     )
 }

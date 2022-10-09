@@ -3,17 +3,19 @@ import { useState } from 'react'
 //** Third party components*/
 import { MenuItem, Select } from '@mui/material';
 
-const SortComponent = () => {
+const SortComponent = (props) => {
     //** States */
-    const [sortType, setSortType] = useState(1)
-    const [viewType, setViewType] = useState(1)
+    const [sortType, setSortType] = useState('asc')
+    const [viewType, setViewType] = useState(12)
 
     const handleSortChange = (e) => {
-        setSortType(e.target.value);
+        setSortType(e.target.value)
+        props?.setSort(e.target.value);
     }
 
     const handleViewChange = (e) => {
         setViewType(e.target.value)
+        props?.setSize(e.target.value)
     }
 
     return (
@@ -27,14 +29,14 @@ const SortComponent = () => {
                     variant="standard"
                     className="bg-gray-200 rounded-[5px] px-2"
                 >
-                    <MenuItem value={1} className="menu-item">
-                        <p className="item-label font-maven">
-                            Giá: giảm dần
-                        </p>
-                    </MenuItem>
-                    <MenuItem value={2} className="menu-item">
+                    <MenuItem value={'asc'} className="menu-item">
                         <p className="item-label font-maven">
                             Giá: tăng dần
+                        </p>
+                    </MenuItem>
+                    <MenuItem value={'desc'} className="menu-item">
+                        <p className="item-label font-maven">
+                            Giá: giảm dần
                         </p>
                     </MenuItem>
                 </Select>
@@ -48,17 +50,17 @@ const SortComponent = () => {
                     variant="standard"
                     className="bg-gray-200 rounded-[5px] px-2"
                 >
-                    <MenuItem value={1} className="menu-item">
+                    <MenuItem value={12} className="menu-item">
                         <p className="item-label font-maven">
                             12
                         </p>
                     </MenuItem>
-                    <MenuItem value={2} className="menu-item">
+                    <MenuItem value={20} className="menu-item">
                         <p className="item-label font-maven">
                             20
                         </p>
                     </MenuItem>
-                    <MenuItem value={3} className="menu-item">
+                    <MenuItem value={32} className="menu-item">
                         <p className="item-label font-maven">
                             32
                         </p>

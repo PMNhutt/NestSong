@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import numberWithComma from '../../../../utils/numberWithComma'
 
 //** Third party components*/
 import { Input } from '@mui/material'
 import Slider from '@mui/material/Slider';
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useDispatch } from 'react-redux'
 
 const Filter = (props) => {
 
@@ -32,7 +33,7 @@ const Filter = (props) => {
             <div className='shadow-md rounded-[5px] py-3 px-5 border'>
                 <div className=''>
                     <h1 className='font-semibold text-[20px] mb-5'>Tìm kiếm</h1>
-                    <Input placeholder='Tìm kiếm ở đây...' />
+                    <Input placeholder='Tìm kiếm ở đây...' onChange={(e) => props?.setSearchVal(e.target.value)} />
                 </div>
                 <div className='py-5 border-b border-solid border-gray-200'>
                     <h1 className='font-semibold text-[20px] my-5'>Danh mục</h1>
