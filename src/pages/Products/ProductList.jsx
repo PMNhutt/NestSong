@@ -35,7 +35,6 @@ const ProductList = ({ title }) => {
     const debounced = useDebounce(searchVal, 600)
 
     const [page, setPage] = useState(1)
-    const [list, setList] = useState()
     const [size, setSize] = useState(null)
     const [cateid, setCateId] = useState(null)
     const [sort, setSort] = useState('asc')
@@ -52,12 +51,13 @@ const ProductList = ({ title }) => {
                 const res = await instances.get('/products/search', {
                     params: {
                         name: debounced,
-                        page: parseInt(page),
+                        page: 1,
                         size: size,
                         sort: sort,
                         cateid: cateid
                     }
                 })
+                setPage(1)
                 dispatch(setProductList(res?.data))
             }
             fetch()
@@ -71,9 +71,21 @@ const ProductList = ({ title }) => {
                         cateid: cateid
                     }
                 })
-                // console.log(res?.data);
-                setList(res?.data)
-                dispatch(setProductList(res?.data))
+                if (res?.data?.result.length === 0 && (res?.data?.page > res?.data?.total_pages)) {
+                    let pageValue = res?.data?.page - 1
+                    const newRes = await instances.get('/products', {
+                        params: {
+                            page: pageValue,
+                            size: size,
+                            sort: sort,
+                            cateid: cateid
+                        }
+                    })
+                    setPage(pageValue)
+                    dispatch(setProductList(newRes?.data))
+                } else {
+                    dispatch(setProductList(res?.data))
+                }
             }
 
             fetch()
@@ -81,25 +93,6 @@ const ProductList = ({ title }) => {
 
 
     }, [debounced, page, sort, size])
-
-    //** get product list
-    // useEffect(() => {
-    //     const fetch = async () => {
-    //         const res = await instances.get('/products', {
-    //             params: {
-    //                 page: page,
-    //                 size: size,
-    //                 sort: sort,
-    //                 cateid: cateid
-    //             }
-    //         })
-    //         // console.log(res?.data);
-    //         setList(res?.data)
-    //         dispatch(setProductList(res?.data))
-    //     }
-
-    //     fetch()
-    // }, [page, sort, size])
 
     return (
         <div>

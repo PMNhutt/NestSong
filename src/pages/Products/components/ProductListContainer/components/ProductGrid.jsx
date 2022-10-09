@@ -29,13 +29,13 @@ const ProductGrid = (props) => {
     const productList = useSelector((state) => state.product?.productList)
 
     useEffect(() => {
-        // console.log(props?.page)
+        // console.log(productList)
 
     }, [productList])
 
-    const handlePaginationChange = (e) => {
+    const handlePaginationChange = (e, value) => {
         // console.log(e.target.textContent);
-        props?.setPage(e.target.textContent)
+        props?.setPage(value)
     }
 
     return (
@@ -64,8 +64,8 @@ const ProductGrid = (props) => {
                     count={productList?.total_pages}
                     color="primary"
                     onChange={handlePaginationChange}
-                    hideNextButton={true}
-                    hidePrevButton={true}
+                    // hideNextButton={true}
+                    // hidePrevButton={true}
                     className='my-10 flex justify-center'
                 /> : <></>}
             </> : <LoadingSmall />}
