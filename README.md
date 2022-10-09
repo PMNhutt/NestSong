@@ -11,7 +11,7 @@ git clone https://github.com/PMNhutt/NestSong.git
 cd NestSong
 
 # install app's dependencies
-yarn install
+yarn 
 
 # create .env file in root directory and copy this line into it
 VITE_BASE_URL=https://localhost:5001/api/v1
