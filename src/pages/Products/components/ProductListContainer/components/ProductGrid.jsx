@@ -29,7 +29,7 @@ const ProductGrid = (props) => {
     const productList = useSelector((state) => state.product?.productList)
 
     useEffect(() => {
-        // console.log(productList)
+        // console.log(props?.page)
 
     }, [productList])
 
@@ -57,9 +57,10 @@ const ProductGrid = (props) => {
                                 />
                             </Grid>
                         ))}
-                    </Grid> : <p className='text-center mt-5 font-semibold'>Không tìm thấy sản phẩm!</p>}
+                    </Grid> : <p className='text-center mt-5 font-semibold mb-[50px]'>Không tìm thấy sản phẩm!</p>}
                 {productList?.result?.length > 0 ? <Pagination
                     // className={classes.root}
+                    page={props?.page}
                     count={productList?.total_pages}
                     color="primary"
                     onChange={handlePaginationChange}

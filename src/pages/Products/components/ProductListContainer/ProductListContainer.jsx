@@ -10,12 +10,13 @@ import { useDispatch } from 'react-redux'
 const ProductListContainer = (props) => {
 
     return (
-        <div className='font-maven text-black mt-20 md:pr-16 pr-6 md:pl-16 pl-6'>
+        <div className='font-maven text-black sm:mt-20 mt-3 md:pr-16 pr-6 md:pl-16 pl-6'>
             <SortComponent
                 setSize={props?.setSize}
                 setSort={props?.setSort}
             />
             <ProductGrid
+                page={props?.page}
                 setPage={props?.setPage}
             />
         </div>

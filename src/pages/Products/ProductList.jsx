@@ -42,7 +42,7 @@ const ProductList = ({ title }) => {
 
     // ** call search api
     useEffect(() => {
-        console.log(debounced === '');
+        // console.log('page', parseInt(page));
         if (debounced !== '') {
             if (!debounced.trim()) {
                 return;
@@ -52,7 +52,7 @@ const ProductList = ({ title }) => {
                 const res = await instances.get('/products/search', {
                     params: {
                         name: debounced,
-                        page: page,
+                        page: parseInt(page),
                         size: size,
                         sort: sort,
                         cateid: cateid
@@ -113,6 +113,7 @@ const ProductList = ({ title }) => {
                 </div>
                 <div className='md:w-[77%] w-full'>
                     <ProductListContainer
+                        page={parseInt(page)}
                         setPage={setPage}
                         setSize={setSize}
                         setCateId={setCateId}
