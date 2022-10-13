@@ -69,6 +69,7 @@ export const cartSlice = createSlice({
                         price: action.payload.price,
                         amount: newAmount,
                         maxAmount: action.payload.stock,
+                        categoryName: action.payload.categoryName
                     }]
                 }
             } else {
@@ -86,7 +87,6 @@ export const cartSlice = createSlice({
             let checkValidAmount = true
             if (action.payload.id === state.addedProduct.id) {
                 addedAmount = state.addedProduct.amountAdded
-                console.log('added amount: ' + addedAmount + ' ' + 'inputValue' + action.payload.inputValue);
                 if (action.payload.inputValue + addedAmount > action.payload.stock) {
                     checkValidAmount = false
                 } else {
@@ -106,6 +106,7 @@ export const cartSlice = createSlice({
                             price: action.payload.price,
                             amount: action.payload.inputValue,
                             maxAmount: action.payload.stock,
+                            categoryName: action.payload.categoryName
                         }]
                         localStorage.setItem('SHOPPING_CART', JSON.stringify(state.productslist))
                     } else {
@@ -122,6 +123,7 @@ export const cartSlice = createSlice({
                                     price: action.payload.price,
                                     amount: newAmount,
                                     maxAmount: action.payload.stock,
+                                    categoryName: action.payload.categoryName
                                 })
                             }
                         })
@@ -153,6 +155,7 @@ export const cartSlice = createSlice({
                             price: pro.price,
                             amount: newAmount,
                             maxAmount: pro.maxAmount,
+                            categoryName: pro.categoryName
                         })
                         localStorage.setItem('SHOPPING_CART', JSON.stringify(state.productslist))
                     }
@@ -198,6 +201,13 @@ export const cartSlice = createSlice({
                 })
             }
         },
+        removeCart: (state) => {
+            let currentShoppingCart = JSON.parse(localStorage.getItem('SHOPPING_CART'))
+            if (currentShoppingCart?.length > 0) {
+                state.productslist = []
+                localStorage.setItem('SHOPPING_CART', JSON.stringify(state.productslist))
+            }
+        },
         setShowModalCart: (state, action) => {
             state.showModal = action.payload
         }
@@ -207,6 +217,6 @@ export const cartSlice = createSlice({
 export const { addItem, addItemFromPeek, deleteItem,
     cartEmpty, setStockAvailable, setStockAvailablePeek,
     setAddedProduct, setCartPosition, getShoppingCart,
-    removeWholeItem, setShowModalCart } = cartSlice.actions;
+    removeWholeItem, setShowModalCart, removeCart } = cartSlice.actions;
 export default cartSlice.reducer;
 

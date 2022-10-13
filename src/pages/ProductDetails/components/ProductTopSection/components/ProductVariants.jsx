@@ -2,6 +2,7 @@ import { useState } from 'react'
 import numberWithComma from '../../../../../utils/numberWithComma'
 import { Button } from '../../../../../share/components'
 import { setAddedProduct, addItemFromPeek, getShoppingCart } from '../../../../../redux/actionSlice/shoppingCartSlice'
+import useDebounce from '../../../../../share/hooks/useDebounce'
 
 //** Third party components*/
 import Rating from '@mui/material/Rating';
@@ -15,7 +16,8 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 const ProductVariants = (props) => {
 
@@ -23,22 +25,53 @@ const ProductVariants = (props) => {
   const dispatch = useDispatch();
   const productStore = useSelector((state) => state.product.productDetail)
   const productList = useSelector((state) => state.cart.productslist)
-
   const [productValue, setProductValue] = useState(1)
-  const inStock = 10
+  // const debounced = useDebounce()
   const notifyWarn = () => toast.warn("Bạn đã chọn tối đa !", {
     pauseOnHover: false,
   });
+  const notifyWarnSoldOut = () => toast.warn("Sản phẩm này đã hết hàng !", {
+    pauseOnHover: false,
+  });
 
-  // ** handle remove all item in cart
+  // ** handle buy now
   const handleBuyNow = () => {
+    if (productStore?.quantityInStock === 0) {
+      notifyWarnSoldOut()
+    } else {
+      dispatch(addItemFromPeek({
+        id: productStore?.productId,
+        name: productStore?.productName,
+        price: productStore?.salePrice,
+        stock: productStore?.quantityInStock,
+        inputValue: productValue,
+        categoryName: productStore?.categoryName
+      }))
+      dispatch(getShoppingCart());
+    }
   }
+
+  const DelayedLink = ({ delay, replace, state, to, ...props }) => {
+    const navigate = useNavigate();
+    const timerRef = useRef();
+    useEffect(() => () => clearTimeout(timerRef.current), []);
+    
+    const clickHandler = async (e) => {
+      e.preventDefault();
+      await handleBuyNow()
+      if (productStore?.quantityInStock !== 0) {
+        timerRef.current = setTimeout(navigate, delay, to, { replace, state });
+      }
+    };
+
+    return <Link to={to} {...props} onClick={clickHandler} />;
+  };
 
   //** handle increse value 
   const handleIncrese = () => {
-    if (productValue === inStock) {
+    if (productValue === productStore?.quantityInStock) {
       notifyWarn()
-      setProductValue(inStock)
+      setProductValue(productStore?.quantityInStock)
     } else {
       setProductValue(prev => prev + 1)
     }
@@ -55,15 +88,20 @@ const ProductVariants = (props) => {
 
   // ** handle add to cart
   const handleAddToCart = () => {
-    dispatch(addItemFromPeek({
-      // product: product,
-      id: productStore?.productId,
-      name: productStore?.productName,
-      price: productStore?.price - (productStore?.price * productStore?.discount),
-      stock: productStore?.stock,
-      inputValue: productValue,
-    }))
-    dispatch(getShoppingCart())
+    if (productStore?.quantityInStock === 0) {
+      notifyWarnSoldOut()
+    } else {
+      dispatch(addItemFromPeek({
+        // product: product,
+        id: productStore?.productId,
+        name: productStore?.productName,
+        price: productStore?.salePrice,
+        stock: productStore?.quantityInStock,
+        inputValue: productValue,
+        categoryName: productStore?.categoryName
+      }))
+      dispatch(getShoppingCart())
+    }
   }
 
   useEffect(() => {
@@ -99,22 +137,12 @@ const ProductVariants = (props) => {
         </div>
       </div>
       <div className='flex items-center gap-2 mt-2'>
-        <p className='text-gray-400 line-through text-[16px]'>{numberWithComma(productStore?.price)}đ</p>
-        <p className='text-redError text-[20px] font-semibold'>{numberWithComma(productStore?.price - (productStore?.price * productStore?.discount))}đ</p>
+        <p className='text-gray-400 line-through text-[16px]'>{numberWithComma(productStore?.originalPrice)}đ</p>
+        <p className='text-redError text-[20px] font-semibold'>{numberWithComma(productStore?.salePrice)}đ</p>
       </div>
       <div className='mt-2 bg-redError px-2 py-1 rounded-full text-white w-fit'>Giảm {productStore?.discount * 100}%</div>
-      {/* <div className='mt-5'>
-        <p className='font-semibold'>Loại:</p>
-        <div className='flex flex-wrap item-center gap-3'>
-          <div
-            onClick={() => handleSelectSize(1)}
-            className={`border px-3 py-1 rounded-[5px] my-3 ${productSize === 1 ? 'bg-primary cursor-default text-white' : 'cursor-pointer'}`}>50g</div>
-          <div
-            onClick={() => handleSelectSize(2)}
-            className={`border px-3 py-1 rounded-[5px] my-3 ${productSize === 2 ? 'bg-primary cursor-default text-white' : 'cursor-pointer'}`}>100g</div>
-        </div>
-      </div> */}
-      <p className='mt-5 font-semibold'>Số lượng trong kho: <span className='font-normal'>{productStore?.stock}</span></p>
+      <p className='mt-5 font-semibold'>Loại: <span className='font-normal'>{productStore?.categoryName}</span></p>
+      <p className='mt-5 font-semibold'>Số lượng trong kho: <span className='font-normal'>{productStore?.quantityInStock}</span></p>
       <p className='mt-5 font-semibold'>Số lượng: </p>
 
       <div className='input-group flex mt-3'>
@@ -124,18 +152,22 @@ const ProductVariants = (props) => {
       </div>
 
       <div className='flex gap-5 flex-wrap mt-10'>
-        <Button styles='bg-primary rounded-[5px]'>
-          <div className='flex items-center gap-2' onClick={() => handleAddToCart()}>
-            <AddShoppingCartIcon />
-            <p>Thêm vào giỏ</p>
-          </div>
-        </Button>
-        <Button styles='bg-primary rounded-[5px]'>
-          <div className='flex items-center gap-2' onClick={() => handleBuyNow()}>
-            <ShoppingBagIcon />
-            <p>Mua ngay</p>
-          </div>
-        </Button>
+        <div onClick={() => handleAddToCart()}>
+          <Button styles='bg-primary rounded-[5px]'>
+            <div className='flex items-center gap-2'>
+              <AddShoppingCartIcon />
+              <p>Thêm vào giỏ</p>
+            </div>
+          </Button>
+        </div>
+        <DelayedLink delay={1000} to='/cart'>
+            <Button styles='bg-primary rounded-[5px]'>
+              <div className='flex items-center gap-2' >
+                <ShoppingBagIcon />
+                <p>Mua ngay</p>
+              </div>
+            </Button>
+        </DelayedLink>
       </div>
 
       <div className='mt-10'>

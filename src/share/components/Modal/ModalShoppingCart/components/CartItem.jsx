@@ -24,7 +24,7 @@ const CartItem = (props) => {
                 <p className='max-w-[85%] text-[18px] font-semibold leading-[1.2]'>
                     {props?.item?.name ? truncate(props?.item.name, 29) : truncate('Yến sào thượng hạng số 1 ngon tuyệt vời bá cháy con bọ chét', 29)}
                 </p>
-                {/* <p className='text-[14px] my-1 text-gray-500'>Loại: {props?.item?.type ? props?.item?.type : '50kg'}</p> */}
+                <p className='text-[14px] my-1 text-gray-500'>Loại: {props?.item?.categoryName ? props?.item?.categoryName : '50kg'}</p>
                 <div className='flex items-center justify-between mt-1 text-primary'>
                     <p className='text-[14px] font-semibold'>{props?.item?.price ? `${numberWithComma(props?.item?.price)}đ` : `${numberWithComma(200000)}đ`}</p>
                     <p className='text-[14px] font-semibold'>{`x${props?.item?.amount ? props?.item?.amount : 3}`}</p>

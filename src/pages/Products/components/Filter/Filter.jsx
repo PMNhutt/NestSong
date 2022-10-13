@@ -25,7 +25,9 @@ const Filter = (props) => {
     };
 
     function handleFilterPrice(minVal, maxVal) {
-        console.log("min: ", minVal, "max: ", maxVal);
+        // console.log("min: ", minVal, "max: ", maxVal);
+        props?.setMinPrice(minVal)
+        props?.setMaxPrice(maxVal)
     }
 
     return (

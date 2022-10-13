@@ -41,6 +41,7 @@ const ItemBody = (props) => {
         price: props?.item?.price,
         stock: props?.item?.maxAmount,
         inputValue: 1,
+        categoryName: props?.item?.categoryName
       }))
       dispatch(getShoppingCart())
     }
@@ -59,6 +60,7 @@ const ItemBody = (props) => {
         price: props?.item?.price,
         stock: props?.item?.maxAmount,
         inputValue: 1,
+        categoryName: props?.item?.categoryName
       }))
       dispatch(setAddedProduct({
         id: id,
@@ -73,7 +75,8 @@ const ItemBody = (props) => {
       <div className='flex w-[60%] gap-5'>
         <div className='w-[80px] h-[80px] bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${product})` }} />
         <div>
-          <p className='text-[18px] mb-2 font-medium'>{props?.item?.name}</p>
+          <p className='text-[18px] mb-1 font-medium'>{props?.item?.name}</p>
+          <p className='text-[14px] mb-1 text-gray-500'>Loại: {props?.item.categoryName}</p>
           <p
             onClick={() => handleRemoveItem(props?.item.id)}
             className='text-primary font-medium cursor-pointer flex items-center gap-1 underline'> <DeleteForeverIcon sx={{ fontSize: '18px' }} /> Xóa</p>

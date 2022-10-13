@@ -12,9 +12,52 @@
   }
 }
 
+@layer base {
+
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
 .Toastify__toast-container--top-right {
   top: 5em !important;
   z-index: 999999999 !important;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  /* border: 1px solid #253341; */
+  -webkit-text-fill-color: #000;
+  -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  box-shadow: 0 0 0px 1000px #fff inset;
+  /* transition: background-color 5000s ease-in-out 0s;
+  color: white; */
+}
+
+.input-placeholer input:valid+.placeholder {
+  display: none;
+}
+
+.placeholder {
+  position: absolute;
+  top: 8px;
+  bottom: 0;
+  pointer-events: none;
+  left: 13px;
+  color: rgb(133 131 131);
+}
+
+.select-input:focus option:first-of-type {
+  display: none;
 }
 
 *,

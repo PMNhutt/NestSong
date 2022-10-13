@@ -23,7 +23,7 @@ const data = [
 
 ]
 
-const RecommendSection = () => {
+const RecommendSection = (props) => {
     return (
         <div className='border shadow-lg rounded-[5px] py-3 px-5 my-8'>
             <Heading text='Sản phẩm cùng loại' />
@@ -49,7 +49,7 @@ const RecommendSection = () => {
                         }
                     }}
                     grabCursor={true}
-                    loop={true}
+                    // loop={true}
                     autoplay={{
                         delay: 3500,
                         disableOnInteraction: false,
@@ -57,10 +57,15 @@ const RecommendSection = () => {
                     modules={[Autoplay]}
                     className='mySwiper py-[10px]'
                 >
-                    {data?.map((product) => (
+                    {/* {data?.map((product) => (
                         <SwiperSlide key={product?.productId}>
                             <Product data={product} />
-                        </SwiperSlide>))}
+                        </SwiperSlide>))} */}
+                    {props?.recommend?.map((product) => (
+                        <SwiperSlide key={product?.productId}>
+                            <Product data={product} />
+                        </SwiperSlide>))
+                    }
                 </Swiper>
             </div>
         </div>

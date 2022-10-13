@@ -4,7 +4,7 @@ import Body from './components/Body'
 
 const ItemList = () => {
   return (
-    <div className='text-black w-[70%]'>
+    <div className='text-black md:w-[70%] w-full'>
         <Header />
         <Body />
     </div>

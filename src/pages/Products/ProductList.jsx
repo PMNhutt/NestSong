@@ -38,6 +38,9 @@ const ProductList = ({ title }) => {
     const [size, setSize] = useState(null)
     const [cateid, setCateId] = useState(null)
     const [sort, setSort] = useState('asc')
+    const [minPrice, setMinPrice] = useState(100000)
+    const [maxPrice, setMaxPrice] = useState(10000000)
+    const [categoryList, setCategoryList] = useState()
 
     // ** call search api
     useEffect(() => {
@@ -54,7 +57,9 @@ const ProductList = ({ title }) => {
                         page: 1,
                         size: size,
                         sort: sort,
-                        cateid: cateid
+                        cateid: cateid,
+                        min: minPrice,
+                        max: maxPrice
                     }
                 })
                 setPage(1)
@@ -68,7 +73,9 @@ const ProductList = ({ title }) => {
                         page: page,
                         size: size,
                         sort: sort,
-                        cateid: cateid
+                        cateid: cateid,
+                        min: minPrice,
+                        max: maxPrice
                     }
                 })
                 if (res?.data?.result.length === 0 && (res?.data?.page > res?.data?.total_pages)) {
@@ -92,7 +99,18 @@ const ProductList = ({ title }) => {
         }
 
 
-    }, [debounced, page, sort, size])
+    }, [debounced, page, sort, size, cateid, minPrice, maxPrice])
+
+    //** get categories */
+    useEffect(() => {
+        const fetch = async () => {
+            const res = await instances.get('/categories')
+            // console.log(res?.data);
+            setCategoryList(res?.data)
+        }
+
+        fetch()
+    }, [])
 
     return (
         <div>
@@ -100,6 +118,8 @@ const ProductList = ({ title }) => {
             <div className='flex md:flex-row flex-col gap-[5px]'>
                 <div className='md:w-[23%] w-full'>
                     <Filter
+                        setMinPrice={setMinPrice}
+                        setMaxPrice={setMaxPrice}
                         setSearchVal={setSearchVal}
                         filter={data.category}
                     />

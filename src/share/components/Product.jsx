@@ -36,8 +36,8 @@ const Product = (props) => {
             <p>Đã bán <span>{props?.data?.soldQuantity}</span></p>
           </div>
           <div className='flex items-center gap-3'>
-            <p className='text-[20px] text-redError font-medium'>{numberWithComma(props?.data?.price - (props?.data?.price * props?.data?.discount))}đ </p>
-            <p className='line-through text-[13px] text-gray-400'>{numberWithComma(props?.data?.price)}đ </p>
+            <p className='text-[20px] text-redError font-medium'>{numberWithComma(props?.data?.salePrice)}đ </p>
+            <p className='line-through text-[13px] text-gray-400'>{numberWithComma(props?.data?.originalPrice)}đ </p>
           </div>
         </div>
       </div>

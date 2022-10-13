@@ -27,11 +27,16 @@ import authImage2 from './pro77.jpg'
 import productListBanner from './productBanner.jpg'
 import heroBanner from './bg2.webp'
 import detailBanner from './bg5.webp'
+import icBox from './box.png'
+import icCard from './credit-card.png'
+import icPin from './place.png'
+import icCashPayment from './cash-on-delivery.png'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire, introduce,
     certificate, diamond, quote, starts, customer1, customer2, customer3,
     product, saleTag, border, blueBorder, redBorder, bannerAbout,
     about1, about2, authImage1, authImage2, productListBanner,
-    heroBanner, productBig, detailBanner
+    heroBanner, productBig, detailBanner, icBox, icCard, icPin, 
+    icCashPayment
 }
