@@ -4,7 +4,7 @@ import { setShowModalCart } from '../../../../redux/actionSlice/shoppingCartSlic
 
 //** Third party components*/
 import { Link } from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 const ModalShoppingCart = (props) => {
     const itemList = props?.shoppingCart

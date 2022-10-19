@@ -4,8 +4,10 @@ import { Button } from '../../share/components'
 // import Logo from '../../assets/nestLogo.svg'
 import { whiteLogo, nestLogo } from '../../assets'
 import { getShoppingCart, setShowModalCart } from '../../redux/actionSlice/shoppingCartSlice'
+import { getAccountInfo } from '../../redux/actionSlice/accountSlice'
 import NotifyItemCart from './NotifyItemCart'
 import ModalShoppingCart from './Modal/ModalShoppingCart/ModalShoppingCart'
+import CornerAva from './CornerAva'
 
 // ** Third party imports
 import { NavLink, Link } from 'react-router-dom'
@@ -20,7 +22,8 @@ const Navigation = () => {
   const [scroll, setScroll] = useState(false)
   // const [showModalCart, setShowModalCart] = useState(false)
   const dispatch = useDispatch()
-  const cartStore = useSelector((state) => state.cart)
+  const cartStore = useSelector((state) => state?.cart)
+  const accountInfo = useSelector((state) => state?.account?.accountInfo)
 
   // ** Consts
   const menu = {
@@ -55,6 +58,7 @@ const Navigation = () => {
   //**  Get shopping cart
   useEffect(() => {
     dispatch(getShoppingCart())
+    dispatch(getAccountInfo())
   }, [])
 
   // ** Scroll nav
@@ -181,11 +185,24 @@ const Navigation = () => {
           }
         </div>
 
-        <Link to='/sign-in'>
-          <Button styles="bg-primary rounded-[5px]">
-            Đăng nhập
-          </Button>
-        </Link>
+        {
+          accountInfo ? (
+            Object.keys(accountInfo)?.length === 0
+              && accountInfo?.constructor === Object
+              ?
+              <Link to='/sign-in'>
+                <Button styles="bg-primary rounded-[5px]">
+                  Đăng nhập
+                </Button>
+              </Link>
+              :
+              <CornerAva />
+          ) : <Link to='/sign-in'>
+            <Button styles="bg-primary rounded-[5px]">
+              Đăng nhập
+            </Button>
+          </Link>
+        }
       </div>
 
     </nav>

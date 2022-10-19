@@ -10,6 +10,7 @@ import { footer } from '../../assets/images'
 
 //** Third party components*/
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate, Navigate } from 'react-router-dom'
 
 const Order = ({ title }) => {
     useEffect(() => {
@@ -18,22 +19,31 @@ const Order = ({ title }) => {
 
     //** Const */
     const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const accountInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+
     const [provinces, setProvinces] = useState()
     const [district, setDistrict] = useState()
     const [ward, setWard] = useState()
     const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
+    // const accountInfo = useSelector((state) => state.account?.accountInfo)
+    const userName = `${accountInfo?.firstName} ${accountInfo?.lastName}`
+    const email = `${accountInfo?.email}`
+    const [userPhone, setUserPhone] = useState(accountInfo?.phoneNumber)
+    const [userAddress, setUserAddress] = useState(accountInfo?.address)
+
     const [deliveryInfo, setDeliveryInfo] = useState({
         name: {
-            value: '',
+            value: userName,
             error: false,
         },
         phone: {
-            value: '',
+            value: userPhone,
             error: false,
         },
-        email: '',
+        email: email,
         address: {
-            value: '',
+            value: userAddress,
             error: false,
         },
         note: '',
@@ -61,7 +71,7 @@ const Order = ({ title }) => {
         setDeliveryInfo(currVal => ({
             ...currVal,
             name: {
-                value: value,
+                value: value ? value : userName,
                 error: value ? false : true
             }
         }))
@@ -70,7 +80,7 @@ const Order = ({ title }) => {
         setDeliveryInfo(currVal => ({
             ...currVal,
             phone: {
-                value: value,
+                value: value ? value : userPhone,
                 error: value ? false : true
             }
         }))
@@ -85,7 +95,7 @@ const Order = ({ title }) => {
         setDeliveryInfo(currVal => ({
             ...currVal,
             address: {
-                value: value,
+                value: value ? value : userAddress,
                 error: value ? false : true
             }
         }))
@@ -119,40 +129,57 @@ const Order = ({ title }) => {
     }
 
 
-    return (
-        <div className='font-maven'>
-            <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
-            <div className='sm:px-16 px-6 mt-10 mb-20 flex gap-7 sm:flex-row flex-col'>
-                <div className='md:w-[70%] w-full'>
-                    <DeliveryAddress
-                        provinces={provinces}
-                        district={district}
-                        ward={ward}
-                        setProvinces={setProvinces}
-                        setDistrict={setDistrict}
-                        setWard={setWard}
-                        handleInputName={handleInputName}
-                        handleInputPhone={handleInputPhone}
-                        handleInputEmail={handleInputEmail}
-                        handleInputAddress={handleInputAddress}
-                        handleInputNote={handleInputNote}
-                        handleSelectProvinces={handleSelectProvinces}
-                        handleSelectDistrict={handleSelectDistrict}
-                        handleSelectWard={handleSelectWard}
-                        deliveryInfo={deliveryInfo}
-                    />
-                    <PaymentMethod />
-                </div>
-                <div className='md:w-[30%] w-full'>
-                    <OrderItem />
-                    <ContinueSection
-                        deliveryInfo={deliveryInfo}
-                        setDeliveryInfo={setDeliveryInfo}
-                    />
-                </div>
-            </div>
-        </div>
-    )
+    if (accountInfo) {
+        if (Object.keys(accountInfo).length === 0
+            && accountInfo.constructor === Object) {
+            return <Navigate replace to="/" />
+        } else {
+            if (accountInfo.authorizeRole === 'User') {
+                return (
+                    <div className='font-maven'>
+                        <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
+                        <div className='sm:px-16 px-6 mt-10 mb-20 flex gap-7 sm:flex-row flex-col'>
+                            <div className='md:w-[70%] w-full'>
+                                <DeliveryAddress
+                                    provinces={provinces}
+                                    district={district}
+                                    ward={ward}
+                                    setProvinces={setProvinces}
+                                    setDistrict={setDistrict}
+                                    setWard={setWard}
+                                    handleInputName={handleInputName}
+                                    handleInputPhone={handleInputPhone}
+                                    handleInputEmail={handleInputEmail}
+                                    handleInputAddress={handleInputAddress}
+                                    handleInputNote={handleInputNote}
+                                    handleSelectProvinces={handleSelectProvinces}
+                                    handleSelectDistrict={handleSelectDistrict}
+                                    handleSelectWard={handleSelectWard}
+                                    deliveryInfo={deliveryInfo}
+                                    userInfo={accountInfo}
+                                    userPhone={userPhone}
+                                    userAddress={userAddress}
+                                />
+                                <PaymentMethod />
+                            </div>
+                            <div className='md:w-[30%] w-full'>
+                                <OrderItem />
+                                <ContinueSection
+                                    deliveryInfo={deliveryInfo}
+                                    setDeliveryInfo={setDeliveryInfo}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                )
+            } else {
+                return <Navigate replace to="/management" />
+            }
+        }
+    } else {
+        return <Navigate replace to="/" />
+    }
+
 }
 
 export default Order

@@ -1,26 +1,36 @@
 import { useEffect } from 'react'
-import ItemList from './components/ItemList/ItemList'
-import PurchaseSection from './components/PurchaseSection/PurchaseSection'
+import CartContainer from './CartContainer'
 
-//** images
-import { footer } from '../../assets/images'
+//** Third party components*/
+import { Navigate } from 'react-router-dom'
 
 const Cart = ({ title }) => {
   useEffect(() => {
     document.title = title
   }, [title])
 
-  return (
-    <div className='font-maven'>
-      <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
-      <div className='sm:px-16 px-6 mt-10 mb-20 flex gap-7 md:flex-row flex-col'>
-        <ItemList />
-        <div className='md:w-[30%] w-full'>
-          <PurchaseSection />
-        </div>
-      </div>
-    </div>
-  )
+  const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+
+  if (loggedInUser) {
+    if (Object.keys(loggedInUser).length === 0
+      && loggedInUser.constructor === Object) {
+      return (
+        <CartContainer />
+      )
+    } else {
+      if (loggedInUser.authorizeRole === 'Staff' || loggedInUser.authorizeRole === 'Admin') {
+        return <Navigate replace to="/management" />
+      } else {
+        return (
+          <CartContainer />
+        )
+      }
+    }
+  } else {
+    return (
+      <CartContainer />
+    )
+  }
 }
 
 export default Cart

@@ -10,12 +10,13 @@ import { useDispatch } from 'react-redux'
 const Filter = (props) => {
 
     // ** State
-    const [activeCategory, setActiveCategory] = useState(0)
+    const [activeCategory, setActiveCategory] = useState(null)
     const [min, setMin] = useState(100000);
-    const [max, setMax] = useState(10000000);
+    const [max, setMax] = useState(5000000);
 
     const handlePickCategory = (id) => {
         setActiveCategory(id)
+        props?.setCateId(id)
     }
 
     // handle change price filter
@@ -41,20 +42,20 @@ const Filter = (props) => {
                     <h1 className='font-semibold text-[20px] my-5'>Danh mục</h1>
                     <div className='md:block flex flex-wrap'>
                         <div
-                            onClick={() => handlePickCategory(0)}
-                            className={`cursor-pointer my-3 py-2 px-4 text-center ${activeCategory === 0 ? 'bg-blue-200 shadow-md' : ''} 
+                            onClick={() => handlePickCategory(null)}
+                            className={`cursor-pointer my-3 py-2 px-4 text-center ${activeCategory === null ? 'bg-blue-200 shadow-md' : ''} 
                         rounded-[5px] hover:bg-blue-200`}
                         >
                             Tất cả sản phẩm
                         </div>
-                        {props?.filter.map(item => (
+                        {props?.filter?.map(item => (
                             <div
-                                key={item.id}
-                                onClick={() => handlePickCategory(item.id)}
-                                className={`cursor-pointer my-3 py-2 px-4 text-center ${activeCategory === item.id ? 'bg-blue-200 shadow-md' : ''} 
+                                key={item.categoryId}
+                                onClick={() => handlePickCategory(item.categoryId)}
+                                className={`cursor-pointer my-3 py-2 px-4 text-center ${activeCategory === item.categoryId ? 'bg-blue-200 shadow-md' : ''} 
                         rounded-[5px] hover:bg-blue-200`}
                             >
-                                {item.name}
+                                {item.categoryName}
                             </div>
                         ))}
                     </div>
@@ -66,7 +67,7 @@ const Filter = (props) => {
                         // getAriaLabel={() => 'Minimum distance'}
                         value={[min, max]}
                         min={100000}
-                        max={10000000}
+                        max={5000000}
                         onChange={handleChangePrice}
                         valueLabelDisplay="auto"
                         // getAriaValueText={valuetext}

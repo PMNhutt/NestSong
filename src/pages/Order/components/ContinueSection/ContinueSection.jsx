@@ -13,6 +13,7 @@ const ContinueSection = (props) => {
     //** Const */
     const dispatch = useDispatch()
     const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
+    const accountInfo = useSelector((state) => state.account?.accountInfo)
     const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
         pauseOnHover: false,
     });
@@ -46,15 +47,27 @@ const ContinueSection = (props) => {
     const handleCompletePurchase = () => {
         if (shoppingCart?.length > 0) {
             if ((props?.deliveryInfo?.name?.value !== "")
-                && (props?.deliveryInfo?.phone?.value !== "")
+                && (props?.deliveryInfo?.phone?.value !== null)
                 && (props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
                 setOpenModal(true)
                 dispatch(removeCart())
                 dispatch(getShoppingCart())
                 console.log({
-                    ...props?.deliveryInfo,
-                    cart: shoppingCart
+                    user: {
+                        customerId: accountInfo?.accountId,
+                        address: props?.deliveryInfo?.address?.value,
+                        agencyId: props?.deliveryInfo?.provinces?.value,
+                        notes: props?.deliveryInfo?.note
+                    },
+                    cart: shoppingCart?.map((item) => (
+                        {
+                            productId: item.id,
+                            quantitybuy: item.amount,
+                            productName: item.name,
+                            salePrice: item.price
+                        }
+                    ))
                 });
             } else {
                 notifyWarn()
@@ -67,7 +80,7 @@ const ContinueSection = (props) => {
                         }
                     }))
                 }
-                if (props?.deliveryInfo?.phone?.value == "") {
+                if (props?.deliveryInfo?.phone?.value == null) {
                     props?.setDeliveryInfo(currVal => ({
                         ...currVal,
                         phone: {
@@ -85,7 +98,7 @@ const ContinueSection = (props) => {
                         }
                     }))
                 }
-                if (props?.deliveryInfo?.address?.value == "") {
+                if (props?.deliveryInfo?.address?.value == null) {
                     props?.setDeliveryInfo(currVal => ({
                         ...currVal,
                         address: {

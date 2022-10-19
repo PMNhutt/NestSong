@@ -9,13 +9,13 @@ const ModalCompleteOder = (props) => {
     //**Const */
     const [isShowModal, setIsShowModal] = useState(true)
 
-    useEffect(() => {
-        if (isShowModal) {
-            document.body.style.overflow = 'hidden'
-        } else {
-            document.body.style.overflow = 'unset'
-        }
-    }, [isShowModal])
+    // useEffect(() => {
+    //     if (isShowModal) {
+    //         document.body.style.overflow = 'hidden'
+    //     } else {
+    //         document.body.style.overflow = 'unset'
+    //     }
+    // }, [isShowModal])
 
     const DelayedLink = ({ delay, replace, state, to, ...props }) => {
         const navigate = useNavigate();

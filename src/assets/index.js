@@ -10,6 +10,7 @@ import shopping from './shopping.gif'
 import truck from './truck.gif'
 import share from './share.gif'
 import like from './like.gif'
+import icCamera from './ic-gallery.svg'
 
 export {
     blackLogo,
@@ -23,5 +24,6 @@ export {
     shopping,
     truck,
     share,
-    like
+    like,
+    icCamera
 }

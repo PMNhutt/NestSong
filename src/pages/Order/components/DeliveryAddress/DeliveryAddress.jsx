@@ -10,6 +10,9 @@ import { MenuItem, Select } from '@mui/material';
 const DeliveryAddress = (props) => {
 
     //**Const */
+    let loggedUserName = `${props?.userInfo.firstName} ${props?.userInfo.lastName}`
+    const [userName, setUserName] = useState(loggedUserName)
+    const [userEmail, setUserEmail] = useState(props?.userInfo?.email)
     const [provinces, setProvinces] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
@@ -44,6 +47,23 @@ const DeliveryAddress = (props) => {
         // props?.setWard(e.target.value);
         props?.handleSelectWard(e.target.value)
     }
+    const handleInputName = (value) => {
+        props?.handleInputName(value)
+        setUserName(value)
+    }
+
+    //** validate number */
+    const handleKeyDown = (e) => {
+        if (e.keyCode === 69 || e.keyCode === 190 || e.keyCode === 110
+            || e.keyCode === 189) {
+            e.preventDefault();
+        }
+        // if (phoneValid) {
+        //     if ((e.keyCode !== 8 && e.keyCode !== 46)) {
+        //         e.preventDefault();
+        //     }
+        // }
+    }
 
     return (
         <div className='text-black w-full border rounded-[5px] shadow-md px-6 py-2 h-fit'>
@@ -56,7 +76,12 @@ const DeliveryAddress = (props) => {
                 <div className="mb-2 relative input-placeholer">
                     <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
-                        required type="text" onBlur={(e) => props?.handleInputName(e.target.value)} />
+                        required type="text"
+                        // readOnly
+                        // onChange={(e) => handleInputName(e.target.value)}
+                        onBlur={(e) => handleInputName(e.target.value)}
+                        value={userName}
+                    />
                     <div className='placeholder'>
                         Họ và tên <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
                     </div>
@@ -65,7 +90,11 @@ const DeliveryAddress = (props) => {
                     <div className='relative input-placeholer w-full'>
                         <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.phone.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary `}
-                            required type="number" onBlur={(e) => props?.handleInputPhone(e.target.value)} />
+                            required type="number"
+                            onBlur={(e) => props?.handleInputPhone(e.target.value)}
+                            value={props?.userPhone}
+                            onKeyDown={handleKeyDown}
+                        />
                         <div className='placeholder'>
                             Số điện thoại <span className='text-redError text-[25px] absolute right-[-13px] font-semibold'>*</span>
                         </div>
@@ -73,7 +102,10 @@ const DeliveryAddress = (props) => {
                     <div className='relative input-placeholer w-full'>
                         <input className="bg-white appearance-none border-[1.5px] border-gray-400
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary "
-                            required onBlur={(e) => props?.handleInputEmail(e.target.value)} />
+                            required
+                            onBlur={(e) => props?.handleInputEmail(e.target.value)}
+                            value={userEmail}
+                        />
                         <div className='placeholder'>
                             Email
                         </div>
@@ -82,7 +114,11 @@ const DeliveryAddress = (props) => {
                 <div className="mb-2 relative input-placeholer">
                     <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.address.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
-                        required type="text" onBlur={(e) => props?.handleInputAddress(e.target.value)} />
+                        required
+                        type="text"
+                        onBlur={(e) => props?.handleInputAddress(e.target.value)}
+                        value={props?.userAddress}
+                    />
                     <div className='placeholder'>
                         Địa chỉ nhận hàng <span className='text-redError text-[25px] absolute right-[-13px] font-semibold'>*</span>
                     </div>
@@ -103,7 +139,7 @@ const DeliveryAddress = (props) => {
                         {
                             props?.provinces?.length > 0 ?
                                 props?.provinces?.map((province) =>
-                                    <MenuItem key={province.agencyId} value={province.address} className="menu-item">
+                                    <MenuItem key={province.agencyId} value={province.agencyId} className="menu-item">
                                         <p className="item-label font-maven">
                                             {province.address}
                                         </p>

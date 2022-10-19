@@ -16,40 +16,30 @@ const comments =
   total_records: 6
 }
 
-
-
-
-const CustomerReview = () => {
+const CustomerReview = (props) => {
   return (
     <div className='my-2'>
-      <div className='flex flex-wrap gap-10 py-10'>
-        <div className='flex gap-4'>
-          <div className='w-[40px] h-[40px] bg-cover bg-center rounded-full' style={{ backgroundImage: `url(${customer1})` }} />
-          <div>
-            <p className='text-[18px] font-semibold mb-1'>Nguyn Van A</p>
-            <Rating defaultValue={5} precision={0.5} readOnly size="small" />
-            <p className='mt-1'>TP HCM</p>
+
+      {
+        props?.listFeedBack?.length > 0 &&
+        props?.listFeedBack?.map((item, index) => (
+          <div key={index} className='flex flex-wrap gap-10 py-10'>
+            <div className='flex gap-4'>
+              <div className='w-[40px] h-[40px] bg-cover bg-center rounded-full' style={{ backgroundImage: `url(${item?.avatar ? item?.avatar : customer1})` }} />
+              <div>
+                <p className='text-[18px] font-semibold mb-1'>{item?.customerName}</p>
+                <Rating defaultValue={item?.stars} value={item?.stars} precision={0.5} readOnly size="small" />
+                <p className='mt-1'>{item?.address}</p>
+              </div>
+            </div>
+            <div className='flex-1'>
+              <p className='w-[40%] mb-2'>{item?.comment}</p>
+              <p>{item?.feedbackDate}</p>
+            </div>
           </div>
-        </div>
-        <div className='flex-1'>
-          <p className='w-[40%] mb-2'>Sản phẩm ngon tuyệt vời, chắc chắn sẽ mua lại để biếu ông bà cha mẹ anh chị em họ hàng cô chú bác</p>
-          <p>2022-06-21</p>
-        </div>
-      </div>
-      <div className='flex flex-wrap gap-10 py-10'>
-        <div className='flex gap-4'>
-          <div className='w-[40px] h-[40px] bg-cover bg-center rounded-full' style={{ backgroundImage: `url(${customer1})` }} />
-          <div>
-            <p className='text-[18px] font-semibold mb-1'>Nguyn Van A</p>
-            <Rating defaultValue={5} precision={0.5} readOnly size="small" />
-            <p className='mt-1'>TP HCM</p>
-          </div>
-        </div>
-        <div className='flex-1'>
-          <p className='w-[40%] mb-2'>Sản phẩm ngon tuyệt vời, chắc chắn sẽ mua lại để biếu ông bà cha mẹ anh chị em họ hàng cô chú bác</p>
-          <p>2022-06-21</p>
-        </div>
-      </div>
+        ))
+      }
+
     </div>
   )
 }

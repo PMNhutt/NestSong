@@ -3,6 +3,7 @@ import { product, starts, saleTag, border, blueBorder, redBorder } from '../../a
 import truncate from '../../utils/truncate'
 import numberWithComma from '../../utils/numberWithComma'
 import { openProductDetails } from '../../redux/actionSlice/productSlice'
+import instances from '../../utils/plugin/axios'
 
 //** Third party libraries */
 import Rating from '@mui/material/Rating';
@@ -15,15 +16,21 @@ const Product = (props) => {
   const dispatch = useDispatch()
 
   //** handle Open detail 
-  const handleOpenDetail = () => {
-    dispatch(openProductDetails(props?.data))
+  const handleOpenDetail = async () => {
+    const res = await instances.get(`/products/id/${props?.data?.categoryId}/${props?.data?.productId}`, {
+      params: {
+        productId: props?.data?.productId,
+        categoryId: props?.data?.categoryId
+      }
+    })
+    dispatch(openProductDetails(res?.data))
   }
 
   return (
     <Link to={'/products/detail/' + props?.data?.productName} onClick={handleOpenDetail}>
       <div className='w-fit h-fit px-3 py-5 cursor-pointer hover:shadow-lg flex flex-col items-center rounded-[5px] font-maven relative'>
         <div className='w-[60px] h-[60px] absolute right-3 bg-contain bg-no-repeat z-10' style={{ backgroundImage: `url(${saleTag})` }}>
-          <p className='text-white absolute right-5 text-[17px] font-bold'>{props?.data?.discount * 100}%</p>
+          <p className='text-white absolute right-5 text-[17px] font-bold'>{Math.round(props?.data?.discount)}%</p>
           <p className='text-white absolute right-5 top-5 text-[17px] font-semibold'>OFF</p>
         </div>
         <div className='w-[230px] h-[230px] bg-cover bg-center bg-no-repeat relative' style={{ backgroundImage: `url(${props?.data?.image || product})` }}>
