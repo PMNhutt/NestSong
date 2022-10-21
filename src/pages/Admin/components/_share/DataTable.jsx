@@ -33,22 +33,27 @@ function Datatable(props) {
         },
     ];
     return (
-        <div className="h-[78vh] bg-white">
+        <div className="h-[75vh] bg-white">
             {
-                props?.dashboardProList ?
+                // props?.dashboardProList ?
                     <DataGrid
-                        rows={props?.dashboardProList?.result}
+                        rows={props?.dashboardProList}
                         columns={userColumns.concat(actionColumn)}
                         pageSize={10}
                         rowsPerPageOptions={[10]}
                         getRowId={(row) => row.productId}
+                        loading={!props?.dashboardProList.length}
+                        components={{
+                            LoadingOverlay: LoadingSmall,
+                        }}
                         className="datagrid"
                         sx={{
                             '& .MuiDataGrid-columnHeaderTitle': {
                                 fontWeight: 700
                             }
                         }}
-                    /> : <LoadingSmall />
+                    />
+                    //  : <LoadingSmall />
             }
         </div>
     );

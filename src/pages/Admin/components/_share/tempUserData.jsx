@@ -12,12 +12,14 @@ export const userColumns = [
     // },
     { field: 'productName', headerName: 'Tên sản phẩm', width: 210, flex: 1 },
     { field: 'categoryName', headerName: 'Danh mục', width: 210, flex: 1 },
-    { field: 'salePrice', headerName: 'Giá tiền (vnd)', width: 200, flex: 1},
+    { field: 'salePrice', headerName: 'Giá bán (vnd)', width: 200, flex: 1},
+    { field: 'originalPrice', headerName: 'Giá gốc (vnd)', width: 200, flex: 1},
     { field: 'discount', headerName: 'Giảm giá (%)', width: 160, flex: 1 },
     {
         field: 'status',
         headerName: 'Trạng thái',
-        width: 100,
+        // width: 100,
+        flex: 1,
         renderCell: (params) => (
             <div className={`cellWithStatus ${params.row.status}`}>
                 {

@@ -71,7 +71,7 @@ const provincesData = [
 const Product = () => {
     //** Const */
     const [searchVal, setSearchVal] = useState('')
-    const [page, setPage] = useState(1)
+    // const [page, setPage] = useState(1)
     const dispatch = useDispatch()
 
     const debounced = useDebounce(searchVal, 600)
@@ -82,7 +82,7 @@ const Product = () => {
     const [ward, setWard] = useState()
     // const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
 
-    const [dashboardProList, setDashboardProList] = useState()
+    const [dashboardProList, setDashboardProList] = useState([])
     const [createInfo, setCreateInfo] = useState({
         name: {
             value: '',
@@ -122,65 +122,30 @@ const Product = () => {
 
     // ** call search api
     useEffect(() => {
-        // console.log('page', parseInt(page));
         if (debounced !== '') {
             if (!debounced.trim()) {
                 return;
             }
 
             const fetch = async () => {
-                const res = await instances.get('/products/search', {
+                const res = await instances.get('/admin/products/search', {
                     params: {
                         name: debounced,
-                        page: 1,
-                        // size: size,
-                        // sort: sort,
-                        // cateid: cateid,
-                        // min: minPrice,
-                        // max: maxPrice
                     }
                 })
-                setPage(1)
-                setDashboardProList(res?.data)
-                // dispatch(setProductList(res?.data))
+                setDashboardProList(res?.data?.result)
             }
             fetch()
         } else {
             const fetch = async () => {
-                const res = await instances.get('/products', {
-                    params: {
-                        page: page,
-                        // size: size,
-                        // sort: sort,
-                        // cateid: cateid,
-                        // min: minPrice,
-                        // max: maxPrice
-                    }
-                })
-                if (res?.data?.result.length === 0 && (res?.data?.page > res?.data?.total_pages)) {
-                    let pageValue = res?.data?.page - 1
-                    const newRes = await instances.get('/products', {
-                        params: {
-                            page: pageValue,
-                            // size: size,
-                            // sort: sort,
-                            // cateid: cateid
-                        }
-                    })
-                    setPage(pageValue)
-                    setDashboardProList(newRes?.data)
-                    // dispatch(setProductList(newRes?.data))
-                } else {
-                    setDashboardProList(res?.data)
-                    // dispatch(setProductList(res?.data))
-                }
+                const res = await instances.get('/admin/products')
+                setDashboardProList(res?.data?.result)
             }
-
             fetch()
         }
 
 
-    }, [debounced, page])
+    }, [debounced])
 
     //** get delivery information */
     const handleInputName = (value) => {
@@ -258,7 +223,7 @@ const Product = () => {
             }
 
             <div className='flex items-center justify-between'>
-                {/* <Input placeholder='Tìm kiếm ở đây...' /> */}
+                <Input placeholder='Tìm kiếm ở đây...' onChange={(e) => setSearchVal(e.target.value)}/>
                 <div
                     onClick={() => setIsShowModal(true)}
                     className='rounded-[5px] cursor-pointer py-2 px-4 bg-primary text-white'>Thêm mới sản phẩm</div>
