@@ -5,6 +5,7 @@ export const accountSlice = createSlice({
     name: 'account',
     initialState: {
         accountInfo: {},
+        showModal: false,
     },
     reducers: {
         setAccountInfo: (state, action) => {
@@ -19,6 +20,9 @@ export const accountSlice = createSlice({
                 state.accountInfo = currentAccInfo
             }
         },
+        setShowModal: (state, action) => {
+            state.showModal = action.payload
+        }
     }
 })
 
@@ -48,5 +52,5 @@ export const accountSlice = createSlice({
 //     }
 // };
 
-export const { setAccountInfo, getAccountInfo } = accountSlice.actions;
+export const { setAccountInfo, getAccountInfo, setShowModal } = accountSlice.actions;
 export default accountSlice.reducer;

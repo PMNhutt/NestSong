@@ -7,6 +7,7 @@ import ShoppingBasketRoundedIcon from '@mui/icons-material/ShoppingBasketRounded
 import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ArticleIcon from '@mui/icons-material/Article';
 import PostAddIcon from '@mui/icons-material/PostAdd';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 
 const Sidebar = (props) => {
 
@@ -43,7 +44,16 @@ const Sidebar = (props) => {
                                 onClick={() => props.setActiveTab(2)}
                                 className={`flex items-center gap-2 cursor-pointer ${props.activeTab === 2 ? 'text-primary' : 'text-gray-500'} mb-5`}>
                                 <ManageAccountsIcon />
-                                <p>Quản lý tài khoản</p>
+                                <p>Quản lý nhân viên</p>
+                            </div>
+                        </div>
+
+                        <div className='pt-3'>
+                            <div
+                                onClick={() => props.setActiveTab(3)}
+                                className={`flex items-center gap-2 cursor-pointer ${props.activeTab === 3 ? 'text-primary' : 'text-gray-500'} mb-5`}>
+                                <AttachMoneyIcon />
+                                <p>Thống kê doanh thu</p>
                             </div>
                         </div>
                     </>

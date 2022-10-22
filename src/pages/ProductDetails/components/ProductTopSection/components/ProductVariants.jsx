@@ -129,7 +129,7 @@ const ProductVariants = (props) => {
 
       <h1 className='text-[25px] font-semibold mb-3'>{productStore?.productName}</h1>
       <div className='flex items-center gap-1'>
-        <Rating  value={productStore?.rating} precision={0.5} readOnly size="small" />
+        <Rating value={productStore?.rating ?? 0} precision={0.5} readOnly size="small" />
         <span>({productStore?.rating})</span>
         <div className='flex items-center border-l-gray-400 border-solid border-l-[1px] ml-1 pl-1 text-gray-500'>
           <ShoppingBagRoundedIcon />

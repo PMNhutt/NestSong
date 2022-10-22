@@ -33,7 +33,10 @@ const Product = (props) => {
           <p className='text-white absolute right-5 text-[17px] font-bold'>{Math.round(props?.data?.discount)}%</p>
           <p className='text-white absolute right-5 top-5 text-[17px] font-semibold'>OFF</p>
         </div>
-        <div className='w-[230px] h-[230px] bg-cover bg-center bg-no-repeat relative' style={{ backgroundImage: `url(${props?.data?.image || product})` }}>
+        <div className='w-[230px] h-[230px] bg-cover bg-center bg-no-repeat relative' 
+        // style={{ backgroundImage: `url(${props?.data?.image || product})` }}
+        >
+          <img className='w-[230px] object-cover' src={`data:image/webp;base64,${props?.data?.image || product}`} />
           <div className='w-[230px] h-[150px] bg-cover bg-center bottom-0 absolute z-10' style={{ backgroundImage: `url(${border})` }} />
         </div>
         <div className='w-[230px]'>

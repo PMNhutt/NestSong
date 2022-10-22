@@ -1,8 +1,13 @@
+import { useEffect, useRef, useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import Tooltip from '@mui/material/Tooltip';
 import LoadingSmall from '../../../../../../share/components/LoadingSmall/LoadingSmall';
 import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
+import { useDispatch, useSelector } from 'react-redux'
+import { toast } from 'react-toastify';
+
+import { setAddedProduct, addItemToCart } from '../../../../../../redux/actionSlice/managementSlice'
 
 //** Collumns */
 export const userColumns = [
@@ -12,6 +17,7 @@ export const userColumns = [
     { field: 'salePrice', headerName: 'Giá bán (vnd)', width: 200, flex: 1 },
     { field: 'originalPrice', headerName: 'Giá gốc (vnd)', width: 200, flex: 1 },
     { field: 'discount', headerName: 'Giảm giá (%)', width: 160, flex: 1 },
+    { field: 'quantityInStock', headerName: 'SL trong kho', flex: 1 },
     {
         field: 'status',
         headerName: 'Trạng thái',
@@ -34,6 +40,16 @@ export const userColumns = [
 ];
 
 const DataTable = (props) => {
+    const [productId, setProductId] = useState()
+    const dispatch = useDispatch()
+    const productList = useSelector((state) => state.management.cartList)
+    const [inputValue, setInputValue] = useState(1)
+    const notifyWarn = () => toast.warn("Bạn đã chọn tối đa !", {
+        pauseOnHover: false,
+    });
+    const notifyWarnSoldOut = () => toast.warn("Sản phẩm này đã hết hàng !", {
+        pauseOnHover: false,
+    });
     const actionColumn = [
         {
             field: 'action',
@@ -42,7 +58,9 @@ const DataTable = (props) => {
             renderCell: (params) => (
                 <div className="cellAction">
                     <Tooltip title="Thêm" placement="right">
-                        <IconButton aria-label="add">
+                        <IconButton
+                            onClick={() => handleAdd(params.row)}
+                            aria-label="add">
                             <AddIcon />
                         </IconButton>
                     </Tooltip>
@@ -50,6 +68,47 @@ const DataTable = (props) => {
             ),
         },
     ];
+
+    // ** handle add cart list **
+    const handleAdd = (value) => {
+        // console.log(value)
+        if (value?.quantityInStock === 0) {
+            notifyWarnSoldOut()
+        } else {
+            dispatch(addItemToCart({
+                // product: product,
+                id: value?.productId,
+                name: value?.productName,
+                price: value?.salePrice,
+                stock: value?.quantityInStock,
+                inputValue: inputValue,
+                categoryName: value?.categoryName
+            }))
+            setProductId(value?.productId)
+
+            // dispatch(getShoppingCart())
+        }
+    }
+
+    useEffect(() => {
+        let added;
+        if (productId) {
+            added = productList?.find((product) => {
+                return product.id === productId
+            })
+        }
+        if (added !== undefined) {
+            dispatch(setAddedProduct({
+                id: added.id,
+                amountAdded: added.amount,
+            }))
+        } else {
+            dispatch(setAddedProduct({
+                id: 0,
+                amountAdded: 0,
+            }))
+        }
+    }, [productList, productId])
 
     return (
         <div className="h-[60vh] bg-white">

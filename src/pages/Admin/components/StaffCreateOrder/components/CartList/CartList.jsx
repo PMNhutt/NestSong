@@ -1,13 +1,15 @@
 import React from 'react'
 import Item from './Item'
+import {useSelector} from 'react-redux'
 
 const CartList = (props) => {
+    const cartList = useSelector((state) => state.management.cartList)
     return (
         <div className='text-black font-maven rounded shadow-md p-5 bg-white'>
-            <div className='max-h-[290px] scroll-bar overflow-x-hidden overflow-y-scroll'>
+            <div className='max-h-[250px] scroll-bar overflow-x-hidden overflow-y-scroll'>
                 {
-                    props?.cartList?.length > 0 ?
-                    props?.cartList?.map((item) => (
+                    cartList?.length > 0 ?
+                    cartList?.map((item) => (
                         <div key={item?.id} className='border-t border-dashed first:border-t-0'>
                             <Item item={item} />
                         </div>

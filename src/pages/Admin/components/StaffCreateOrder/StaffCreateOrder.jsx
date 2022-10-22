@@ -18,6 +18,7 @@ const StaffCreateOrder = () => {
     const [searchVal, setSearchVal] = useState('')
     const debounced = useDebounce(searchVal, 600)
     const [dashboardProList, setDashboardProList] = useState([])
+    const staffInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
 
     const [cartList, setCartList] = useState([])
     const [agency, setAgency] = useState('TP HCM')
@@ -37,7 +38,7 @@ const StaffCreateOrder = () => {
         },
         note: '',
         provinces: {
-            value: '',
+            value: staffInfo?.agencyId,
             error: false,
         },
         // district: '',
@@ -55,7 +56,8 @@ const StaffCreateOrder = () => {
                 const res = await instances.get('/products/search', {
                     params: {
                         name: debounced,
-                        size: 100000
+                        size: 100000,
+                        page: 1,
                     }
                 })
                 setDashboardProList(res?.data?.result)
@@ -63,7 +65,12 @@ const StaffCreateOrder = () => {
             fetch()
         } else {
             const fetch = async () => {
-                const res = await instances.get('/products')
+                const res = await instances.get('/products', {
+                    params: {
+                        size: 100000,
+                        page: 1,
+                    }
+                })
                 setDashboardProList(res?.data?.result)
             }
             fetch()
@@ -120,7 +127,9 @@ const StaffCreateOrder = () => {
                 <div className='mb-4'>
                     <Input placeholder='Tìm kiếm ở đây...' onChange={(e) => setSearchVal(e.target.value)} />
                 </div>
-                <DataTable dashboardProList={dashboardProList} />
+                <DataTable
+                    setCartList={setCartList}
+                    dashboardProList={dashboardProList} />
             </div>
 
             <div className='flex gap-5 sm:flex-row flex-col pb-8'>
@@ -134,7 +143,7 @@ const StaffCreateOrder = () => {
                             handleInputAddress={handleInputAddress}
                             handleInputNote={handleInputNote}
                             deliveryInfo={deliveryInfo}
-                            agency={agency}
+                            agency={staffInfo?.address}
                         />
                     </div>
                 </div>

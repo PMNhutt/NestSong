@@ -4,7 +4,7 @@ import { Button } from '../../share/components'
 // import Logo from '../../assets/nestLogo.svg'
 import { whiteLogo, nestLogo } from '../../assets'
 import { getShoppingCart, setShowModalCart } from '../../redux/actionSlice/shoppingCartSlice'
-import { getAccountInfo } from '../../redux/actionSlice/accountSlice'
+import { getAccountInfo, setShowModal } from '../../redux/actionSlice/accountSlice'
 import NotifyItemCart from './NotifyItemCart'
 import ModalShoppingCart from './Modal/ModalShoppingCart/ModalShoppingCart'
 import CornerAva from './CornerAva'
@@ -59,6 +59,7 @@ const Navigation = () => {
   useEffect(() => {
     dispatch(getShoppingCart())
     dispatch(getAccountInfo())
+    dispatch(setShowModal())
   }, [])
 
   // ** Scroll nav

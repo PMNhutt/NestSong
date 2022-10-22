@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import instances from '../../utils/plugin/axios';
-import { setAccountInfo } from '../../redux/actionSlice/accountSlice'
+import { setAccountInfo, setShowModal } from '../../redux/actionSlice/accountSlice'
 
 // ** image
 import { defaultAva } from '../../assets/images'
@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import OutsideClickHandler from 'react-outside-click-handler';
 
@@ -19,6 +19,7 @@ const CornerAva = (props) => {
     // ** Const
     const [openModal, setopenModal] = useState(false)
     const dispatch = useDispatch()
+    const showModal = useSelector((state) => state.account.showModal)
     const navigate = useNavigate();
 
     //** handle logout */
@@ -30,12 +31,12 @@ const CornerAva = (props) => {
 
     return (
         <div className='relative font-maven'
-            onClick={() => setopenModal(true)}
+            onClick={() => dispatch(setShowModal(true))}
         >
             <div className='w-[35px] h-[35px] bg-cover bg-center rounded-full cursor-pointer' style={{ backgroundImage: `url(${defaultAva})` }} />
             <AnimatePresence>
-                {openModal &&
-                    <OutsideClickHandler onOutsideClick={() => setopenModal(false)}>
+                {showModal &&
+                    <OutsideClickHandler onOutsideClick={() => dispatch(setShowModal(false))}>
                         <motion.div
                             transition={{ duration: 0.3, type: "tween" }}
                             initial={{

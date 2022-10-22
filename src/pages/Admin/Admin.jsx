@@ -4,6 +4,7 @@ import Header from './components/Header/Header'
 import Dashboard from './components/Dashboard/Dashboard'
 import Product from './components/Product/Product'
 import Account from './components/Account/Account'
+import TurnOver from './components/TurnOver/TurnOver'
 import StaffOrder from './components/StaffOrder/StaffOrder'
 import StaffCreateOrder from './components/StaffCreateOrder/StaffCreateOrder'
 
@@ -65,6 +66,10 @@ const Admin = ({ title, children }) => {
                                             {
                                                 activeTab === 2 &&
                                                 <Account />
+                                            }
+                                            {
+                                                activeTab === 3 &&
+                                                <TurnOver />
                                             }
                                         </>
                                 }

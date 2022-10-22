@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react'
 import ModalCompleteOder from '../../../../share/components/Modal/ModalCompleteOrder/ModalCompleteOder'
 import { removeCart, getShoppingCart } from '../../../../redux/actionSlice/shoppingCartSlice'
+import instances from '../../../../utils/plugin/axios'
 
 //**Third party components*/
 import { useSelector, useDispatch } from 'react-redux'
@@ -44,7 +45,7 @@ const ContinueSection = (props) => {
         }
         return false;
     }
-    const handleCompletePurchase = () => {
+    const handleCompletePurchase = async () => {
         if (shoppingCart?.length > 0) {
             if ((props?.deliveryInfo?.name?.value !== "")
                 && (props?.deliveryInfo?.phone?.value !== null)
@@ -53,7 +54,26 @@ const ContinueSection = (props) => {
                 setOpenModal(true)
                 dispatch(removeCart())
                 dispatch(getShoppingCart())
+                const res = await instances.post(`/orders/createorder/online`,
+                    {
+                        user: {
+                            customerID: accountInfo?.accountId,
+                            address: props?.deliveryInfo?.address?.value,
+                            agencyID: props?.deliveryInfo?.provinces?.value,
+                            notes: props?.deliveryInfo?.note
+                        },
+                        cart: shoppingCart?.map((item) => (
+                            {
+                                productId: item.id,
+                                quantityBuy: item.amount,
+                                productName: item.name,
+                                salePrice: item.price
+                            }
+                        ))
+                    }
+                )
                 console.log({
+                    res,
                     user: {
                         customerId: accountInfo?.accountId,
                         address: props?.deliveryInfo?.address?.value,

@@ -12,7 +12,7 @@ const Filter = (props) => {
     // ** State
     const [activeCategory, setActiveCategory] = useState(null)
     const [min, setMin] = useState(100000);
-    const [max, setMax] = useState(5000000);
+    const [max, setMax] = useState(1000000);
 
     const handlePickCategory = (id) => {
         setActiveCategory(id)
@@ -67,7 +67,7 @@ const Filter = (props) => {
                         // getAriaLabel={() => 'Minimum distance'}
                         value={[min, max]}
                         min={100000}
-                        max={5000000}
+                        max={1000000}
                         onChange={handleChangePrice}
                         valueLabelDisplay="auto"
                         // getAriaValueText={valuetext}

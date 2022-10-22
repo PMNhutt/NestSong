@@ -35,6 +35,7 @@ import defaultAva from './account.png'
 import dashboardProduct from './dashboard-product.png'
 import dashboardUser from './dashboard-user.png'
 import dashboardOrder from './dashboard-order.png'
+import dashboardCash from './dashboard-cash.png'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire, introduce,
@@ -43,5 +44,5 @@ export {
     about1, about2, authImage1, authImage2, productListBanner,
     heroBanner, productBig, detailBanner, icBox, icCard, icPin, 
     icCashPayment, defaultAva, dashboardProduct, dashboardUser, 
-    dashboardOrder
+    dashboardOrder, dashboardCash
 }

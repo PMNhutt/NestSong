@@ -59,8 +59,8 @@ const Header = (props) => {
 
     return (
         <div className='w-full'>
-            <div className='fixed top-0 right-0 z-[44]'>
-                <div className='py-5 px-20 flex justify-end'>
+            <div className='fixed top-0 right-0 z-[44] w-full pr-20 pl-[20rem]'>
+                <div className='py-5  flex justify-end backdrop-blur-[6px]'>
                     <div
                         onClick={() => setopenModal(true)}
                         className='relative cursor-pointer flex items-center gap-2 hover:bg-gray-200 border border-gray-300 rounded-[50px] py-1 pr-1 pl-2'>

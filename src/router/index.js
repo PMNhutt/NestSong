@@ -28,7 +28,7 @@ const privateRoutes = [
     { path: '/order', component: Order, title: 'Yến Sào Nesty - Đặt hàng' },
     { path: '*', component: NotFound, title: '404 Page not found', layout: null },
     { path: '/management', component: Admin, title: 'NESTY - MANAGEMENT', layout: null },
-    { path: 'profile', component: Profile, title: 'Thông tin cá nhân', layout: null },
+    { path: 'profile', component: Profile, title: 'Thông tin cá nhân' },
 ]
 
 export { publicRoutes, privateRoutes }

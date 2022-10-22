@@ -8,6 +8,7 @@ import "swiper/css/free-mode";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/thumbs";
+import { useSelector } from 'react-redux'
 
 // import Swiper core and required modules
 import { Mousewheel, Pagination, Thumbs, Navigation } from "swiper"
@@ -29,6 +30,7 @@ const ProductSlider = () => {
     const handleThumbsSwiper = (e) => {
         console.log(e)
     }
+    const productMedia = useSelector((state) => state.product?.productDetail?.productMedia)
 
     const [indexSwiper, setIndexSwiper] = useState(0)
 
@@ -59,13 +61,15 @@ const ProductSlider = () => {
                     }}
                 >
                     {
-                        product_media?.length > 0 &&
-                        product_media?.map((item, index) => {
+                        productMedia?.length > 0 &&
+                        productMedia?.map((item, index) => {
                             return (
-                                <SwiperSlide key={item.id}>
+                                <SwiperSlide key={item.imageId}>
                                     {
-                                        <div className={`swiper-slide-media bg-cover bg-center bg-no-repeat
-                                        h-full w-full overflow-hidden cursor-pointer pt-[100%]`} style={{ backgroundImage: `url('${item?.url_thumb}')` }} />
+                                        // <div className={`swiper-slide-media bg-cover bg-center bg-no-repeat
+                                        // h-full w-full overflow-hidden cursor-pointer pt-[100%]`} style={{ backgroundImage: `url('${item?.url_thumb}')` }} />
+                                        <img className='w-full swiper-slide-media cursor-pointer object-cover' src={`data:image/webp;base64,${item?.smallImage}`} />
+
                                     }
                                 </SwiperSlide>
                             )
@@ -75,7 +79,7 @@ const ProductSlider = () => {
             </div>
             <div className={`containerSwiperMain sm:w-[636px] w-full`}>
                 <Swiper
-                    thumbs={{swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null}}
+                    thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                     modules={[Navigation, Thumbs, Mousewheel, Pagination]}
                     slidesPerView={1}
                     spaceBetween={20}
@@ -110,15 +114,16 @@ const ProductSlider = () => {
                     }}
                 >
                     {
-                        product_media?.length > 0 &&
-                        product_media?.map((item, index) => {
+                        productMedia?.length > 0 &&
+                        productMedia?.map((item, index) => {
                             // const replaceMediaUrl = replaceUrlImage(item?.url)
                             return (
-                                <SwiperSlide key={item.id}>
+                                <SwiperSlide key={item.imageId}>
                                     {
-                                        <div className={`cursor-grabbing background-image bg-cover bg-center bg-no-repeat h-full w-full rounded-[5px]`}
-                                            // onClick={() => this.handleMediaSelected(index)}
-                                            style={{ backgroundImage: `url('${item?.url}')` }} />
+                                        // <div className={`cursor-grabbing background-image bg-cover bg-center bg-no-repeat h-full w-full rounded-[5px]`}
+                                        //     // onClick={() => this.handleMediaSelected(index)}
+                                        //     style={{ backgroundImage: `url('${item?.url}')` }} />
+                                        <img className='w-full swiper-slide-media cursor-grabbing object-cover rounded-[5px] background-image' src={`data:image/webp;base64,${item?.bigImage}`} />
                                     }
                                 </SwiperSlide>
                             )

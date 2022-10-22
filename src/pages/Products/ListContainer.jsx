@@ -34,7 +34,7 @@ const ListContainer = () => {
     const [cateid, setCateId] = useState(null)
     const [sort, setSort] = useState('asc')
     const [minPrice, setMinPrice] = useState(100000)
-    const [maxPrice, setMaxPrice] = useState(5000000)
+    const [maxPrice, setMaxPrice] = useState(1000000)
     const [categoryList, setCategoryList] = useState()
 
     // ** call search api

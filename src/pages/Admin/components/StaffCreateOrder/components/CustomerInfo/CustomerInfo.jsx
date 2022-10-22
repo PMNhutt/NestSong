@@ -13,7 +13,7 @@ const CustomerInfo = (props) => {
 
     return (
         <div className='bg-white p-5 shadow-md rounded w-full'>
-            <div className="mb-2 relative input-placeholer">
+            {/* <div className="mb-2 relative input-placeholer">
                 <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                     required type="text"
@@ -50,7 +50,7 @@ const CustomerInfo = (props) => {
                         Email
                     </div>
                 </div>
-            </div>
+            </div> */}
 
             <div className="mb-2 relative input-placeholer">
                 <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.address.error ? 'border-red-500' : 'border-gray-400'}
