@@ -3,13 +3,14 @@ import { DataGrid } from '@mui/x-data-grid';
 import Tooltip from '@mui/material/Tooltip';
 import LoadingSmall from '../../../../../share/components/LoadingSmall/LoadingSmall';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
+import IconButton from '@mui/material/IconButton';
 
 const userColumns = [
     { field: 'orderId', headerName: 'ID', width: 90 },
     { field: 'customerName', headerName: 'Khách hàng', width: 210, flex: 1 },
-    { field: 'customerAddress', headerName: 'Địa chỉ', width: 210, flex: 1 },
-    { field: 'note', headerName: 'Ghi chú', width: 200, flex: 1 },
-    { field: 'totalPrice', headerName: 'Tổng tiền (vnd)', width: 160, flex: 1 },
+    { field: 'address', headerName: 'Địa chỉ', width: 210, flex: 1 },
+    { field: 'notes', headerName: 'Ghi chú', width: 200, flex: 1 },
+    { field: 'total', headerName: 'Tổng tiền (vnd)', width: 160, flex: 1 },
     { field: 'orderDate', headerName: 'Ngày đặt hàng', width: 160, flex: 1 },
     {
         field: 'status',
@@ -46,9 +47,11 @@ const DataTable = (props) => {
                 <div className="cellAction">
                     <Tooltip title="Xem chi tiết" placement="right">
                         {/* <Link to={`/admin/edit-user/${params.row.id}`}> */}
-                        <IconButton aria-label="edit">
-                            <RemoveRedEyeIcon />
-                        </IconButton>
+                        <div onClick={() => props?.handleOpenOrderDetail(params.row.orderId)}>
+                            <IconButton aria-label="edit">
+                                <RemoveRedEyeIcon />
+                            </IconButton>
+                        </div>
                         {/* </Link> */}
                     </Tooltip>
                 </div>
@@ -70,7 +73,7 @@ const DataTable = (props) => {
                     components={{
                         LoadingOverlay: LoadingSmall,
                     }}
-                    // getRowId={(row) => row.productId}
+                    getRowId={(row) => row.orderId}
                     className="datagrid"
                     sx={{
                         '& .MuiDataGrid-columnHeaderTitle': {

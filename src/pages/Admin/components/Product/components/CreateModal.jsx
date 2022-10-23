@@ -9,59 +9,59 @@ import { product } from '../../../../../assets/images';
 
 const provincesData = [
   {
-      "agencyId": "11111111-1111-1111-1111-111111111110",
-      "address": "Bình Dương",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111110",
+    "address": "Bình Dương",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111111",
-      "address": "Hồ Chí Minh",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111111",
+    "address": "Hồ Chí Minh",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111112",
-      "address": "Hà Nội",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111112",
+    "address": "Hà Nội",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111113",
-      "address": "Vũng Tàu",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111113",
+    "address": "Vũng Tàu",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111114",
-      "address": "Đà Nẵng",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111114",
+    "address": "Đà Nẵng",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111115",
-      "address": "Cần Thơ",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111115",
+    "address": "Cần Thơ",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111116",
-      "address": "Trà Vinh",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111116",
+    "address": "Trà Vinh",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111117",
-      "address": "Huế",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111117",
+    "address": "Huế",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111118",
-      "address": "Bắc Giang",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111118",
+    "address": "Bắc Giang",
+    "storeProducts": []
   },
   {
-      "agencyId": "11111111-1111-1111-1111-111111111119",
-      "address": "Lào Cai",
-      "storeProducts": []
+    "agencyId": "11111111-1111-1111-1111-111111111119",
+    "address": "Lào Cai",
+    "storeProducts": []
   },
   {
-      "agencyId": "db944b53-e861-4f3c-a5b3-6bbebbbcce5b",
-      "address": "TPHCM",
-      "storeProducts": []
+    "agencyId": "db944b53-e861-4f3c-a5b3-6bbebbbcce5b",
+    "address": "TPHCM",
+    "storeProducts": []
   }
 ]
 const CreateModal = (props) => {
@@ -135,7 +135,7 @@ const CreateModal = (props) => {
             translate-x-[-50%] top-[50%] translate-y-[-50%]'>
         <div className='font-maven p-5'>
 
-        <div className='flex mt-3 gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
+          <div className='flex mt-3 gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
             <Select
               displayEmpty
               disableUnderline
@@ -181,7 +181,7 @@ const CreateModal = (props) => {
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleInputPrice(e.target.value)}
-                onKeyDown={handleKeyDown} 
+                onKeyDown={handleKeyDown}
               />
               <div className='placeholder'>
                 Giá bán <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
@@ -277,7 +277,7 @@ const CreateModal = (props) => {
                 focus:outline-none focus:bg-white focus:border-primary resize-none" placeholder="Mô tả..."></textarea>
 
           <div className='bg-primary cursor-pointer py-2 px-4 rounded text-white text-center mt-4'>Tạo sản phẩm</div>
-          
+
         </div>
       </div>
     </div>

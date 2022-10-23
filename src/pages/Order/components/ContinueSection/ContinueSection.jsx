@@ -72,23 +72,23 @@ const ContinueSection = (props) => {
                         ))
                     }
                 )
-                console.log({
-                    res,
-                    user: {
-                        customerId: accountInfo?.accountId,
-                        address: props?.deliveryInfo?.address?.value,
-                        agencyId: props?.deliveryInfo?.provinces?.value,
-                        notes: props?.deliveryInfo?.note
-                    },
-                    cart: shoppingCart?.map((item) => (
-                        {
-                            productId: item.id,
-                            quantitybuy: item.amount,
-                            productName: item.name,
-                            salePrice: item.price
-                        }
-                    ))
-                });
+                // console.log({
+                //     res,
+                //     user: {
+                //         customerId: accountInfo?.accountId,
+                //         address: props?.deliveryInfo?.address?.value,
+                //         agencyId: props?.deliveryInfo?.provinces?.value,
+                //         notes: props?.deliveryInfo?.note
+                //     },
+                //     cart: shoppingCart?.map((item) => (
+                //         {
+                //             productId: item.id,
+                //             quantitybuy: item.amount,
+                //             productName: item.name,
+                //             salePrice: item.price
+                //         }
+                //     ))
+                // });
             } else {
                 notifyWarn()
                 if (props?.deliveryInfo?.name?.value == "") {

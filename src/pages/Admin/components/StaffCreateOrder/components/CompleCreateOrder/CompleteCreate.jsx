@@ -5,6 +5,7 @@ import { toast } from 'react-toastify';
 import { removeCart } from '../../../../../../redux/actionSlice/managementSlice'
 import { useSelector, useDispatch } from 'react-redux'
 import ModalStaffOrder from '../../../../../../share/components/Modal/ModalStaffOrder/ModalStaffOrder'
+import instances from '../../../../../../utils/plugin/axios';
 
 const CompleteCreate = (props) => {
     //** Const */
@@ -32,52 +33,32 @@ const CompleteCreate = (props) => {
     const totalItem = totalItemInCart()
 
     //** handle click complete button */
-    const handleCompletePurchase = () => {
+    const handleCompletePurchase = async () => {
         if (cartList?.length > 0) {
-            if ((props?.deliveryInfo?.name?.value !== "")
-                && (props?.deliveryInfo?.phone?.value !== null)
-                && (props?.deliveryInfo?.provinces?.value !== "")
+            if ((props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
                 // setOpenModal(true)
                 dispatch(removeCart())
                 setOpenModal(true)
                 // dispatch(getShoppingCart())
-                console.log({
+                await instances.post('/orders/createorder/offline', {
                     user: {
                         // customerId: accountInfo?.accountId,
                         address: props?.deliveryInfo?.address?.value,
-                        agencyId: props?.deliveryInfo?.provinces?.value,
+                        agencyID: props?.deliveryInfo?.provinces?.value,
                         notes: props?.deliveryInfo?.note
                     },
                     cart: cartList?.map((item) => (
                         {
                             productId: item.id,
-                            quantitybuy: item.amount,
+                            quantityBuy: item.amount,
                             productName: item.name,
                             salePrice: item.price
                         }
                     ))
-                });
+                })
             } else {
                 notifyWarn()
-                if (props?.deliveryInfo?.name?.value == "") {
-                    props?.setDeliveryInfo(currVal => ({
-                        ...currVal,
-                        name: {
-                            value: '',
-                            error: true
-                        }
-                    }))
-                }
-                if (props?.deliveryInfo?.phone?.value == '') {
-                    props?.setDeliveryInfo(currVal => ({
-                        ...currVal,
-                        phone: {
-                            value: '',
-                            error: true
-                        }
-                    }))
-                }
                 if (props?.deliveryInfo?.address?.value == "") {
                     props?.setDeliveryInfo(currVal => ({
                         ...currVal,
