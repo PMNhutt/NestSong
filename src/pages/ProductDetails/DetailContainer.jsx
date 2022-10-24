@@ -4,7 +4,8 @@ import ProductMidSection from './components/ProductMidSection/ProductMidSection'
 import ProductBottomSection from './components/ProductBottomSection/ProductBottomSection'
 import RecommendSection from './components/RecommendSection/RecommendSection'
 import instances from '../../utils/plugin/axios'
-import { getProductDetail } from '../../redux/actionSlice/productSlice'
+import { getProductDetail, clearProductDetail } from '../../redux/actionSlice/productSlice'
+import LoadingSmall from '../../share/components/LoadingSmall/LoadingSmall'
 
 //** images */
 import { footer } from '../../assets/images'
@@ -16,7 +17,8 @@ const DetailContainer = () => {
 
     const params = useParams();
     const dispatch = useDispatch()
-    const productDetail = useSelector((state) => state?.product?.productDetail);
+    const loading = useSelector((state) => state?.product?.loading)
+    const productDetail = useSelector((state) => state?.product?.productDetail.productDetail);
     const recommendLProduct = useSelector((state) => state?.product?.productDetail?.suggestedProduct)
     const listFeedBack = useSelector((state) => state?.product?.productDetail?.listFeedbakcs)
 
@@ -24,34 +26,41 @@ const DetailContainer = () => {
         document.title = params.name;
     }, [params.name])
 
-    // useEffect(() => {
-    //     const fetch = async () => {
-    //         const res = await instances.get('/products/suggest', {
-    //             params: {
-    //                 currentProductID: productDetail?.productId,
-    //                 cateid: productDetail?.categoryId
-    //             }
-    //         })
-    //         setRecommend(res?.data?.result)
-    //     }
-
-    //     fetch()
-    // }, [productDetail])
-
     useEffect(() => {
+        const fetch = async () => {
+            dispatch(clearProductDetail(true))
+            if (productDetail) {
+                const res = await instances.get(`/products/id/${productDetail?.categoryId}/${productDetail?.productId}`, {
+                    params: {
+                        productId: productDetail?.productId,
+                        categoryId: productDetail?.categoryId
+                    }
+                })
+            }
+            dispatch(clearProductDetail(false))
+        }
         dispatch(getProductDetail())
+        fetch()
     }, [])
 
     return (
-        <div className='text-black '>
-            <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
-            <div className='sm:px-16 px-6 mb-20'>
-                <ProductTopSection />
-                {/* <ProductMidSection /> */}
-                <ProductBottomSection listFeedBack={listFeedBack} />
-                <RecommendSection recommend={recommendLProduct} />
-            </div>
-        </div>
+        <>
+            {
+                !loading ?
+                    <div className='text-black '>
+                        <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
+                        <div className='sm:px-16 px-6 mb-20'>
+                            <ProductTopSection />
+                            {/* <ProductMidSection /> */}
+                            <ProductBottomSection listFeedBack={listFeedBack} />
+                            <RecommendSection recommend={recommendLProduct} />
+                        </div>
+                    </div> :
+                    <div className='pt-[10%]'>
+                        <LoadingSmall />
+                    </div>
+            }
+        </>
     )
 }
 

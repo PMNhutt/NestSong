@@ -47,10 +47,11 @@ const ProductSlider = () => {
                     direction={'horizontal'}
                     spaceBetween={7}
                     slidesPerView={'auto'}
-                    className="mySwiper"
+                    className="mySwiper sm:h-[636px]"
                     watchSlidesProgress={true}
                     // watchSlidesVisibility={true}
                     watchOverflow={true}
+                    
                     breakpoints={{
                         769: {
                             direction: 'vertical'

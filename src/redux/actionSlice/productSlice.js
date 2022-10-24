@@ -5,7 +5,8 @@ export const productSlice = createSlice({
     name: 'product',
     initialState: {
         productDetail: {},
-        productList: undefined
+        productList: undefined,
+        loading: true
     },
     reducers: {
         //actions
@@ -24,8 +25,11 @@ export const productSlice = createSlice({
                 state.productDetail = currentDetail
             }
         },
+        clearProductDetail: (state, action) => {
+            state.loading = action.payload
+        },
     }
 })
 
-export const { openProductDetails, setProductList, getProductDetail } = productSlice.actions;
+export const { openProductDetails, setProductList, getProductDetail, clearProductDetail } = productSlice.actions;
 export default productSlice.reducer;

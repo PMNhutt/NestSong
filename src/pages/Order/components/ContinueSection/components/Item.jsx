@@ -8,7 +8,11 @@ import truncate from '../../../../../utils/truncate'
 const Item = (props) => {
     return (
         <div className='font-maven flex gap-4 py-5'>
-            <div className='bg-white w-[80px] h-[80px] bg-cover bg-no-repeat bg-center' style={{ backgroundImage: `url(${props?.item?.image ? props?.item.image : product})` }} />
+            <div className='bg-white w-[80px] h-[80px] bg-cover bg-no-repeat bg-center'
+            //  style={{ backgroundImage: `url(${props?.item?.image ? props?.item.image : product})` }} 
+            >
+                <img loading='lazy' className='w-[80px] h-[80px] object-cover' src={`data:image/webp;base64,${props?.item?.ImgSrc || ''}`} />
+            </div>
             <div className='flex-1 relative'>
                 <p className='max-w-[85%] text-[18px] font-semibold leading-[1.2]'>
                     {props?.item?.name ? truncate(props?.item.name, 29) : truncate('Yến sào thượng hạng số 1 ngon tuyệt vời bá cháy con bọ chét', 29)}

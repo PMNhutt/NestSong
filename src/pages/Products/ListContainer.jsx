@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Banner } from '../../share/components'
 import Filter from './components/Filter/Filter'
 import ProductListContainer from './components/ProductListContainer/ProductListContainer'
-import { setProductList } from '../../redux/actionSlice/productSlice'
+import { setProductList, clearProductDetail } from '../../redux/actionSlice/productSlice'
 import instances from '../../utils/plugin/axios'
 
 // ** Hooks
@@ -103,7 +103,7 @@ const ListContainer = () => {
             // console.log(res?.data);
             setCategoryList(res?.data?.result)
         }
-
+        // dispatch(clearProductDetail(true))
         fetch()
     }, [])
 

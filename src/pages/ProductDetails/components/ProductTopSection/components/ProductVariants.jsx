@@ -2,7 +2,9 @@ import { useState } from 'react'
 import numberWithComma from '../../../../../utils/numberWithComma'
 import { Button } from '../../../../../share/components'
 import { setAddedProduct, addItemFromPeek, getShoppingCart } from '../../../../../redux/actionSlice/shoppingCartSlice'
+import { clearProductDetail } from '../../../../../redux/actionSlice/productSlice'
 import useDebounce from '../../../../../share/hooks/useDebounce'
+import LoadingSmall from '../../../../../share/components/LoadingSmall/LoadingSmall'
 
 //** Third party components*/
 import Rating from '@mui/material/Rating';
@@ -23,6 +25,7 @@ const ProductVariants = (props) => {
 
   //** State */
   const dispatch = useDispatch();
+  let loading = useSelector((state) => state?.product?.loading)
   const productStore = useSelector((state) => state.product?.productDetail?.productDetail)
   const productList = useSelector((state) => state?.cart?.productslist)
   const [productValue, setProductValue] = useState(1)
@@ -45,6 +48,7 @@ const ProductVariants = (props) => {
         price: productStore?.salePrice,
         stock: productStore?.quantityInStock,
         inputValue: productValue,
+        thumbImg: productStore?.image,
         categoryName: productStore?.categoryName
       }))
       dispatch(getShoppingCart());
@@ -98,6 +102,7 @@ const ProductVariants = (props) => {
         price: productStore?.salePrice,
         stock: productStore?.quantityInStock,
         inputValue: productValue,
+        thumbImg: productStore?.image,
         categoryName: productStore?.categoryName
       }))
       dispatch(getShoppingCart())

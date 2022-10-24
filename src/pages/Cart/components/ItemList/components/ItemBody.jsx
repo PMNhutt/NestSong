@@ -41,7 +41,8 @@ const ItemBody = (props) => {
         price: props?.item?.price,
         stock: props?.item?.maxAmount,
         inputValue: 1,
-        categoryName: props?.item?.categoryName
+        categoryName: props?.item?.categoryName,
+        thumbImg: props?.item?.ImgSrc,
       }))
       dispatch(getShoppingCart())
     }
@@ -60,6 +61,7 @@ const ItemBody = (props) => {
         price: props?.item?.price,
         stock: props?.item?.maxAmount,
         inputValue: 1,
+        ImgSrc: props?.item?.ImgSrc,
         categoryName: props?.item?.categoryName
       }))
       dispatch(setAddedProduct({
@@ -73,7 +75,11 @@ const ItemBody = (props) => {
   return (
     <div className='py-6 flex font-maven'>
       <div className='flex w-[60%] gap-5'>
-        <div className='w-[80px] h-[80px] bg-cover bg-center bg-no-repeat' style={{ backgroundImage: `url(${product})` }} />
+        <div className='w-[80px] h-[80px] bg-cover bg-center bg-no-repeat'
+        //  style={{ backgroundImage: `url(${product})` }} 
+        >
+          <img loading='lazy' className='w-[80px] h-[80px] object-cover' src={`data:image/webp;base64,${props?.item?.ImgSrc || ''}`} />
+        </div>
         <div>
           <p className='text-[18px] mb-1 font-medium'>{props?.item?.name}</p>
           <p className='text-[14px] mb-1 text-gray-500'>Loại: {props?.item.categoryName}</p>
