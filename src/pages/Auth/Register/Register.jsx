@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../../../share/components/Button'
+import { deleteProductDetail } from '../../../redux/actionSlice/productSlice'
 
 // ** images
 import { authImage1, authImage2, about2 } from '../../../assets/images'
@@ -16,6 +17,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import { useForm } from 'react-hook-form'
+import { useDispatch } from 'react-redux'
 
 const Register = ({ title }) => {
     useEffect(() => {
@@ -28,7 +30,11 @@ const Register = ({ title }) => {
         showPassword: false,
     });
     const inputStyle = { WebkitBoxShadow: "0 0 0 1000px white inset", WebkitTextFillColor: '#000000' };
+    const dispatch = useDispatch()
 
+    useEffect(() => {
+        dispatch(deleteProductDetail())
+    }, [])
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });

@@ -17,9 +17,9 @@ export const productSlice = createSlice({
         setProductList: (state, action) => {
             state.productList = action.payload
         },
-        getProductDetail: (state) => {
-            state.productDetail = JSON.parse(localStorage.getItem('PRODUCT_DETAIL'))
+        getProductDetail: (state, action) => {
             let currentDetail = JSON.parse(localStorage.getItem('PRODUCT_DETAIL'))
+            state.productDetail = currentDetail
 
             if (!currentDetail) {
                 state.productDetail = currentDetail
@@ -28,8 +28,15 @@ export const productSlice = createSlice({
         clearProductDetail: (state, action) => {
             state.loading = action.payload
         },
+        deleteProductDetail: (state) => {
+            let currentDetail = JSON.parse(localStorage.getItem('PRODUCT_DETAIL'))
+            if (currentDetail) {
+                localStorage.removeItem('PRODUCT_DETAIL')
+            }
+        }
     }
 })
 
-export const { openProductDetails, setProductList, getProductDetail, clearProductDetail } = productSlice.actions;
+export const { openProductDetails, setProductList, getProductDetail, clearProductDetail,
+    deleteProductDetail } = productSlice.actions;
 export default productSlice.reducer;

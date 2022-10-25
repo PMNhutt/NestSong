@@ -4,11 +4,19 @@ import { Banner } from '../../share/components'
 import { bannerAbout, about1, about2 } from '../../assets/images'
 import { motion } from 'framer-motion'
 import { BsPatchCheck } from 'react-icons/bs'
+import {deleteProductDetail} from '../../redux/actionSlice/productSlice'
+import {useDispatch} from 'react-redux'
 
 const About = ({ title }) => {
   useEffect(() => {
     document.title = title;
   }, [title])
+
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(deleteProductDetail())
+  }, [])
 
   return (
     <div>

@@ -1,8 +1,21 @@
 import React from 'react'
+import UserInfo from './components/UserInfo'
+import OrderTracking from './components/OrderTracking'
 
-const MainSection = () => {
+const MainSection = (props) => {
     return (
-        <div>MainSection</div>
+        <div>
+            {
+                props.activeMenu === 1 &&
+                <UserInfo
+                    data={props?.info}
+                />
+            }
+            {
+                props.activeMenu === 2 &&
+                <OrderTracking />
+            }
+        </div>
     )
 }
 

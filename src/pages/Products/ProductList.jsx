@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
+import {deleteProductDetail} from '../../redux/actionSlice/productSlice'
 
 import ListContainer from './ListContainer'
 
 // ** Third party components
 import { Navigate } from 'react-router-dom'
-
+import {useDispatch} from 'react-redux'
 
 const ProductList = ({ title }) => {
     useEffect(() => {
@@ -13,6 +14,12 @@ const ProductList = ({ title }) => {
 
     // ** Const */
     const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const dispatch = useDispatch()
+
+    //** remove productDetail localStorage */
+    useEffect(() => {
+        dispatch(deleteProductDetail())
+    }, [])
 
     if (loggedInUser) {
         if (Object.keys(loggedInUser).length === 0

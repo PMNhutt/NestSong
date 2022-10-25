@@ -4,6 +4,8 @@ import ContinueSection from './components/ContinueSection/ContinueSection'
 import OrderItem from './components/ContinueSection/OrderItem'
 import PaymentMethod from './components/DeliveryAddress/PaymentMethod'
 import instances from '../../utils/plugin/axios'
+import LoadingSmall from '../../share/components/LoadingSmall/LoadingSmall'
+import { deleteProductDetail } from '../../redux/actionSlice/productSlice'
 
 //** images
 import { footer } from '../../assets/images'
@@ -21,6 +23,7 @@ const Order = ({ title }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const accountInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const [accountDetail, setAccountDetail] = useState()
 
     const [provinces, setProvinces] = useState()
     const [district, setDistrict] = useState()
@@ -29,8 +32,8 @@ const Order = ({ title }) => {
     // const accountInfo = useSelector((state) => state.account?.accountInfo)
     const userName = `${accountInfo?.firstName} ${accountInfo?.lastName}`
     const email = `${accountInfo?.email}`
-    const [userPhone, setUserPhone] = useState(accountInfo?.phoneNumber)
-    const [userAddress, setUserAddress] = useState(accountInfo?.address)
+    const [userPhone, setUserPhone] = useState('')
+    const [userAddress, setUserAddress] = useState('')
 
     const [deliveryInfo, setDeliveryInfo] = useState({
         name: {
@@ -64,6 +67,29 @@ const Order = ({ title }) => {
         }
 
         fetch()
+    }, [])
+
+    //** get detail account info  */
+    useEffect(() => {
+        const fetch = async () => {
+            const res = await instances.get('/accounts/id', {
+                params: {
+                    id: accountInfo?.accountId
+                }
+            })
+            setAccountDetail(res?.data?.result)
+            setUserPhone(res?.data?.result.phoneNumber)
+            setUserAddress(res?.data?.result.address)
+            handleInputPhone(res?.data?.result.phoneNumber)
+            handleInputAddress(res?.data?.result.address)
+        }
+
+        fetch()
+    }, [])
+
+    // ** remove productDetail
+    useEffect(() => {
+        dispatch(deleteProductDetail())
     }, [])
 
     //** get delivery information */

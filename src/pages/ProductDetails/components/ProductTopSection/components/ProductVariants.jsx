@@ -130,74 +130,80 @@ const ProductVariants = (props) => {
   }, [productStore, productList, productValue])
 
   return (
-    <div className='font-maven'>
+    <>
+      {
+        productStore ?
+          <div className='font-maven'>
 
-      <h1 className='text-[25px] font-semibold mb-3'>{productStore?.productName}</h1>
-      <div className='flex items-center gap-1'>
-        <Rating value={productStore?.rating ?? 0} precision={0.5} readOnly size="small" />
-        <span>({productStore?.rating})</span>
-        <div className='flex items-center border-l-gray-400 border-solid border-l-[1px] ml-1 pl-1 text-gray-500'>
-          <ShoppingBagRoundedIcon />
-          <span>{productStore?.soldQuantity}</span>
-        </div>
-      </div>
-      <div className='flex items-center gap-2 mt-2'>
-        <p className='text-gray-400 line-through text-[16px]'>{numberWithComma(productStore?.originalPrice)}đ</p>
-        <p className='text-redError text-[20px] font-semibold'>{numberWithComma(productStore?.salePrice)}đ</p>
-      </div>
-      <div className='mt-2 bg-redError px-2 py-1 rounded-full text-white w-fit'>Giảm {Math.round(productStore?.discount)}%</div>
-      <p className='mt-5 font-semibold'>Loại: <span className='font-normal'>{productStore?.categoryName}</span></p>
-      <p className='mt-5 font-semibold'>Số lượng trong kho: <span className='font-normal'>{productStore?.quantityInStock}</span></p>
-      <div className='flex gap-2 items-center'>
-        <p className='mt-5 font-semibold'>Số lượng: </p>
-        <div className='input-group flex mt-3'>
-          <div onClick={() => handleDecrese()} className='w-[35px] h-[35px] rounded-tl-[5px] rounded-bl-[5px] border flex items-center justify-center cursor-pointer'><RemoveIcon /></div>
-          <div className='select-none w-[40px] h-[35px] flex items-center justify-center border-t border-b'>{productValue}</div>
-          <div onClick={() => handleIncrese()} className='w-[35px] h-[35px] rounded-tr-[5px] rounded-br-[5px] border flex items-center justify-center cursor-pointer'><AddIcon /></div>
-        </div>
-      </div>
-
-      <div className='flex gap-5 flex-wrap mt-10'>
-        <div onClick={() => handleAddToCart()}>
-          <Button styles='bg-primary rounded-[5px]'>
-            <div className='flex items-center gap-2'>
-              <AddShoppingCartIcon />
-              <p>Thêm vào giỏ</p>
+            <h1 className='text-[25px] font-semibold mb-3'>{productStore?.productName}</h1>
+            <div className='flex items-center gap-1'>
+              <Rating value={productStore?.rating ?? 0} precision={0.5} readOnly size="small" />
+              <span>({productStore?.rating})</span>
+              <div className='flex items-center border-l-gray-400 border-solid border-l-[1px] ml-1 pl-1 text-gray-500'>
+                <ShoppingBagRoundedIcon />
+                <span>{productStore?.soldQuantity}</span>
+              </div>
             </div>
-          </Button>
-        </div>
-        <DelayedLink delay={1000} to='/cart'>
-          <Button styles='bg-primary rounded-[5px]'>
-            <div className='flex items-center gap-2' >
-              <ShoppingBagIcon />
-              <p>Mua ngay</p>
+            <div className='flex items-center gap-2 mt-2'>
+              <p className='text-gray-400 line-through text-[16px]'>{numberWithComma(productStore?.originalPrice)}đ</p>
+              <p className='text-redError text-[20px] font-semibold'>{numberWithComma(productStore?.salePrice)}đ</p>
             </div>
-          </Button>
-        </DelayedLink>
-      </div>
+            <div className='mt-2 bg-redError px-2 py-1 rounded-full text-white w-fit'>Giảm {Math.round(productStore?.discount)}%</div>
+            <p className='mt-5 font-semibold'>Loại: <span className='font-normal'>{productStore?.categoryName}</span></p>
+            <p className='mt-5 font-semibold'>Số lượng trong kho: <span className='font-normal'>{productStore?.quantityInStock}</span></p>
+            <div className='flex gap-2 items-center'>
+              <p className='mt-5 font-semibold'>Số lượng: </p>
+              <div className='input-group flex mt-3'>
+                <div onClick={() => handleDecrese()} className='w-[35px] h-[35px] rounded-tl-[5px] rounded-bl-[5px] border flex items-center justify-center cursor-pointer'><RemoveIcon /></div>
+                <div className='select-none w-[40px] h-[35px] flex items-center justify-center border-t border-b'>{productValue}</div>
+                <div onClick={() => handleIncrese()} className='w-[35px] h-[35px] rounded-tr-[5px] rounded-br-[5px] border flex items-center justify-center cursor-pointer'><AddIcon /></div>
+              </div>
+            </div>
 
-      <div className='mt-10'>
-        <p className='uppercase font-semibold text-[18px] mb-2'>Mô tả sản phẩm</p>
-        <p>{productStore?.description}</p>
-      </div>
+            <div className='flex gap-5 flex-wrap mt-10'>
+              <div onClick={() => handleAddToCart()}>
+                <Button styles='bg-primary rounded-[5px]'>
+                  <div className='flex items-center gap-2'>
+                    <AddShoppingCartIcon />
+                    <p>Thêm vào giỏ</p>
+                  </div>
+                </Button>
+              </div>
+              <DelayedLink delay={1000} to='/cart'>
+                <Button styles='bg-primary rounded-[5px]'>
+                  <div className='flex items-center gap-2' >
+                    <ShoppingBagIcon />
+                    <p>Mua ngay</p>
+                  </div>
+                </Button>
+              </DelayedLink>
+            </div>
 
-      <div className='mt-7'>
-        <p className='uppercase font-semibold text-[18px]'>Tại sao nên mua tại nesty</p>
-        <div className='flex item-center gap-5 my-5 text-gray-500'>
-          <CheckCircleIcon />
-          <p>Cam kết sản phẩm nguồn gốc chính hãng</p>
-        </div>
-        <div className='flex item-center gap-5 my-5 text-gray-500'>
-          <LockPersonIcon />
-          <p>Cam kết bảo mật thông tin khách hàng</p>
-        </div>
-        <div className='flex item-center gap-5 my-5 text-gray-500'>
-          <ChangeCircleIcon />
-          <p>Đổi trả miễn phí nếu sản phẩm lỗi</p>
-        </div>
-      </div>
+            <div className='mt-10'>
+              <p className='uppercase font-semibold text-[18px] mb-2'>Mô tả sản phẩm</p>
+              <p>{productStore?.description}</p>
+            </div>
 
-    </div>
+            <div className='mt-7'>
+              <p className='uppercase font-semibold text-[18px]'>Tại sao nên mua tại nesty</p>
+              <div className='flex item-center gap-5 my-5 text-gray-500'>
+                <CheckCircleIcon />
+                <p>Cam kết sản phẩm nguồn gốc chính hãng</p>
+              </div>
+              <div className='flex item-center gap-5 my-5 text-gray-500'>
+                <LockPersonIcon />
+                <p>Cam kết bảo mật thông tin khách hàng</p>
+              </div>
+              <div className='flex item-center gap-5 my-5 text-gray-500'>
+                <ChangeCircleIcon />
+                <p>Đổi trả miễn phí nếu sản phẩm lỗi</p>
+              </div>
+            </div>
+
+          </div>
+          : <LoadingSmall />
+      }
+    </>
   )
 }
 

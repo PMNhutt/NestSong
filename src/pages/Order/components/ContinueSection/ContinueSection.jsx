@@ -47,8 +47,9 @@ const ContinueSection = (props) => {
     }
     const handleCompletePurchase = async () => {
         if (shoppingCart?.length > 0) {
+            console.log(props?.deliveryInfo?.phone?.value)
             if ((props?.deliveryInfo?.name?.value !== "")
-                && (props?.deliveryInfo?.phone?.value !== null)
+                && (props?.deliveryInfo?.phone?.value !== '')
                 && (props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
                 setOpenModal(true)

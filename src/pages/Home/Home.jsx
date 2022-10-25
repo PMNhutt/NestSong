@@ -1,8 +1,10 @@
 import { useEffect } from 'react'
 import { Hero, Trending, Policies, Clients, Introduce } from './components'
+import { deleteProductDetail } from '../../redux/actionSlice/productSlice'
 
 //** Third party components*/
 import { Link, useNavigate, Navigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 const Home = ({ title }) => {
   useEffect(() => {
@@ -11,6 +13,12 @@ const Home = ({ title }) => {
 
   //** Const  */
   const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+  const dispatch = useDispatch()
+
+  //** remove productDetail localStore */
+  useEffect(() => {
+    dispatch(deleteProductDetail())
+  }, [])
 
   if (loggedInUser) {
     if (Object.keys(loggedInUser).length === 0
