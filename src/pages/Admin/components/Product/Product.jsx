@@ -220,6 +220,7 @@ const Product = () => {
                     handleInputPrice={handleInputPrice}
                     handleInputDiscount={handleInputDiscount}
                     handleSelectAmount={handleSelectAmount}
+                    handleInputNote={handleInputNote}
                 />
             }
 

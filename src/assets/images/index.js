@@ -37,6 +37,8 @@ import dashboardUser from './dashboard-user.png'
 import dashboardOrder from './dashboard-order.png'
 import dashboardCash from './dashboard-cash.png'
 import emptyUserOrder from './empty-order.png'
+import placeholerPicture from './create-picture.png'
+import addMoreImage from './add-more-image.png'
 
 export {
     img1, bg1, pro2, pro3, pro1, footer, fire, introduce,
@@ -45,5 +47,6 @@ export {
     about1, about2, authImage1, authImage2, productListBanner,
     heroBanner, productBig, detailBanner, icBox, icCard, icPin, 
     icCashPayment, defaultAva, dashboardProduct, dashboardUser, 
-    dashboardOrder, dashboardCash, emptyUserOrder
+    dashboardOrder, dashboardCash, emptyUserOrder, placeholerPicture,
+    addMoreImage
 }

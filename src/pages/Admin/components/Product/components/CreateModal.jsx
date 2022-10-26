@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
+
 import { MenuItem, Select } from '@mui/material';
 import Dropzone from "react-dropzone"
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
@@ -6,65 +7,8 @@ import validator from 'validator';
 import { toast } from 'react-toastify';
 
 import { icCamera } from '../../../../../assets'
-import { product } from '../../../../../assets/images';
+import { product, placeholerPicture, addMoreImage } from '../../../../../assets/images';
 
-const provincesData = [
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111110",
-    "address": "Bình Dương",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111111",
-    "address": "Hồ Chí Minh",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111112",
-    "address": "Hà Nội",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111113",
-    "address": "Vũng Tàu",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111114",
-    "address": "Đà Nẵng",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111115",
-    "address": "Cần Thơ",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111116",
-    "address": "Trà Vinh",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111117",
-    "address": "Huế",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111118",
-    "address": "Bắc Giang",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "11111111-1111-1111-1111-111111111119",
-    "address": "Lào Cai",
-    "storeProducts": []
-  },
-  {
-    "agencyId": "db944b53-e861-4f3c-a5b3-6bbebbbcce5b",
-    "address": "TPHCM",
-    "storeProducts": []
-  }
-]
 const CreateModal = (props) => {
 
   //**Const */
@@ -72,7 +16,11 @@ const CreateModal = (props) => {
   const [provinces, setProvinces] = useState('')
   const [categoryList, setCategoryList] = useState('')
   const [file, setFile] = useState('');
+  const [showErrorThumb, setShowErrorThumb] = useState(false)
+  const [fileList, setFileList] = useState([])
+  const [showErrorFileList, setShowErrorFileList] = useState(false)
   const [percentValid, setPercentValid] = useState(false);
+  const [discountValue, setDiscountValue] = useState('')
   const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
     pauseOnHover: false,
   });
@@ -95,9 +43,16 @@ const CreateModal = (props) => {
   //** handle discountInput check */
   const handleCheckValidDiscount = (e) => {
     var percent = e.target.value;
-    console.log(percent);
+    setDiscountValue(percent)
+    // console.log(percent);
     if (percent.length === 3) {
       setPercentValid(true);
+      if (percent > 100) {
+        setDiscountValue(100)
+      }
+      if (percent === '000') {
+        setDiscountValue(0)
+      }
     } else {
       setPercentValid(false);
     }
@@ -173,17 +128,40 @@ const CreateModal = (props) => {
     })
   }
 
+  //** handle select thumbnail */
+  const handleSelectThumb = (e) => {
+    setShowErrorThumb(false);
+    setFile(e.target.files[0])
+  }
+
+  //** handle select list image */
+  const handleSelectListImage = (e) => {
+    setShowErrorFileList(false)
+    const selectedFiles = e.target.files
+    const selectedFilesArray = Array.from(selectedFiles)
+    // const imagesArray = selectedFilesArray.map((img) => {
+    //   return URL.createObjectURL(img)
+    // })
+
+    setFileList(selectedFilesArray)
+  }
+
   //** handle cerate product */
   const handleCreateProduct = () => {
     if ((props?.createInfo?.category?.value !== "")
-    && (props?.createInfo?.name?.value !== "")
-    && (props?.createInfo?.price?.value !== "")
-    && (props?.createInfo?.discount?.value !== "")) {
+      && (props?.createInfo?.name?.value !== "")
+      && (props?.createInfo?.price?.value !== "")
+      && (props?.createInfo?.discount?.value !== "")
+      && (file !== "")
+      && (fileList?.length > 0)) {
       console.log({
         name: props?.createInfo?.name?.value,
         category: props?.createInfo?.category?.value,
-        price: props?.createInfo?.price?.value,
-        discount: props?.createInfo?.discount?.value,
+        price: parseInt(props?.createInfo?.price?.value),
+        discount: parseInt(props?.createInfo?.discount?.value),
+        description: props.createInfo?.note,
+        thumbImg: file,
+        imageList: fileList
       });
     } else {
       notifyWarn()
@@ -223,6 +201,12 @@ const CreateModal = (props) => {
           }
         }))
       }
+      if (file == "") {
+        setShowErrorThumb(true)
+      }
+      if (!fileList?.length > 0) {
+        setShowErrorFileList(true)
+      }
     }
   }
 
@@ -234,8 +218,11 @@ const CreateModal = (props) => {
       <div className='sm:w-max w-full bg-white fixed z-[990] rounded-[5px] left-[50%]
             translate-x-[-50%] top-[50%] translate-y-[-50%]'>
         <div className='font-maven p-5'>
+          <div className='pb-2 border-b border-gray-300'>
+            <p className='font-semibold text-[20px]'>Thêm mới sản phẩm</p>
+          </div>
 
-          <div className='flex mt-3 gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
+          <div className='flex mt-4 gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
             <Select
               displayEmpty
               disableUnderline
@@ -277,7 +264,7 @@ const CreateModal = (props) => {
 
           <div className='flex gap-3'>
             <div className="mb-2 relative input-placeholer">
-              <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+              <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.price.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleInputPrice(e.target.value)}
@@ -306,6 +293,7 @@ const CreateModal = (props) => {
                 onBlur={(e) => props?.handleInputDiscount(e.target.value)}
                 onKeyDown={(e) => handleKeyDown(e, true)}
                 onChange={handleCheckValidDiscount}
+                value={discountValue}
               />
               <div className='placeholder'>
                 Giảm giá (%) <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
@@ -363,23 +351,55 @@ const CreateModal = (props) => {
                 </div>
               )}
             </Dropzone> */}
-            <label htmlFor="file" className='cursor-pointer'>
-              Chọn ảnh thumbnal:
+            <label htmlFor="file" className='cursor-pointer w-fit'>
+              Chọn ảnh thumbnail:<span className='text-redError font-medium text-[20px]'>*</span>
               {' '}
-              <DriveFolderUploadIcon className="upload-icon" />
+              <DriveFolderUploadIcon className="upload-icon" /> {showErrorThumb && <span className='text-redError text-[14px]'>Ảnh thumbnail không được trống!</span>}
+              <input type="file" id="file" style={{ display: 'none' }} onChange={(e) => handleSelectThumb(e)} />
+              <img className='w-[60px] h-[60px] object-cover' src={file ? URL.createObjectURL(file) : `${placeholerPicture}`} alt="default-img" />
             </label>
-            <input type="file" id="file" style={{ display: 'none' }} onChange={(e) => setFile(e.target.files[0])} />
-            <img className='w-[60px]' src={file ? URL.createObjectURL(file) : `${product}`} alt="default-img" />
+          </div>
+
+          <div className='mt-2'>
+            <label htmlFor="fileList" className='cursor-pointer w-fit'>
+              Chọn ảnh mô tả chi tiết:<span className='text-redError font-medium text-[20px]'>*</span>
+              {' '}
+              <DriveFolderUploadIcon className="upload-icon" /> {showErrorFileList && <span className='text-redError text-[14px]'>Ảnh chi tiết không được trống!</span>}
+              <input
+                multiple
+                name='fileList'
+                accept='image/png, image/jpeg, image/webp, image/jpg'
+                type="file" id="fileList"
+                style={{ display: 'none' }}
+                onChange={handleSelectListImage} />
+              <div className='flex gap-1'>
+                {
+                  fileList &&
+                  fileList?.map((image, index) => (
+                    <div key={index}>
+                      <img className='w-[60px] h-[60px] object-cover' src={URL.createObjectURL(image)} />
+                    </div>
+                  ))
+                }
+                {
+                  !fileList?.length > 0 &&
+                  <>
+                    <img className='w-[60px] h-[60px] object-cover' src={placeholerPicture} />
+                    <img className='w-[60px] h-[60px] object-cover' src={addMoreImage} />
+                  </>
+                }
+              </div>
+            </label>
           </div>
 
           <textarea
-            // onBlur={(e) => props?.handleInputNote(e.target.value)} 
+            onBlur={(e) => props?.handleInputNote(e.target.value)}
             rows="4" className="mt-3 p-2.5 w-full text-gray-900 bg-white rounded border border-gray-400
-                focus:outline-none focus:bg-white focus:border-primary resize-none" placeholder="Mô tả..."></textarea>
+                focus:outline-none focus:bg-white focus:border-primary resize-none" placeholder="Mô tả sản phẩm..."></textarea>
 
           <div
             onClick={() => handleCreateProduct()}
-            className={`bg-primary cursor-pointer py-2 px-4 rounded text-white text-center mt-4`}>Tạo sản phẩm</div>
+            className={`bg-primary select-none cursor-pointer py-2 px-4 rounded text-white text-center mt-4`}>Tạo sản phẩm</div>
 
         </div>
       </div>
