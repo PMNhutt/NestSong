@@ -3,6 +3,7 @@ import { MenuItem, Select } from '@mui/material';
 import Dropzone from "react-dropzone"
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import validator from 'validator';
+import { toast } from 'react-toastify';
 
 import { icCamera } from '../../../../../assets'
 import { product } from '../../../../../assets/images';
@@ -71,17 +72,34 @@ const CreateModal = (props) => {
   const [provinces, setProvinces] = useState('')
   const [categoryList, setCategoryList] = useState('')
   const [file, setFile] = useState('');
-  const [numberValid, setNumberValid] = useState(false);
+  const [percentValid, setPercentValid] = useState(false);
+  const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
+    pauseOnHover: false,
+  });
 
   //** validate number */
-  const handleKeyDown = (e) => {
-    if (e.keyCode === 69 || e.keyCode === 190 || e.keyCode === 110) {
+  const handleKeyDown = (e, percentVal) => {
+    if (e.keyCode === 69 || e.keyCode === 190 || e.keyCode === 110
+      || e.keyCode === 189 || e.keyCode === 109) {
       e.preventDefault();
     }
-    if (phoneValid) {
-      if ((e.keyCode !== 8 && e.keyCode !== 46)) {
-        e.preventDefault();
+    if (percentVal) {
+      if (percentValid) {
+        if ((e.keyCode !== 8 && e.keyCode !== 46)) {
+          e.preventDefault();
+        }
       }
+    }
+  }
+
+  //** handle discountInput check */
+  const handleCheckValidDiscount = (e) => {
+    var percent = e.target.value;
+    console.log(percent);
+    if (percent.length === 3) {
+      setPercentValid(true);
+    } else {
+      setPercentValid(false);
     }
   }
 
@@ -118,18 +136,100 @@ const CreateModal = (props) => {
     props?.handleSelectWard(e.target.value)
   }
 
-  useEffect(() => {
-    if (props.isShowModal) {
-      document.body.style.overflow = 'hidden'
+  // useEffect(() => {
+  //   if (props.isShowModal) {
+  //     document.body.style.overflow = 'hidden'
+  //   } else {
+  //     document.body.style.overflow = 'unset'
+  //   }
+  // }, [props.isShowModal])
+
+  //** handle close modal **/
+  const handleCloseCreateModal = () => {
+    props.setIsShowModal(false)
+    // ** clear input data
+    props?.setCreateInfo({
+      name: {
+        value: '',
+        error: false,
+      },
+      price: {
+        value: '',
+        error: false,
+      },
+      amount: {
+        value: '',
+        error: false,
+      },
+      discount: {
+        value: '',
+        error: false,
+      },
+      note: '',
+      category: {
+        value: '',
+        error: false,
+      },
+    })
+  }
+
+  //** handle cerate product */
+  const handleCreateProduct = () => {
+    if ((props?.createInfo?.category?.value !== "")
+    && (props?.createInfo?.name?.value !== "")
+    && (props?.createInfo?.price?.value !== "")
+    && (props?.createInfo?.discount?.value !== "")) {
+      console.log({
+        name: props?.createInfo?.name?.value,
+        category: props?.createInfo?.category?.value,
+        price: props?.createInfo?.price?.value,
+        discount: props?.createInfo?.discount?.value,
+      });
     } else {
-      document.body.style.overflow = 'unset'
+      notifyWarn()
+      if (props?.createInfo?.category?.value == "") {
+        props?.setCreateInfo(currVal => ({
+          ...currVal,
+          category: {
+            value: '',
+            error: true
+          }
+        }))
+      }
+      if (props?.createInfo?.name?.value == "") {
+        props?.setCreateInfo(currVal => ({
+          ...currVal,
+          name: {
+            value: '',
+            error: true
+          }
+        }))
+      }
+      if (props?.createInfo?.price?.value == "") {
+        props?.setCreateInfo(currVal => ({
+          ...currVal,
+          price: {
+            value: '',
+            error: true
+          }
+        }))
+      }
+      if (props?.createInfo?.discount?.value == "") {
+        props?.setCreateInfo(currVal => ({
+          ...currVal,
+          discount: {
+            value: '',
+            error: true
+          }
+        }))
+      }
     }
-  }, [props.isShowModal])
+  }
 
   return (
     <div>
       <div
-        onClick={() => props.setIsShowModal(false)}
+        onClick={() => handleCloseCreateModal()}
         className='top-0 bottom-0 right-0 left-0 bg-[rgba(0,0,0,0.8)] fixed z-[900]' />
       <div className='sm:w-max w-full bg-white fixed z-[990] rounded-[5px] left-[50%]
             translate-x-[-50%] top-[50%] translate-y-[-50%]'>
@@ -146,12 +246,12 @@ const CreateModal = (props) => {
                 provinces !== '' ? undefined : () => <Placeholder>Chọn danh mục</Placeholder>
               }
               variant="standard"
-              className={`bg-white border ${props?.deliveryInfo?.provinces.error ? 'border-red-500' : 'border-gray-400'} rounded px-3 w-full`}
+              className={`bg-white border ${props?.createInfo?.category.error ? 'border-red-500' : 'border-gray-400'} rounded px-3 w-full`}
             >
               {
                 props?.categoryList?.length > 0 ?
                   props?.categoryList?.map((cate) =>
-                    <MenuItem key={cate.categoryId} value={cate.categoryName} className="menu-item">
+                    <MenuItem key={cate.categoryId} value={cate.categoryId} className="menu-item">
                       <p className="item-label font-maven">
                         {cate.categoryName}
                       </p>
@@ -165,7 +265,7 @@ const CreateModal = (props) => {
           </div>
 
           <div className="mb-2 relative input-placeholer">
-            <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+            <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
               required type="text"
               onBlur={(e) => props?.handleInputName(e.target.value)}
@@ -177,19 +277,19 @@ const CreateModal = (props) => {
 
           <div className='flex gap-3'>
             <div className="mb-2 relative input-placeholer">
-              <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+              <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleInputPrice(e.target.value)}
                 onKeyDown={handleKeyDown}
               />
               <div className='placeholder'>
-                Giá bán <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                Giá bán (vnd) <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
               </div>
             </div>
 
             {/* <div className="mb-2 relative input-placeholer">
-              <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+              <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleSelectAmount(e.target.value)}
@@ -200,14 +300,15 @@ const CreateModal = (props) => {
             </div> */}
 
             <div className="mb-2 relative input-placeholer">
-              <input className={`bg-white appearance-none border-[1.5px] ${props?.deliveryInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+              <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.discount.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleInputDiscount(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => handleKeyDown(e, true)}
+                onChange={handleCheckValidDiscount}
               />
               <div className='placeholder'>
-                Giảm giá () <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                Giảm giá (%) <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
               </div>
             </div>
           </div>
@@ -263,7 +364,7 @@ const CreateModal = (props) => {
               )}
             </Dropzone> */}
             <label htmlFor="file" className='cursor-pointer'>
-              Chọn ảnh sản phẩm:
+              Chọn ảnh thumbnal:
               {' '}
               <DriveFolderUploadIcon className="upload-icon" />
             </label>
@@ -276,7 +377,9 @@ const CreateModal = (props) => {
             rows="4" className="mt-3 p-2.5 w-full text-gray-900 bg-white rounded border border-gray-400
                 focus:outline-none focus:bg-white focus:border-primary resize-none" placeholder="Mô tả..."></textarea>
 
-          <div className='bg-primary cursor-pointer py-2 px-4 rounded text-white text-center mt-4'>Tạo sản phẩm</div>
+          <div
+            onClick={() => handleCreateProduct()}
+            className={`bg-primary cursor-pointer py-2 px-4 rounded text-white text-center mt-4`}>Tạo sản phẩm</div>
 
         </div>
       </div>

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import LoadingSmall from '../../../../../share/components/LoadingSmall/LoadingSmall'
 
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+
 const UserInfo = (props) => {
     //** State */
     const [lastName, setLastName] = useState('')
@@ -10,6 +12,7 @@ const UserInfo = (props) => {
     const [address, setAddress] = useState('')
     const [oldPassWord, setOldPassWord] = useState('')
     const [newPassWord, setNewPassWord] = useState('')
+    const [togglePassword, setTogglePassword] = useState(false)
 
     useEffect(() => {
         setFirstName(props?.data?.firstName || '')
@@ -29,7 +32,7 @@ const UserInfo = (props) => {
     }
 
     return (
-        <div>
+        <div className='px-7 py-5 rounded border shadow-md'>
             <div className='border-b-gray-300 border-b pb-4'>
                 <p className='text-[20px] mb-1 font-medium'>Thông Tin Cá Nhân</p>
                 <p>Cập nhật thông tin tài khoản của bạn</p>
@@ -114,12 +117,16 @@ const UserInfo = (props) => {
             }
 
             <div className='border-b-gray-300 border-b pb-4 mt-8'>
-                <p className='text-[20px] mb-1 font-medium'>Bảo mật tài khoản</p>
+                <div className='flex items-center gap-2 cursor-pointer' onClick={() => setTogglePassword(prev => !prev)}>
+                    <p className='text-[20px] mb-1 font-medium'>Bảo mật tài khoản</p>
+                    <KeyboardArrowDownIcon />
+                </div>
                 <p>Đổi mật khẩu</p>
             </div>
 
             {
-                props?.data !== undefined ?
+                togglePassword &&
+                (props?.data !== undefined ?
                     <div className='mt-6'>
 
                         <div className='w-[49%] mb-[20px]'>
@@ -163,6 +170,7 @@ const UserInfo = (props) => {
                         </div>
                     </div>
                     : <LoadingSmall />
+                )
             }
         </div>
     )

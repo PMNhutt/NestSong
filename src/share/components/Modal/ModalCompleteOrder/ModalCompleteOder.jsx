@@ -46,7 +46,7 @@ const ModalCompleteOder = (props) => {
                     />
                     <p className='text-black text-[18px] font-medium'>Đơn hàng đã được tiếp nhận!</p>
                     <div className='flex gap-3 mt-8'>
-                        <DelayedLink delay={0} to='/user/my-order'>
+                        <DelayedLink delay={0} to='/profile'>
                             <div className='bg-primary py-2 px-4 rounded-[5px] cursor-pointer'>
                                 <p className='font-medium'>Theo dõi đơn hàng</p>
                             </div>

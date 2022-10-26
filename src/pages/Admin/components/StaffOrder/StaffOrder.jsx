@@ -11,7 +11,7 @@ const StaffOrder = () => {
     const [isShowModal, setIsShowModal] = useState(false)
     const [orderDetail, setOrderDetail] = useState()
     const [ordersNumber, setOrdersNumber] = useState(0)
-    const [agencyName, setAgencyName] = useState('TP HCM')
+    const [statusChange, setStatusChange] = useState(false)
     const [orderList, setOrderList] = useState([])
     const staffInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
 
@@ -31,12 +31,14 @@ const StaffOrder = () => {
         }
 
         fetch()
-    }, [])
+    }, [statusChange])
 
     //** handle open order detail */
-    const handleOpenOrderDetail = (orderId) => {
+    const handleOpenOrderDetail = async (orderId) => {
+        const res = await instances.get(`/staff/orderdetails/${orderId}`)
         setIsShowModal(true)
-        console.log(orderId);
+        setOrderDetail(res?.data?.results)
+        // console.log(res?.data?.results);
     }
 
     return (
@@ -46,6 +48,8 @@ const StaffOrder = () => {
                 <ViewDetailOrder
                     isShowModal={isShowModal}
                     setIsShowModal={setIsShowModal}
+                    orderDetail={orderDetail}
+                    setStatusChange={setStatusChange}
                 />
             }
             <p className='text-[18px]'>Chi nhánh: <span className='font-medium text-primary'>{staffInfo?.address}</span></p>

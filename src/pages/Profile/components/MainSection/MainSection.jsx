@@ -7,13 +7,13 @@ const MainSection = (props) => {
         <div>
             {
                 props.activeMenu === 1 &&
-                <UserInfo
-                    data={props?.info}
-                />
+                <OrderTracking />
             }
             {
                 props.activeMenu === 2 &&
-                <OrderTracking />
+                <UserInfo
+                    data={props?.info}
+                />
             }
         </div>
     )

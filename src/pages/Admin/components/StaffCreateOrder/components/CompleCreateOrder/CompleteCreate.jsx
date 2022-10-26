@@ -39,9 +39,8 @@ const CompleteCreate = (props) => {
                 && (props?.deliveryInfo?.address?.value !== "")) {
                 // setOpenModal(true)
                 dispatch(removeCart())
-                setOpenModal(true)
                 // dispatch(getShoppingCart())
-                await instances.post('/orders/createorder/offline', {
+                const res = await instances.post('/orders/createorder/offline', {
                     user: {
                         // customerId: accountInfo?.accountId,
                         address: props?.deliveryInfo?.address?.value,
@@ -57,6 +56,11 @@ const CompleteCreate = (props) => {
                         }
                     ))
                 })
+                if (res?.status === 200) {
+                    setOpenModal(true)
+                } else {
+                    console.log('CREATE ORDER FAILED');
+                }
             } else {
                 notifyWarn()
                 if (props?.deliveryInfo?.address?.value == "") {

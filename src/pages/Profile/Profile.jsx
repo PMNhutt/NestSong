@@ -63,7 +63,7 @@ const Profile = ({ title }) => {
                     setActiveMenu={setActiveMenu}
                   />
                 </div>
-                <div className='w-[80%] h-fit rounded border shadow-md py-4 px-9'>
+                <div className='w-[80%] h-fit  '>
                   <MainSection
                     activeMenu={activeMenu}
                     info={userInfo}

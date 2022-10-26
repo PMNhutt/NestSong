@@ -216,6 +216,7 @@ const Product = () => {
                     handleInputName={handleInputName}
                     handleSelectCategory={handleSelectCategory}
                     createInfo={createInfo}
+                    setCreateInfo={setCreateInfo}
                     handleInputPrice={handleInputPrice}
                     handleInputDiscount={handleInputDiscount}
                     handleSelectAmount={handleSelectAmount}

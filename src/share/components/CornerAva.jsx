@@ -56,10 +56,10 @@ const CornerAva = (props) => {
                                         <p>Thông tin cá nhân</p>
                                     </div>
                                 </Link>
-                                <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'>
+                                {/* <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'>
                                     <AssignmentIcon sx={{ fontSize: '16px' }} />
                                     <p>Kiểm tra đơn hàng</p>
-                                </div>
+                                </div> */}
                                 <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'
                                     onClick={() => handleLogout()}
                                 >
