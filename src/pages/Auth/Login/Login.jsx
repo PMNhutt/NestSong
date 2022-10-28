@@ -5,6 +5,7 @@ import { deleteProductDetail } from '../../../redux/actionSlice/productSlice'
 // ** Third party components
 import { Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import jwt_decode from "jwt-decode";
 
 const Login = ({ title }) => {
     useEffect(() => {
@@ -13,20 +14,25 @@ const Login = ({ title }) => {
 
     //** States, const */
     const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const accessToken = localStorage.getItem('accessToken')
+    let decoded_jwt = {}
+    if (accessToken) {
+        decoded_jwt = jwt_decode(accessToken)
+    }
     const dispatch = useDispatch()
 
     useEffect(() => {
         dispatch(deleteProductDetail())
     }, [])
 
-    if (loggedInUser) {
-        if (Object.keys(loggedInUser).length === 0
-            && loggedInUser.constructor === Object) {
+    if (accessToken) {
+        if (Object.keys(decoded_jwt).length === 0
+            && decoded_jwt.constructor === Object) {
             return (
                 <LoginForm />
             )
         } else {
-            if (loggedInUser.authorizeRole === 'Staff' || loggedInUser.authorizeRole === 'Admin') {
+            if (decoded_jwt.Role === 'Staff' || decoded_jwt.Role === 'Admin') {
                 return <Navigate replace to="/management" />
             } else {
                 return <Navigate replace to="/" />

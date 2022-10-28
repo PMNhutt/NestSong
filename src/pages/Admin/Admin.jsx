@@ -11,6 +11,7 @@ import StaffCreateOrder from './components/StaffCreateOrder/StaffCreateOrder'
 //** Third party components*/
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import jwt_decode from "jwt-decode";
 
 const Admin = ({ title, children }) => {
     useEffect(() => {
@@ -22,13 +23,18 @@ const Admin = ({ title, children }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const accessToken = localStorage.getItem('accessToken')
+    let decoded_jwt = {}
+    if (accessToken) {
+        decoded_jwt = jwt_decode(accessToken)
+    }
 
-    if (loggedInUser) {
-        if (Object.keys(loggedInUser).length === 0
-            && loggedInUser.constructor === Object) {
+    if (accessToken) {
+        if (Object.keys(decoded_jwt).length === 0
+            && decoded_jwt.constructor === Object) {
             return <Navigate replace to="/" />
         } else {
-            if (loggedInUser.authorizeRole === 'User') {
+            if (decoded_jwt.Role === 'User') {
                 return <Navigate replace to="/" />
             } else {
                 return (
@@ -39,10 +45,13 @@ const Admin = ({ title, children }) => {
                                 activeTab={activeTab} />
                         </div>
                         <div className='pr-20 pl-[20rem] pt-[6rem] bg-gray-100 w-full min-h-screen'>
-                            <Header info={loggedInUser} />
+                            <Header
+                                role={decoded_jwt.Role}
+                                info={loggedInUser}
+                            />
                             <div className='w-full'>
                                 {
-                                    loggedInUser.authorizeRole === 'Staff' ?
+                                    decoded_jwt.Role === 'Staff' ?
                                         <>
                                             {
                                                 activeTab === 0 &&

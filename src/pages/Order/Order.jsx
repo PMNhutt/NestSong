@@ -13,6 +13,7 @@ import { footer } from '../../assets/images'
 //** Third party components*/
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate, Navigate } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
 
 const Order = ({ title }) => {
     useEffect(() => {
@@ -23,6 +24,11 @@ const Order = ({ title }) => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const accountInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const accessToken = localStorage.getItem('accessToken')
+    let decoded_jwt = {}
+    if (accessToken) {
+        decoded_jwt = jwt_decode(accessToken)
+    }
     const [accountDetail, setAccountDetail] = useState()
 
     const [provinces, setProvinces] = useState()
@@ -155,12 +161,12 @@ const Order = ({ title }) => {
     }
 
 
-    if (accountInfo) {
-        if (Object.keys(accountInfo).length === 0
-            && accountInfo.constructor === Object) {
+    if (accessToken) {
+        if (Object.keys(decoded_jwt).length === 0
+            && decoded_jwt.constructor === Object) {
             return <Navigate replace to="/" />
         } else {
-            if (accountInfo.authorizeRole === 'User') {
+            if (decoded_jwt.Role === 'User') {
                 return (
                     <div className='font-maven'>
                         <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
@@ -185,6 +191,7 @@ const Order = ({ title }) => {
                                     userInfo={accountInfo}
                                     userPhone={userPhone}
                                     userAddress={userAddress}
+                                    accountDetail={accountDetail}
                                 />
                                 <PaymentMethod />
                             </div>

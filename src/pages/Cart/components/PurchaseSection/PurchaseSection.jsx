@@ -5,6 +5,7 @@ import ModalRequireLogin from '../../../../share/components/Modal/ModalRequireLo
 //** Third party components*/
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, Navigate } from 'react-router-dom'
+import jwt_decode from "jwt-decode";
 
 const PurchaseSection = () => {
     //** Const */
@@ -33,14 +34,19 @@ const PurchaseSection = () => {
         const navigate = useNavigate();
         const timerRef = useRef();
         const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+        const accessToken = localStorage.getItem('accessToken')
+        let decoded_jwt = {}
+        if (accessToken) {
+            decoded_jwt = jwt_decode(accessToken)
+        }
         useEffect(() => () => clearTimeout(timerRef.current), []);
 
         const clickHandler = async (e) => {
             e.preventDefault();
             // await handleBuyNow()
             if (cartList?.length > 0) {
-                if (loggedInUser) {
-                    if (loggedInUser.authorizeRole === 'User') {
+                if (accessToken) {
+                    if (decoded_jwt.Role === 'User') {
                         timerRef.current = setTimeout(navigate, delay, to, { replace, state });
                     } else {
                         // navigation('/sign-in')

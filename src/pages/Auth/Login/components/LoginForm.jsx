@@ -57,8 +57,8 @@ const LoginForm = () => {
             notifyError()
         } else {
             dispatch(setAccountInfo(res?.data?.result))
+            localStorage.setItem('accessToken', res.data.token)
             if (res?.data?.result?.authorizeRole === 'Staff' || res?.data?.result?.authorizeRole === 'Admin') {
-                localStorage.setItem('accessToken', res.data.token)
                 navigate('/management')
             } else {
                 navigate('/')

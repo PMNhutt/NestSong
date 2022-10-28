@@ -12,6 +12,7 @@ const MainSection = (props) => {
             {
                 props.activeMenu === 2 &&
                 <UserInfo
+                    setUpdateStatus={props.setUpdateStatus}
                     data={props?.info}
                 />
             }

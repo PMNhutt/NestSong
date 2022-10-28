@@ -10,7 +10,14 @@ export const accountSlice = createSlice({
     reducers: {
         setAccountInfo: (state, action) => {
             state.accountInfo = action.payload
-            localStorage.setItem('ACCOUNT_INFO', JSON.stringify(state.accountInfo))
+            localStorage.setItem('ACCOUNT_INFO', JSON.stringify({
+                address: action.payload.address,
+                firstName: action.payload.firstName,
+                lastName: action.payload.lastName,
+                agencyId: action.payload.agencyId,
+                email: action.payload.email,
+                accountId: action.payload.accountId,
+            }))
         },
         getAccountInfo: (state, action) => {
             state.accountInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))

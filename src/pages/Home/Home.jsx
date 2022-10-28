@@ -5,6 +5,7 @@ import { deleteProductDetail } from '../../redux/actionSlice/productSlice'
 //** Third party components*/
 import { Link, useNavigate, Navigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
+import jwt_decode from "jwt-decode";
 
 const Home = ({ title }) => {
   useEffect(() => {
@@ -13,6 +14,11 @@ const Home = ({ title }) => {
 
   //** Const  */
   const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+  const accessToken = localStorage.getItem('accessToken')
+  let decoded_jwt = {}
+  if (accessToken) {
+    decoded_jwt = jwt_decode(accessToken)
+  }
   const dispatch = useDispatch()
 
   //** remove productDetail localStore */
@@ -20,9 +26,9 @@ const Home = ({ title }) => {
     dispatch(deleteProductDetail())
   }, [])
 
-  if (loggedInUser) {
-    if (Object.keys(loggedInUser).length === 0
-      && loggedInUser.constructor === Object) {
+  if (accessToken) {
+    if (Object.keys(decoded_jwt).length === 0
+      && decoded_jwt.constructor === Object) {
       return (
         <div >
           <Hero />
@@ -33,7 +39,7 @@ const Home = ({ title }) => {
         </div>
       )
     } else {
-      if (loggedInUser.authorizeRole === 'Staff' || loggedInUser.authorizeRole === 'Admin') {
+      if (decoded_jwt.Role === 'Staff' || decoded_jwt.Role === 'Admin') {
         return <Navigate replace to="/management" />
       } else {
         return (

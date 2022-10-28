@@ -58,11 +58,6 @@ const DeliveryAddress = (props) => {
             || e.keyCode === 189) {
             e.preventDefault();
         }
-        // if (phoneValid) {
-        //     if ((e.keyCode !== 8 && e.keyCode !== 46)) {
-        //         e.preventDefault();
-        //     }
-        // }
     }
 
     return (

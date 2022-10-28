@@ -8,10 +8,16 @@ import ManageAccountsIcon from '@mui/icons-material/ManageAccounts';
 import ArticleIcon from '@mui/icons-material/Article';
 import PostAddIcon from '@mui/icons-material/PostAdd';
 import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import jwt_decode from "jwt-decode";
 
 const Sidebar = (props) => {
 
     const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
+    const accessToken = localStorage.getItem('accessToken')
+    let decoded_jwt = {}
+    if (accessToken) {
+        decoded_jwt = jwt_decode(accessToken)
+    }
 
     return (
         <div className='text-black w-[240px] h-[100vh] shadow-lg bg-white p-6 fixed top-0'>
@@ -21,7 +27,7 @@ const Sidebar = (props) => {
             </div>
             <div className='mt-10'>
                 {
-                    loggedInUser.authorizeRole === 'Admin' &&
+                    decoded_jwt.Role === 'Admin' &&
                     <>
                         <div
                             onClick={() => props.setActiveTab(0)}
@@ -60,7 +66,7 @@ const Sidebar = (props) => {
                 }
 
                 {
-                    loggedInUser.authorizeRole === 'Staff' &&
+                    decoded_jwt.Role === 'Staff' &&
                     <>
                         <div
                             onClick={() => props.setActiveTab(0)}
