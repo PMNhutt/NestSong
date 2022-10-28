@@ -1,25 +1,45 @@
 import axios from 'axios';
+import jwt_decode from "jwt-decode";
 
 //base url to make requests to the database
 const instances = axios.create({
     baseURL: import.meta.env.VITE_BASE_URL
 })
 
+instances.interceptors.request.use(
+    config => {
+        // ** Get token from localStorage
+        const accessToken = localStorage.getItem('accessToken')
 
-// instances.interceptors.request.use(
-//     config => {
-//         // ** Get token from localStorage
-//         const accessToken = localStorage.getItem('accessToken')
+        // ** If token is present add it to request's Authorization Header
+        if (accessToken) {
+            localStorage.setItem('EXPIRED_TOKEN', false)
+            // ** eslint-disable-next-line no-param-reassign
+            config.headers.Authorization = `Bearer ${accessToken}`
+        }
+        return config
+    },
+    error => Promise.reject(error)
+)
 
-//         // ** If token is present add it to request's Authorization Header
-//         if (accessToken) {
-//             // ** eslint-disable-next-line no-param-reassign
-//             config.headers.Authorization = `Bearer ${accessToken}`
-//         }
-//         return config
-//     },
-//     error => Promise.reject(error)
-// )
+instances.interceptors.request.use(
+    (config) => {
+        // const navigate = useNavigate()
+        const accessToken = localStorage.getItem('accessToken')
+        if (accessToken) {
+            let currenDate = new Date()
+            const decodedToken = jwt_decode(accessToken)
+
+            if (decodedToken.exp * 1000 < currenDate.getTime()) {
+                localStorage.removeItem('accessToken')
+                localStorage.setItem('ACCOUNT_INFO', JSON.stringify({}))
+                localStorage.setItem('EXPIRED_TOKEN', true)
+            }
+        }
+        return config
+    },
+    error => Promise.reject(error)
+)
 
 // // ** Add request/response interceptor
 // instances.interceptors.response.use(

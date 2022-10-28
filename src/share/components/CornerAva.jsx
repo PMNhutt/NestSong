@@ -25,6 +25,7 @@ const CornerAva = (props) => {
     //** handle logout */
     const handleLogout = async () => {
         const res = await instances.post('/logout')
+        localStorage.removeItem('accessToken')
         navigate('/')
         dispatch(setAccountInfo({}))
     }
