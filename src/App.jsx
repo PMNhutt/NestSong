@@ -1,4 +1,4 @@
-import { Fragment, Suspense } from 'react'
+import { Fragment, Suspense, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { publicRoutes, privateRoutes } from './router'
 import { DefaultLayout } from './share/layout'

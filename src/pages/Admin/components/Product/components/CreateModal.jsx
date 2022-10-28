@@ -1,10 +1,13 @@
 import { useState, useEffect, useRef } from 'react'
+import instances from '../../../../../utils/plugin/axios';
 
 import { MenuItem, Select } from '@mui/material';
 import Dropzone from "react-dropzone"
 import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import validator from 'validator';
 import { toast } from 'react-toastify';
+import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
+import CloseIcon from '@mui/icons-material/Close';
 
 import { icCamera } from '../../../../../assets'
 import { product, placeholerPicture, addMoreImage } from '../../../../../assets/images';
@@ -147,21 +150,30 @@ const CreateModal = (props) => {
   }
 
   //** handle cerate product */
-  const handleCreateProduct = () => {
+  const handleCreateProduct = async () => {
     if ((props?.createInfo?.category?.value !== "")
       && (props?.createInfo?.name?.value !== "")
       && (props?.createInfo?.price?.value !== "")
       && (props?.createInfo?.discount?.value !== "")
       && (file !== "")
       && (fileList?.length > 0)) {
+      await instances.post('/products', {
+        ProductName: props?.createInfo?.name?.value,
+        CategoryId: props?.createInfo?.category?.value,
+        Price: parseInt(props?.createInfo?.price?.value),
+        Discount: parseInt(props?.createInfo?.discount?.value),
+        Description: props.createInfo?.note,
+        Thumbnail: file,
+        DetailImages: fileList
+      })
       console.log({
-        name: props?.createInfo?.name?.value,
-        category: props?.createInfo?.category?.value,
-        price: parseInt(props?.createInfo?.price?.value),
-        discount: parseInt(props?.createInfo?.discount?.value),
-        description: props.createInfo?.note,
-        thumbImg: file,
-        imageList: fileList
+        ProductName: props?.createInfo?.name?.value,
+        CategoryId: props?.createInfo?.category?.value,
+        Price: parseInt(props?.createInfo?.price?.value),
+        Discount: parseInt(props?.createInfo?.discount?.value),
+        Description: props.createInfo?.note,
+        Thumbnail: file,
+        DetailImages: fileList,
       });
     } else {
       notifyWarn()
@@ -218,8 +230,16 @@ const CreateModal = (props) => {
       <div className='sm:w-max w-full bg-white fixed z-[990] rounded-[5px] left-[50%]
             translate-x-[-50%] top-[50%] translate-y-[-50%]'>
         <div className='font-maven p-5'>
-          <div className='pb-2 border-b border-gray-300'>
-            <p className='font-semibold text-[20px]'>Thêm mới sản phẩm</p>
+          <div className='text-primary pb-2 border-b border-gray-300 flex justify-between gap-2'>
+            <div className='flex items-center gap-2'>
+              <p className='font-semibold text-[20px] p-1'>Thêm mới sản phẩm</p>
+              <LibraryAddIcon />
+            </div>
+            <div
+              onClick={() => handleCloseCreateModal()}
+              className='text-redError cursor-pointer'>
+              <CloseIcon />
+            </div>
           </div>
 
           <div className='flex mt-4 gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
@@ -356,7 +376,7 @@ const CreateModal = (props) => {
               {' '}
               <DriveFolderUploadIcon className="upload-icon" /> {showErrorThumb && <span className='text-redError text-[14px]'>Ảnh thumbnail không được trống!</span>}
               <input type="file" id="file" style={{ display: 'none' }} onChange={(e) => handleSelectThumb(e)} />
-              <img className='w-[60px] h-[60px] object-cover' src={file ? URL.createObjectURL(file) : `${placeholerPicture}`} alt="default-img" />
+              <img className='w-[60px] h-[60px] object-cover rounded' src={file ? URL.createObjectURL(file) : `${placeholerPicture}`} alt="default-img" />
             </label>
           </div>
 
@@ -372,12 +392,12 @@ const CreateModal = (props) => {
                 type="file" id="fileList"
                 style={{ display: 'none' }}
                 onChange={handleSelectListImage} />
-              <div className='flex gap-1'>
+              <div className='flex gap-1 flex-wrap'>
                 {
                   fileList &&
                   fileList?.map((image, index) => (
                     <div key={index}>
-                      <img className='w-[60px] h-[60px] object-cover' src={URL.createObjectURL(image)} />
+                      <img className='w-[60px] h-[60px] object-cover rounded' src={URL.createObjectURL(image)} />
                     </div>
                   ))
                 }

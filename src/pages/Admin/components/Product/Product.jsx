@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
 import Datatable from '../_share/DataTable'
 import CreateModal from './components/CreateModal'
+import ConfirmDeleteModal from './components/ConfirmDeleteModal'
+import EditModal from './components/EditModal'
 import instances from '../../../../utils/plugin/axios'
 import useDebounce from '../../../../share/hooks/useDebounce'
 import { setProductList } from '../../../../redux/actionSlice/productSlice'
@@ -76,11 +78,15 @@ const Product = () => {
 
     const debounced = useDebounce(searchVal, 600)
     const [isShowModal, setIsShowModal] = useState(false)
+    const [isShowEditModal, setIsShowEditModal] = useState(false)
+    const [isShowDeleteModal, setIsShowDeleteModal] = useState(false)
     const [provinces, setProvinces] = useState('')
     const [categoryList, setCategoryList] = useState('')
     const [district, setDistrict] = useState()
     const [ward, setWard] = useState()
-    // const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
+    const [deleteModalData, setDeleteModalData] = useState()
+    const [editModalData, setEditModalData] = useState()
+    const [updateTable, setUpdateTable] = useState(false)
 
     const [dashboardProList, setDashboardProList] = useState([])
     const [createInfo, setCreateInfo] = useState({
@@ -145,7 +151,7 @@ const Product = () => {
         }
 
 
-    }, [debounced])
+    }, [debounced, updateTable])
 
     //** get delivery information */
     const handleInputName = (value) => {
@@ -203,6 +209,21 @@ const Product = () => {
         }))
     }
 
+    //** handle open delete modal */
+    const handleOpenDeleteModal = (data) => {
+        setIsShowDeleteModal(true)
+        // console.log(data);
+        setDeleteModalData(data)
+    }
+
+    //** handle open edit modal */
+    const handleOpenEditModal = (id, cateId) => {
+        setIsShowEditModal(true)
+        setEditModalData({
+            proId: id,
+            cateId: cateId
+        })
+    }
     return (
         <div>
             {
@@ -224,14 +245,38 @@ const Product = () => {
                 />
             }
 
+            {
+                isShowDeleteModal &&
+                <ConfirmDeleteModal
+                    setIsShowDeleteModal={setIsShowDeleteModal}
+                    data={deleteModalData}
+                    setUpdateTable={setUpdateTable}
+                />
+            }
+
+            {
+                isShowEditModal &&
+                <EditModal
+                    categoryList={categoryList}
+                    data={editModalData}
+                    setIsShowEditModal={setIsShowEditModal}
+                    setUpdateTable={setUpdateTable}
+                />
+            }
+
             <div className='flex items-center justify-between'>
-                <Input placeholder='Tìm kiếm ở đây...' onChange={(e) => setSearchVal(e.target.value)}/>
+                <Input placeholder='Tìm kiếm ở đây...' onChange={(e) => setSearchVal(e.target.value)} />
                 <div
                     onClick={() => setIsShowModal(true)}
                     className='rounded-[5px] cursor-pointer py-2 px-4 bg-primary text-white'>Thêm mới sản phẩm</div>
             </div>
             <div className='mt-6'>
-                <Datatable dashboardProList={dashboardProList} />
+                <Datatable
+                    handleOpenEditModal={handleOpenEditModal}
+                    handleOpenDeleteModal={handleOpenDeleteModal}
+                    setIsShowEditModal={setIsShowEditModal}
+                    setIsShowDeleteModal={setIsShowDeleteModal}
+                    dashboardProList={dashboardProList} />
             </div>
 
 

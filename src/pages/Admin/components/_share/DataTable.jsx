@@ -17,14 +17,18 @@ function Datatable(props) {
             renderCell: (params) => (
                 <div className="cellAction">
                     <Tooltip title="Chỉnh sửa" placement="left">
-                        <Link to={`/admin/edit-user/${params.row.id}`}>
-                            <IconButton aria-label="edit">
-                                <EditIcon />
-                            </IconButton>
-                        </Link>
+                        {/* <Link to={`/admin/edit-user/${params.row.id}`}> */}
+                        <IconButton
+                            onClick={() => props?.handleOpenEditModal(params.row.productId, params.row.categoryId)}
+                            aria-label="edit">
+                            <EditIcon />
+                        </IconButton>
+                        {/* </Link> */}
                     </Tooltip>
-                    <Tooltip title="Xóa" placement="right">
-                        <IconButton aria-label="remove">
+                    <Tooltip title="Ẩn SP" placement="right">
+                        <IconButton
+                            onClick={() => props?.handleOpenDeleteModal(params.row)}
+                            aria-label="remove">
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
@@ -36,24 +40,24 @@ function Datatable(props) {
         <div className="h-[75vh] bg-white">
             {
                 // props?.dashboardProList ?
-                    <DataGrid
-                        rows={props?.dashboardProList}
-                        columns={userColumns.concat(actionColumn)}
-                        pageSize={10}
-                        rowsPerPageOptions={[10]}
-                        getRowId={(row) => row.productId}
-                        loading={!props?.dashboardProList.length}
-                        components={{
-                            LoadingOverlay: LoadingSmall,
-                        }}
-                        className="datagrid"
-                        sx={{
-                            '& .MuiDataGrid-columnHeaderTitle': {
-                                fontWeight: 700
-                            }
-                        }}
-                    />
-                    //  : <LoadingSmall />
+                <DataGrid
+                    rows={props?.dashboardProList}
+                    columns={userColumns.concat(actionColumn)}
+                    pageSize={10}
+                    rowsPerPageOptions={[10]}
+                    getRowId={(row) => row.productId}
+                    loading={!props?.dashboardProList.length}
+                    components={{
+                        LoadingOverlay: LoadingSmall,
+                    }}
+                    className="datagrid"
+                    sx={{
+                        '& .MuiDataGrid-columnHeaderTitle': {
+                            fontWeight: 700
+                        }
+                    }}
+                />
+                //  : <LoadingSmall />
             }
         </div>
     );

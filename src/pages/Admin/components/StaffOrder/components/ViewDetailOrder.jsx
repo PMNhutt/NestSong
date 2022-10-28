@@ -3,6 +3,8 @@ import LoadingSmall from '../../../../../share/components/LoadingSmall/LoadingSm
 import numberWithCommas from '../../../../../utils/numberWithComma'
 import instances from '../../../../../utils/plugin/axios'
 
+import AssignmentOutlinedIcon from '@mui/icons-material/AssignmentOutlined';
+
 const ViewDetailOrder = (props) => {
 
     //** State */
@@ -80,8 +82,9 @@ const ViewDetailOrder = (props) => {
             translate-x-[-50%] top-[50%] translate-y-[-50%]'>
 
                 <div className='font-maven p-5'>
-                    <div className='pb-2 border-b border-gray-300'>
+                    <div className='text-primary pb-2 border-b border-gray-300 flex items-center gap-2'>
                         <p className='font-semibold text-[20px]'>Chi tiết đơn hàng</p>
+                        <AssignmentOutlinedIcon />
                     </div>
                     {
                         props?.orderDetail ?

@@ -54,6 +54,7 @@ const Header = (props) => {
     const handleLogout = async () => {
         // const res = await instances.post('/logout')
         navigate('/')
+        localStorage.removeItem('accessToken')
         dispatch(setAccountInfo({}))
     }
 
