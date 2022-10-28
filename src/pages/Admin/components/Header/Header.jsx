@@ -90,10 +90,10 @@ const Header = (props) => {
                                     <div className='absolute z-40 bg-white rounded-[5px] overflow-hidden top-[45px] border shadow-md text-black w-max right-[10%] '
                                     >
                                         <p className='text-[14px] pl-2 pt-2 text-gray-400'>@{props?.role}</p>
-                                        <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'>
+                                        {/* <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'>
                                             <AccountCircleIcon sx={{ fontSize: '16px' }} />
                                             <p>Thông tin cá nhân</p>
-                                        </div>
+                                        </div> */}
                                         <div className='flex cursor-pointer gap-2 items-center hover:bg-blue-100 p-2'
                                             onClick={() => handleLogout()}
                                         >

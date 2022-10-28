@@ -40,14 +40,14 @@ const ProductSlider = () => {
 
     return (
         <div className='flex items-start sm:flex-row flex-col-reverse'>
-            <div className={`containerSwiperSmall sm:h-[636px] sm:w-[100px] sm:mr-[9px] sm:p-0 p-[15px] w-full h-auto`}>
+            <div className={`containerSwiperSmall sm:h-[600px] sm:w-[100px] sm:mr-[9px] sm:p-0 p-[15px] w-full h-auto`}>
                 <Swiper
                     modules={[Navigation, Thumbs, Pagination]}
                     onSwiper={(e) => setThumbsSwiper(e)}
                     direction={'horizontal'}
                     spaceBetween={7}
                     slidesPerView={'auto'}
-                    className="mySwiper sm:h-[636px]"
+                    className="mySwiper sm:h-[600px]"
                     watchSlidesProgress={true}
                     // watchSlidesVisibility={true}
                     watchOverflow={true}
@@ -69,7 +69,7 @@ const ProductSlider = () => {
                                     {
                                         // <div className={`swiper-slide-media bg-cover bg-center bg-no-repeat
                                         // h-full w-full overflow-hidden cursor-pointer pt-[100%]`} style={{ backgroundImage: `url('${item?.url_thumb}')` }} />
-                                        <img className='w-full swiper-slide-media cursor-pointer object-cover' src={`data:image/webp;base64,${item?.smallImage}`} />
+                                        <img className='w-full h-[90px] swiper-slide-media cursor-pointer object-cover' src={`data:image/webp;base64,${item?.smallImage}`} />
 
                                     }
                                 </SwiperSlide>
@@ -78,7 +78,7 @@ const ProductSlider = () => {
                     }
                 </Swiper>
             </div>
-            <div className={`containerSwiperMain sm:w-[636px] w-full`}>
+            <div className={`containerSwiperMain sm:w-[600px] w-full`}>
                 <Swiper
                     thumbs={{ swiper: thumbsSwiper && !thumbsSwiper.destroyed ? thumbsSwiper : null }}
                     modules={[Navigation, Thumbs, Mousewheel, Pagination]}
@@ -101,7 +101,7 @@ const ProductSlider = () => {
                     // watchSlidesVisibility={true}
                     watchOverflow={true}
                     pagination={true}
-                    className='w-[100%] sm:h-[636px] h-[350px]'
+                    className='w-[100%] sm:h-[600px] h-[350px]'
                     breakpoints={{
                         769: {
                             direction: 'vertical',
@@ -124,7 +124,7 @@ const ProductSlider = () => {
                                         // <div className={`cursor-grabbing background-image bg-cover bg-center bg-no-repeat h-full w-full rounded-[5px]`}
                                         //     // onClick={() => this.handleMediaSelected(index)}
                                         //     style={{ backgroundImage: `url('${item?.url}')` }} />
-                                        <img className='w-full swiper-slide-media cursor-grabbing object-cover rounded-[5px] background-image' src={`data:image/webp;base64,${item?.bigImage}`} />
+                                        <img className='w-full h-full swiper-slide-media cursor-grabbing object-cover rounded-[5px] background-image' src={`data:image/webp;base64,${item?.bigImage}`} />
                                     }
                                 </SwiperSlide>
                             )

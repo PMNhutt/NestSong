@@ -143,15 +143,15 @@ const UserInfo = (props) => {
                                 }))
                             }
                             // )
-                            console.log({
-                                accountID: updateInfor?.accountID,
-                                email: updateInfor?.email?.value,
-                                password: newConfirmPass,
-                                firstName: updateInfor?.firstName?.value,
-                                lastName: updateInfor?.lastName?.value,
-                                phoneNumber: updateInfor?.phoneNumber?.value,
-                                address: updateInfor?.address?.value
-                            });
+                            // console.log({
+                            //     accountID: updateInfor?.accountID,
+                            //     email: updateInfor?.email?.value,
+                            //     password: newConfirmPass,
+                            //     firstName: updateInfor?.firstName?.value,
+                            //     lastName: updateInfor?.lastName?.value,
+                            //     phoneNumber: updateInfor?.phoneNumber?.value,
+                            //     address: updateInfor?.address?.value
+                            // });
                         }
                     } else {
                         notifyWarnConfirmPass()
@@ -178,15 +178,15 @@ const UserInfo = (props) => {
                         email: updateInfor?.email?.value,
                     }))
                 }
-                console.log({
-                    accountID: updateInfor?.accountID,
-                    email: updateInfor?.email?.value,
-                    password: updateInfor?.password?.value,
-                    firstName: updateInfor?.firstName?.value,
-                    lastName: updateInfor?.lastName?.value,
-                    phoneNumber: updateInfor?.phoneNumber?.value,
-                    address: updateInfor?.address?.value
-                });
+                // console.log({
+                //     accountID: updateInfor?.accountID,
+                //     email: updateInfor?.email?.value,
+                //     password: updateInfor?.password?.value,
+                //     firstName: updateInfor?.firstName?.value,
+                //     lastName: updateInfor?.lastName?.value,
+                //     phoneNumber: updateInfor?.phoneNumber?.value,
+                //     address: updateInfor?.address?.value
+                // });
             }
 
         } else {
