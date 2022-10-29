@@ -4,6 +4,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import LoadingSmall from '../../../../../../share/components/LoadingSmall/LoadingSmall'
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 //** Collumns */
 export const userColumns = [
@@ -42,11 +43,11 @@ const DataTable = (props) => {
             width: 100,
             renderCell: (params) => (
                 <div className="cellAction">
-                    <Tooltip title="Thêm" placement="right">
+                    <Tooltip title="Chỉnh sửa" placement="right">
                         <IconButton
-                            // onClick={() => handleAdd(params.row)}
+                            onClick={() => props?.handleOpenEdit(params.row)}
                             aria-label="add">
-                            <AddIcon />
+                            <EditIcon />
                         </IconButton>
                     </Tooltip>
                 </div>
@@ -55,7 +56,7 @@ const DataTable = (props) => {
     ];
 
     return (
-        <div className="h-[78vh] bg-white">
+        <div className="h-[75vh] bg-white">
             {
                 <DataGrid
                     rows={props?.dashboardStaff}

@@ -21,6 +21,7 @@ export const managementSlice = createSlice({
         },
         adminProductList: [],
         adminStaffList: [],
+        updateStaffList: false
     },
     reducers: {
         addItemToCart: (state, action) => {
@@ -138,10 +139,13 @@ export const managementSlice = createSlice({
         setAdminStaffList: (state, action) => {
             state.adminStaffList = action.payload
         },
+        updateStaffList: (state, action) => {
+            state.updateStaffList = !state.updateStaffList
+        }
     }
 })
 
 export const { setAddedProduct, addItemToCart, removeCart, removeWholeItem, deleteItem,
-    setAdminProductList, setAdminStaffList } = managementSlice.actions;
+    setAdminProductList, setAdminStaffList, updateStaffList } = managementSlice.actions;
 
 export default managementSlice.reducer;
