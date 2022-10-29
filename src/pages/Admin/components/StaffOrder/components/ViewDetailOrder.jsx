@@ -33,19 +33,21 @@ const ViewDetailOrder = (props) => {
     }
 
     //** handle confirm order and change status to shiping order */
-    const handleConfirmOrder = () => {
+    const handleConfirmOrder = async () => {
+        await instances.put(`/changestatusorder/${props?.orderDetail?.orderID}`)
         props?.setStatusChange(prev => !prev)
         props.setIsShowModal(false)
     }
 
     //** handle confirm cancel order */
-    const handleConfirmCancel = (data) => {
+    const handleConfirmCancel = async (data) => {
         if (data !== '') {
+            await instances.put(`/changestatusorder/${props?.orderDetail?.orderID}?reason=${data}`)
             setIsOpenCancel(false)
             props?.setStatusChange(prev => !prev)
             props.setIsShowModal(false)
             setError(false)
-            console.log(data);
+            // console.log(data);
         } else {
             setError(true)
         }
@@ -120,14 +122,18 @@ const ViewDetailOrder = (props) => {
 
                                 <p className='font-medium text-center text-[18px] mt-7'>Tổng đơn hàng: <span className='font-normal'>{numberWithCommas(calculateTotalPrice())} đ</span></p>
 
-                                <div className='w-full flex gap-5 mt-10 justify-center'>
-                                    <div
-                                        onClick={() => handleConfirmOrder()}
-                                        className='bg-green-500 rounded-[5px] cursor-pointer px-4 py-2 text-white font-semibold'>Xác nhận giao hàng</div>
-                                    <div
-                                        onClick={() => handleOpenCancelModal()}
-                                        className='bg-red-500 rounded-[5px] cursor-pointer px-4 py-2 text-white font-semibold'>Từ chối đơn hàng</div>
-                                </div>
+                                {
+                                    (props?.orderStatus && props?.orderStatus === 'PENDING') &&
+                                    <div className='w-full flex gap-5 mt-10 justify-center'>
+                                        <div
+                                            onClick={() => handleConfirmOrder()}
+                                            className='bg-green-500 rounded-[5px] cursor-pointer px-4 py-2 text-white font-semibold'>Xác nhận giao hàng</div>
+                                        <div
+                                            onClick={() => handleOpenCancelModal()}
+                                            className='bg-red-500 rounded-[5px] cursor-pointer px-4 py-2 text-white font-semibold'>Từ chối đơn hàng</div>
+                                    </div>
+                                }
+
                             </>
                             : <LoadingSmall />
                     }

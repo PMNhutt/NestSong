@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react'
 import ModalCompleteOder from '../../../../share/components/Modal/ModalCompleteOrder/ModalCompleteOder'
+import ModalError from '../../../../share/components/Modal/ModalError/ModalError'
 import { removeCart, getShoppingCart } from '../../../../redux/actionSlice/shoppingCartSlice'
 import instances from '../../../../utils/plugin/axios'
 
@@ -19,6 +20,7 @@ const ContinueSection = (props) => {
         pauseOnHover: false,
     });
     const [openModal, setOpenModal] = useState(false)
+    const [openErrorModal, setOpenErrorModal] = useState(false)
 
     //** handle total item */
     const totalItemInCart = () => {
@@ -47,12 +49,11 @@ const ContinueSection = (props) => {
     }
     const handleCompletePurchase = async () => {
         if (shoppingCart?.length > 0) {
-            console.log(props?.deliveryInfo?.phone?.value)
+            // console.log(props?.deliveryInfo?.phone?.value)
             if ((props?.deliveryInfo?.name?.value !== "")
                 && (props?.deliveryInfo?.phone?.value !== '')
                 && (props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
-                setOpenModal(true)
                 dispatch(removeCart())
                 dispatch(getShoppingCart())
                 const res = await instances.post(`/orders/createorder/online`,
@@ -72,7 +73,14 @@ const ContinueSection = (props) => {
                             }
                         ))
                     }
-                )
+                ).catch(function (err) {
+                    console.log(err);
+                })
+                if (res) {
+                    setOpenModal(true)
+                } else {
+                    setOpenErrorModal(true)
+                }
                 // console.log({
                 //     res,
                 //     user: {
@@ -153,6 +161,13 @@ const ContinueSection = (props) => {
         <>
             {openModal &&
                 <ModalCompleteOder />
+            }
+            {
+                openErrorModal &&
+                <ModalError
+                    title='Tạo đơn hàng thất bại!'
+                    setOpenErrorModal={setOpenErrorModal}
+                />
             }
             <div className='text-black border rounded-[5px] shadow-md  px-6 py-2 h-fit'>
                 <div className='flex justify-between mb-2'>

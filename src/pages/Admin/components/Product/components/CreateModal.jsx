@@ -380,7 +380,7 @@ const CreateModal = (props) => {
             </label>
           </div>
 
-          <div className='mt-2'>
+          <div className='mt-2 max-h-[195px] scroll-bar overflow-x-hidden overflow-y-scroll'>
             <label htmlFor="fileList" className='cursor-pointer w-fit'>
               Chọn ảnh mô tả chi tiết:<span className='text-redError font-medium text-[20px]'>*</span>
               {' '}

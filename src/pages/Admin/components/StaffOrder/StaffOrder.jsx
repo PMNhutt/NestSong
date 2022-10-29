@@ -13,6 +13,7 @@ const StaffOrder = () => {
     const [ordersNumber, setOrdersNumber] = useState(0)
     const [statusChange, setStatusChange] = useState(false)
     const [orderList, setOrderList] = useState([])
+    const [orderStatus, setOrderStatus] = useState()
     const staffInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
 
     useEffect(() => {
@@ -22,7 +23,7 @@ const StaffOrder = () => {
                     agencyId: staffInfo.agencyId,
                 }
             })
-            setOrdersNumber(res?.data?.total_results || 0)
+            setOrdersNumber(res?.data?.total_pending || 0)
             if (res?.data?.status === 402) {
                 setOrderList([])
             } else {
@@ -34,10 +35,11 @@ const StaffOrder = () => {
     }, [statusChange])
 
     //** handle open order detail */
-    const handleOpenOrderDetail = async (orderId) => {
+    const handleOpenOrderDetail = async (orderId, status) => {
         const res = await instances.get(`/staff/orderdetails/${orderId}`)
         setIsShowModal(true)
         setOrderDetail(res?.data?.results)
+        setOrderStatus(status)
         // console.log(res?.data?.results);
     }
 
@@ -46,6 +48,7 @@ const StaffOrder = () => {
             {
                 isShowModal &&
                 <ViewDetailOrder
+                    orderStatus={orderStatus}
                     isShowModal={isShowModal}
                     setIsShowModal={setIsShowModal}
                     orderDetail={orderDetail}

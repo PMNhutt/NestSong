@@ -19,7 +19,7 @@ const userColumns = [
         renderCell: (params) => (
             <div className={`cellWithStatus ${params.row.status}`}>
                 {
-                    params.row.status === 'AVAILABLE' ?
+                    params.row.status === 'SHIPPING' ?
                         <p className='text-green-500'>
                             {params.row.status}
                         </p> : <p className='text-red-500'>
@@ -47,7 +47,7 @@ const DataTable = (props) => {
                 <div className="cellAction">
                     <Tooltip title="Xem chi tiết" placement="right">
                         {/* <Link to={`/admin/edit-user/${params.row.id}`}> */}
-                        <div onClick={() => props?.handleOpenOrderDetail(params.row.orderId)}>
+                        <div onClick={() => props?.handleOpenOrderDetail(params.row.orderId, params.row.status)}>
                             <IconButton aria-label="edit">
                                 <RemoveRedEyeIcon />
                             </IconButton>
