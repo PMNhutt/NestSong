@@ -16,16 +16,11 @@ const Product = (props) => {
   const dispatch = useDispatch()
 
   //** handle Open detail 
-  const handleOpenDetail = async () => {
-    dispatch(clearProductDetail(true))
-    const res = await instances.get(`/products/id/${props?.data?.categoryId}/${props?.data?.productId}`, {
-      params: {
-        productId: props?.data?.productId,
-        categoryId: props?.data?.categoryId
-      }
-    })
-    dispatch(openProductDetails(res?.data))
-    dispatch(clearProductDetail(false))
+  const handleOpenDetail = () => {
+    dispatch(openProductDetails({
+      productId: props?.data?.productId,
+      categoryId: props?.data?.categoryId
+    }))
   }
 
   return (
@@ -35,7 +30,7 @@ const Product = (props) => {
           <p className='text-white absolute right-5 text-[17px] font-bold'>{Math.round(props?.data?.discount)}%</p>
           <p className='text-white absolute right-5 top-5 text-[17px] font-semibold'>OFF</p>
         </div>
-        <div className='w-[230px] h-[230px] bg-cover bg-center bg-no-repeat relative' 
+        <div className='w-[230px] h-[230px] bg-cover bg-center bg-no-repeat relative'
         // style={{ backgroundImage: `url(${props?.data?.image || product})` }}
         >
           <img loading='lazy' className='w-[230px] h-[230px] object-cover' src={`data:image/webp;base64,${props?.data?.image || ''}`} />

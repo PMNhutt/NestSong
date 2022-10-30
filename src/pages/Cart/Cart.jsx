@@ -1,10 +1,10 @@
 import { useEffect } from 'react'
 import CartContainer from './CartContainer'
-import {deleteProductDetail} from '../../redux/actionSlice/productSlice'
+import { deleteProductDetail } from '../../redux/actionSlice/productSlice'
 
 //** Third party components*/
 import { Navigate } from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import jwt_decode from "jwt-decode";
 
 const Cart = ({ title }) => {
@@ -14,16 +14,10 @@ const Cart = ({ title }) => {
 
   const loggedInUser = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
   const accessToken = localStorage.getItem('accessToken')
-    let decoded_jwt = {}
-    if (accessToken) {
-        decoded_jwt = jwt_decode(accessToken)
-    }
-  const dispatch = useDispatch()
-
-  //** remove productDetail */
-  useEffect(() => {
-    dispatch(deleteProductDetail())
-  }, [])
+  let decoded_jwt = {}
+  if (accessToken) {
+    decoded_jwt = jwt_decode(accessToken)
+  }
 
   if (accessToken) {
     if (Object.keys(decoded_jwt).length === 0

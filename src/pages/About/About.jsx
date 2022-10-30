@@ -12,12 +12,6 @@ const About = ({ title }) => {
     document.title = title;
   }, [title])
 
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(deleteProductDetail())
-  }, [])
-
   return (
     <div>
       <div className="text-black font-maven">

@@ -11,8 +11,8 @@ const Filter = (props) => {
 
     // ** State
     const [activeCategory, setActiveCategory] = useState(null)
-    const [min, setMin] = useState(100000);
-    const [max, setMax] = useState(1000000);
+    const [min, setMin] = useState(10000);
+    const [max, setMax] = useState(2000000);
 
     const handlePickCategory = (id) => {
         setActiveCategory(id)
@@ -66,8 +66,8 @@ const Filter = (props) => {
                     <Slider
                         // getAriaLabel={() => 'Minimum distance'}
                         value={[min, max]}
-                        min={100000}
-                        max={1000000}
+                        min={10000}
+                        max={2000000}
                         onChange={handleChangePrice}
                         valueLabelDisplay="auto"
                         // getAriaValueText={valuetext}

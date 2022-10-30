@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react'
+import instances from '../../../../../utils/plugin/axios';
 
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
+import { toast } from 'react-toastify';
 
 const ConfirmDeleteModal = (props) => {
 
@@ -11,8 +13,23 @@ const ConfirmDeleteModal = (props) => {
 
     //** handle confirm delete  */
     const handleConfirmDelete = () => {
-        props?.setUpdateTable(prev => !prev)
-        
+        // console.log(props?.data.productId);
+        toast.promise(
+            instances.delete('/products', {
+                params: {
+                    proid: props?.data.productId
+                }
+            }).then(() => {
+                props?.setUpdateTable(prev => !prev)
+                handleColseModal()
+            }),
+            {
+                pending: 'Đang xóa sản phẩm',
+                success: 'Đã xóa thành công! 👌',
+                error: 'Xóa sản phẩm thất bại'
+            }
+        )
+
     }
 
     return (
@@ -41,9 +58,9 @@ const ConfirmDeleteModal = (props) => {
 
                     </div>
 
-                    <div 
-                    onClick={() => handleConfirmDelete()}
-                    className='bg-redError px-4 py-2 text-center text-white rounded-[5px] cursor-pointer font-semibold mt-8'>Xác nhận</div>
+                    <div
+                        onClick={() => handleConfirmDelete()}
+                        className='bg-redError px-4 py-2 text-center text-white rounded-[5px] cursor-pointer font-semibold mt-8'>Xác nhận</div>
                 </div>
             </div>
         </div>

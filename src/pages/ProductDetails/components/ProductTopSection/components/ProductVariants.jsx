@@ -26,7 +26,8 @@ const ProductVariants = (props) => {
   //** State */
   const dispatch = useDispatch();
   let loading = useSelector((state) => state?.product?.loading)
-  const productStore = useSelector((state) => state.product?.productDetail?.productDetail)
+  // const productStore = useSelector((state) => state.product?.productDetail?.productDetail)
+  const productStore = props.productDetail
   const productList = useSelector((state) => state?.cart?.productslist)
   const [productValue, setProductValue] = useState(1)
   // const debounced = useDebounce()

@@ -54,14 +54,14 @@ const Sidebar = (props) => {
                             </div>
                         </div>
 
-                        <div className='pt-3'>
+                        {/* <div className='pt-3'>
                             <div
                                 onClick={() => props.setActiveTab(3)}
                                 className={`flex items-center gap-2 cursor-pointer ${props.activeTab === 3 ? 'text-primary' : 'text-gray-500'} mb-5`}>
                                 <AttachMoneyIcon />
                                 <p>Thống kê doanh thu</p>
                             </div>
-                        </div>
+                        </div> */}
                     </>
                 }
 

@@ -15,12 +15,6 @@ const NotFound = ({ title }) => {
     document.title = title;
   }, [title])
 
-  const dispatch = useDispatch()
-
-  useEffect(() => {
-    dispatch(deleteProductDetail())
-  }, [])
-
   return (
     <>
       <div className="flex flex-col justify-center w-full items-center">

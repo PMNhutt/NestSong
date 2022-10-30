@@ -87,6 +87,7 @@ const Product = () => {
     const [deleteModalData, setDeleteModalData] = useState()
     const [editModalData, setEditModalData] = useState()
     const [updateTable, setUpdateTable] = useState(false)
+    const [agencyList, setAgencyList] = useState('')
 
     const [dashboardProList, setDashboardProList] = useState([])
     const [createInfo, setCreateInfo] = useState({
@@ -163,9 +164,6 @@ const Product = () => {
             }
         }))
     }
-
-    //**  */
-
     const handleInputPrice = (value) => {
         setCreateInfo(currVal => ({
             ...currVal,
@@ -242,6 +240,7 @@ const Product = () => {
                     handleInputDiscount={handleInputDiscount}
                     handleSelectAmount={handleSelectAmount}
                     handleInputNote={handleInputNote}
+                    setUpdateTable={setUpdateTable}
                 />
             }
 

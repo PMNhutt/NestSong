@@ -3,6 +3,7 @@ import instances from '../../../../../utils/plugin/axios';
 import LoadingSmall from '../../../../../share/components/LoadingSmall/LoadingSmall';
 import numberWithCommas from '../../../../../utils/numberWithComma';
 import truncate from '../../../../../utils/truncate';
+import { clearProductDetail, openProductDetails } from '../../../../../redux/actionSlice/productSlice';
 
 //** images */
 import { emptyUserOrder } from '../../../../../assets/images';
@@ -16,14 +17,20 @@ import AssignmentTurnedInIcon from '@mui/icons-material/AssignmentTurnedIn';
 import CancelIcon from '@mui/icons-material/Cancel';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import EventNoteIcon from '@mui/icons-material/EventNote';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 const OrderTracking = (props) => {
 
     //** State */
+    const dispatch = useDispatch()
     const [status, setStatus] = useState('PENDING')
     const [orderList, setOrderList] = useState([])
     const accountID = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
     const [confirmShipOrder, setConfirmShipOrder] = useState(false)
+    const [openModalFeedback, setOpenModalFeedback] = useState(false)
+    const [feedBack, setFeedBack] = useState('')
+    const [error, setError] = useState(false)
 
     const handleChange = (event, newValue) => {
         setStatus(newValue);
@@ -50,8 +57,46 @@ const OrderTracking = (props) => {
         setConfirmShipOrder(prev => !prev)
     }
 
+    //** confirm send feedBack */
+    const handleConfirmFeedBack = (data) => {
+        if (data !== '') {
+            // await instances.put(`/changestatusorder/${props?.orderDetail?.orderID}?reason=${data}`)
+            setOpenModalFeedback(false)
+            setError(false)
+        } else {
+            setError(true)
+        }
+    }
+
+    //** handle Open detail 
+    const handleOpenDetail = async (categoryId, productId) => {
+        dispatch(openProductDetails({
+            productId: productId,
+            categoryId: categoryId
+        }))
+    }
+
     return (
         <div className='font-maven'>
+            {
+                openModalFeedback &&
+                <div>
+                    <div
+                        onClick={() => setOpenModalFeedback(false)}
+                        className='top-0 bottom-0 right-0 left-0 bg-[rgba(0,0,0,0.5)] fixed z-[995]' />
+                    <div className='fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] 
+                z-[999] rounded shadow-lg bg-white px-3 py-4 w-[300px]'>
+                        <p className='text-[18px] text-center font-semibold '>Nhập đánh giá</p>
+                        <textarea
+                            onBlur={(e) => setFeedBack(e.target.value)}
+                            rows="4" className={`my-3 p-2.5 w-full text-gray-900 bg-white rounded border ${error ? 'border-red-500' : 'border-gray-500'}
+                focus:outline-none focus:bg-white focus:border-primary  resize-none`} placeholder="Nhập feedback tại đây..."></textarea>
+                        <div
+                            onClick={() => handleConfirmFeedBack(feedBack)}
+                            className='bg-primary rounded-[5px] text-center cursor-pointer px-4 py-2 text-white font-semibold'>Xác nhận</div>
+                    </div>
+                </div>
+            }
             <div className='rounded border shadow-lg'>
                 <Tabs
                     value={status}
@@ -79,16 +124,34 @@ const OrderTracking = (props) => {
                                             {
                                                 item.productList.map((product, index) => (
                                                     <div key={index} className='flex gap-3 mb-2'>
-                                                        <img loading='lazy' className='w-[120px] h-[120px] rounded object-cover' src={`data:image/webp;base64,${product.image || ''}`} />
-                                                        <div className='leading-6'>
+                                                        <img loading='lazy' className='w-[150px] h-[150px] rounded object-cover' src={`data:image/webp;base64,${product.image || ''}`} />
+                                                        <div className='leading-6 relative'>
                                                             <p className='font-medium '>{truncate(product.productName, 30)}</p>
                                                             <p className='font-medium'>Danh mục: <span className='font-normal'>{product.categoryName}</span></p>
                                                             <p className='font-medium'>Số lượng: <span className='font-normal'>{product.quantityBuy}</span></p>
 
-                                                            <p className='font-medium mt-2'>
-                                                                <span className='font-normal text-primary'>{numberWithCommas(product.salePrice)}đ</span>
-                                                                <span className='font-normal line-through ml-2 text-[14px] text-gray-400'>{numberWithCommas(product.originalPrice)}đ</span>
-                                                            </p>
+                                                            <div className=' gap-2 items-center'>
+                                                                <p className='font-medium mt-2'>
+                                                                    <span className='font-normal text-primary'>{numberWithCommas(product.salePrice)}đ</span>
+                                                                    <span className='font-normal line-through ml-2 text-[14px] text-gray-400'>{numberWithCommas(product.originalPrice)}đ</span>
+                                                                </p>
+                                                                {
+                                                                    item.status == 'SHIPPED' &&
+
+                                                                    <div className='mt-3 flex gap-2'>
+                                                                        <div
+                                                                            onClick={() => setOpenModalFeedback(true)}
+                                                                            className='w-fit uppercase bg-primary rounded px-3 
+                                                                        py-1 cursor-pointer text-center text-white text-[14px] font-medium'>Gửi đánh giá</div>
+                                                                        <Link to={'/products/detail/' + product.productName}
+                                                                            onClick={() => handleOpenDetail(product.categoryId, product.productId)}
+                                                                        >
+                                                                            <div className='w-fit uppercase bg-green-500 rounded px-3 
+                                                                        py-1 cursor-pointer text-center text-white text-[14px] font-medium'>Mua lại</div>
+                                                                        </Link>
+                                                                    </div>
+                                                                }
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 ))

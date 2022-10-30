@@ -22,12 +22,17 @@ const CreateModal = (props) => {
   const [showErrorThumb, setShowErrorThumb] = useState(false)
   const [fileList, setFileList] = useState([])
   const [showErrorFileList, setShowErrorFileList] = useState(false)
+  const [showErrorLimitFile, setShowErrorLimitFile] = useState(false)
   const [percentValid, setPercentValid] = useState(false);
   const [discountValue, setDiscountValue] = useState('')
+  const [priceValue, setPriceValue] = useState('')
+  const [priceValid, setPriceValid] = useState(false)
   const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
     pauseOnHover: false,
   });
-
+  const notifyPriceLimit = () => toast.warn("Giá bán phải nằm trong khoảng 10k - 2tr !", {
+    pauseOnHover: false,
+  });
   //** validate number */
   const handleKeyDown = (e, percentVal) => {
     if (e.keyCode === 69 || e.keyCode === 190 || e.keyCode === 110
@@ -35,7 +40,7 @@ const CreateModal = (props) => {
       e.preventDefault();
     }
     if (percentVal) {
-      if (percentValid) {
+      if (percentValid || priceValid) {
         if ((e.keyCode !== 8 && e.keyCode !== 46)) {
           e.preventDefault();
         }
@@ -58,6 +63,24 @@ const CreateModal = (props) => {
       }
     } else {
       setPercentValid(false);
+    }
+  }
+
+  //** handle sale price check */
+  const handleCheckPriceInput = (e) => {
+    var price = e.target.value
+    setPriceValue(price)
+
+    if (price.length === 7) {
+      setPriceValid(true)
+      if (price > 2000000) {
+        setPriceValue(2000000)
+      }
+      if (price <= 10000) {
+        setPriceValue(10000)
+      }
+    } else {
+      setPriceValid(false)
     }
   }
 
@@ -145,36 +168,63 @@ const CreateModal = (props) => {
     // const imagesArray = selectedFilesArray.map((img) => {
     //   return URL.createObjectURL(img)
     // })
-
-    setFileList(selectedFilesArray)
+    if (selectedFilesArray.length <= 4) {
+      setShowErrorLimitFile(false)
+      setFileList(selectedFilesArray)
+    } else {
+      setShowErrorLimitFile(true)
+    }
   }
 
   //** handle cerate product */
   const handleCreateProduct = async () => {
+    let formData = new FormData();
     if ((props?.createInfo?.category?.value !== "")
       && (props?.createInfo?.name?.value !== "")
       && (props?.createInfo?.price?.value !== "")
       && (props?.createInfo?.discount?.value !== "")
       && (file !== "")
       && (fileList?.length > 0)) {
-      await instances.post('/products', {
-        ProductName: props?.createInfo?.name?.value,
-        CategoryId: props?.createInfo?.category?.value,
-        Price: parseInt(props?.createInfo?.price?.value),
-        Discount: parseInt(props?.createInfo?.discount?.value),
-        Description: props.createInfo?.note,
-        Thumbnail: file,
-        DetailImages: fileList
-      })
-      console.log({
-        ProductName: props?.createInfo?.name?.value,
-        CategoryId: props?.createInfo?.category?.value,
-        Price: parseInt(props?.createInfo?.price?.value),
-        Discount: parseInt(props?.createInfo?.discount?.value),
-        Description: props.createInfo?.note,
-        Thumbnail: file,
-        DetailImages: fileList,
-      });
+
+      if (props?.createInfo?.price?.value > 10000) {
+
+        formData.append("ProductName", props?.createInfo?.name?.value)
+        formData.append("CategoryId", props?.createInfo?.category?.value)
+        formData.append("Price", parseInt(props?.createInfo?.price?.value))
+        formData.append("Discount", parseInt(props?.createInfo?.discount?.value))
+        formData.append("Description", props.createInfo?.note == '' ? 'Không có mô tả' : props.createInfo?.note)
+        formData.append("Thumbnail", file)
+        fileList.forEach((item, index) => {
+          formData.append(`Image${index + 1}`, item)
+        })
+        // console.log([...formData])
+        toast.promise(
+          instances.post('/products', formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            }
+          }).then(() => {
+            props?.setUpdateTable(prev => !prev)
+            handleCloseCreateModal()
+          }),
+          {
+            pending: 'Đang tạo sản phẩm',
+            success: 'Đã tạo thành công! 👌',
+            error: 'Tạo sản phẩm thất bại'
+          }
+        )
+      } else {
+        notifyPriceLimit()
+      }
+      // console.log({
+      //   ProductName: props?.createInfo?.name?.value,
+      //   CategoryId: props?.createInfo?.category?.value,
+      //   Price: parseInt(props?.createInfo?.price?.value),
+      //   Discount: parseInt(props?.createInfo?.discount?.value),
+      //   Description: props.createInfo?.note,
+      //   Thumbnail: file,
+      //   DetailImages: fileList,
+      // });
     } else {
       notifyWarn()
       if (props?.createInfo?.category?.value == "") {
@@ -288,7 +338,9 @@ const CreateModal = (props) => {
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
                 required type="number"
                 onBlur={(e) => props?.handleInputPrice(e.target.value)}
-                onKeyDown={handleKeyDown}
+                onKeyDown={(e) => handleKeyDown(e, true)}
+                value={priceValue}
+                onChange={handleCheckPriceInput}
               />
               <div className='placeholder'>
                 Giá bán (vnd) <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
@@ -384,7 +436,9 @@ const CreateModal = (props) => {
             <label htmlFor="fileList" className='cursor-pointer w-fit'>
               Chọn ảnh mô tả chi tiết:<span className='text-redError font-medium text-[20px]'>*</span>
               {' '}
-              <DriveFolderUploadIcon className="upload-icon" /> {showErrorFileList && <span className='text-redError text-[14px]'>Ảnh chi tiết không được trống!</span>}
+              <DriveFolderUploadIcon className="upload-icon" />
+              {showErrorFileList && <span className='text-redError text-[14px]'>Ảnh chi tiết không được trống!</span>}
+              {showErrorLimitFile && <span className="text-redError text-[14px]">Chọn tối đa 4 ảnh mô tả!</span>}
               <input
                 multiple
                 name='fileList'

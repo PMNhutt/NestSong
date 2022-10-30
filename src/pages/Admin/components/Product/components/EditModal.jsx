@@ -17,6 +17,7 @@ const EditModal = (props) => {
     const [file, setFile] = useState('');
     const [showErrorThumb, setShowErrorThumb] = useState(false)
     const [fileList, setFileList] = useState([])
+    const [showErrorLimitFile, setShowErrorLimitFile] = useState(false)
     const [showErrorFileList, setShowErrorFileList] = useState(false)
     const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
         pauseOnHover: false,
@@ -40,6 +41,36 @@ const EditModal = (props) => {
     const [category, setCategory] = useState('')
     const [thumgImg, setThumgImg] = useState('')
     const [detailImages, setDetailImages] = useState([])
+    const [updateInfor, setUpdateInfor] = useState({
+        productId: '',
+        categoryId: '',
+        agencyId: '',
+        productName: {
+            value: '',
+            error: false,
+        },
+        description: {
+            value: '',
+            error: false,
+        },
+        price: {
+            value: '',
+            error: false,
+        },
+        discount: {
+            value: '',
+            error: false,
+        },
+        quantityInStock: {
+            value: '',
+            error: false,
+        },
+        thumbNail: null,
+        image1: null,
+        image2: null,
+        image3: null,
+        image4: null,
+    })
 
     useEffect(() => {
         setProName(productDetail?.productName || '')
@@ -52,6 +83,36 @@ const EditModal = (props) => {
         setDetailImages(producMedia?.map((img) => (
             img.smallImage
         )))
+        setUpdateInfor({
+            productId: productDetail?.productId,
+            categoryId: productDetail?.categoryId,
+            agencyId: '',
+            productName: {
+                value: '',
+                error: false,
+            },
+            description: {
+                value: '',
+                error: false,
+            },
+            price: {
+                value: '',
+                error: false,
+            },
+            discount: {
+                value: '',
+                error: false,
+            },
+            quantityInStock: {
+                value: '',
+                error: false,
+            },
+            thumbNail: null,
+            image1: null,
+            image2: null,
+            image3: null,
+            image4: null,
+        })
     }, [productDetail, producMedia])
 
     //**  handle close modal  */
@@ -63,7 +124,7 @@ const EditModal = (props) => {
     useEffect(() => {
         const fetch = async () => {
             const res = await instances.get(`/products/id/${props.data?.cateId}/${props.data?.proId}`)
-            console.log(res?.data);
+            // console.log(res?.data);
             setProductDetail(res?.data?.productDetail)
             setProductMedia(res?.data?.productMedia)
         }
@@ -106,11 +167,7 @@ const EditModal = (props) => {
 
     //** handle select category */
     const handleCategoryChange = (e) => {
-        // console.log(e );
-        // setCategorySelect(e.target.value)
         setCategoryList(e.target.value)
-        // props?.setProvinces(e.target.value);
-        // props?.handleSelectCategory(e.target.value)
     }
 
     //** handle select thumbnail */
@@ -128,7 +185,17 @@ const EditModal = (props) => {
         //   return URL.createObjectURL(img)
         // })
 
-        setFileList(selectedFilesArray)
+        if (selectedFilesArray.length <= 4) {
+            setShowErrorLimitFile(false)
+            setFileList(selectedFilesArray)
+        } else {
+            setShowErrorLimitFile(true)
+        }
+    }
+
+    // ** handle update product
+    const handleUpdateProduct = () => {
+
     }
 
     return (
@@ -272,6 +339,7 @@ const EditModal = (props) => {
 
                                             <div className='mt-2 '>
                                                 <p className='text-gray-400 mb-2'>Ảnh chi tiết sản phẩm <span className='text-[14px]'>(Click vào để chọn ảnh mới)</span></p>
+                                                {showErrorLimitFile && <span className="text-redError text-[14px]">Chọn tối đa 4 ảnh mô tả!</span>}
                                                 <div className='max-h-[195px] scroll-bar overflow-x-hidden overflow-y-scroll'>
                                                     <label htmlFor="fileList" className='cursor-pointer w-fit'>
                                                         <input
@@ -305,7 +373,9 @@ const EditModal = (props) => {
                                         </div>
                                     </div>
                                     <div className='flex flex-col w-full gap-3'>
-                                        <div className='w-full bg-primary rounded-[5px] text-center py-2 text-white font-semibold cursor-pointer'>
+                                        <div
+                                            onClick={() => handleUpdateProduct()}
+                                            className='w-full bg-primary rounded-[5px] text-center py-2 text-white font-semibold cursor-pointer'>
                                             Cập nhật sản phẩm
                                         </div>
 

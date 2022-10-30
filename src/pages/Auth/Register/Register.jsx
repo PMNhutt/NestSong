@@ -30,11 +30,6 @@ const Register = ({ title }) => {
         showPassword: false,
     });
     const inputStyle = { WebkitBoxShadow: "0 0 0 1000px white inset", WebkitTextFillColor: '#000000' };
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        dispatch(deleteProductDetail())
-    }, [])
 
     const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });

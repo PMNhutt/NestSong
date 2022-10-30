@@ -93,11 +93,6 @@ const Order = ({ title }) => {
         fetch()
     }, [])
 
-    // ** remove productDetail
-    useEffect(() => {
-        dispatch(deleteProductDetail())
-    }, [])
-
     //** get delivery information */
     const handleInputName = (value) => {
         setDeliveryInfo(currVal => ({

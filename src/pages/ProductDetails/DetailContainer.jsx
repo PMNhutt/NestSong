@@ -18,37 +18,35 @@ const DetailContainer = () => {
     const params = useParams();
     const dispatch = useDispatch()
     const loading = useSelector((state) => state?.product?.loading)
-    const productDetail = useSelector((state) => state?.product?.productDetail?.productDetail);
+    const productDetail = JSON.parse(localStorage.getItem('PRODUCT_DETAIL'))
     const recommendLProduct = useSelector((state) => state?.product?.productDetail?.suggestedProduct)
     const listFeedBack = useSelector((state) => state?.product?.productDetail?.listFeedbakcs)
+    const [detailData, setDetailData] = useState()
+    const [updateDetail, setUpdateDetail] = useState(false)
 
     useEffect(() => {
         document.title = params.name;
     }, [params.name])
 
-    // useEffect(() => {
-    //     const fetch = async () => {
-    //         console.log('begin');
-    //         dispatch(clearProductDetail(true))
-    //         if (productDetail) {
-    //             const res = await instances.get(`/products/id/${productDetail?.categoryId}/${productDetail?.productId}`, {
-    //                 params: {
-    //                     productId: productDetail?.productId,
-    //                     categoryId: productDetail?.categoryId
-    //                 }
-    //             })
-    //             dispatch(getProductDetail())
-    //         }
-    //         dispatch(clearProductDetail(false))
-    //         console.log('end');
-    //     }
-    //     fetch()
-    // }, [])
-
     useEffect(() => {
-        dispatch(getProductDetail())
-        dispatch(clearProductDetail(false))
-    }, [])
+        const fetch = async () => {
+            dispatch(clearProductDetail(true))
+            if (productDetail) {
+                setDetailData(undefined)
+                dispatch(getProductDetail())
+                const res = await instances.get(`/products/id/${productDetail?.categoryId}/${productDetail?.productId}`, {
+                    params: {
+                        productId: productDetail?.productId,
+                        categoryId: productDetail?.categoryId
+                    }
+                })
+                // console.log(res?.data)
+                setDetailData(res?.data)
+            }
+            dispatch(clearProductDetail(false))
+        }
+        fetch()
+    }, [params.name])
 
     return (
         <>
@@ -57,10 +55,12 @@ const DetailContainer = () => {
                     <div className='text-black '>
                         <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
                         <div className='sm:px-16 px-6 mb-20'>
-                            <ProductTopSection />
+                            <ProductTopSection
+                                detailData={detailData}
+                            />
                             {/* <ProductMidSection /> */}
-                            <ProductBottomSection listFeedBack={listFeedBack} />
-                            <RecommendSection recommend={recommendLProduct} />
+                            <ProductBottomSection listFeedBack={detailData?.listFeedbakcs} />
+                            <RecommendSection recommend={detailData?.suggestedProduct} />
                         </div>
                     </div> :
                     <div className='pt-[10%]'>

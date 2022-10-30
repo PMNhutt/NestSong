@@ -28,7 +28,7 @@ const LoginForm = () => {
         password: '',
         showPassword: false,
     });
-    const notifyError = () => toast.error("Sai email hoặc mật khẩu !", {
+    const notifyError = () => toast.error("Sai email, mật khẩu hoặc tài khoản đã bị khóa !", {
         pauseOnHover: false,
     });
     const inputStyle = { WebkitBoxShadow: "0 0 0 1000px white inset", WebkitTextFillColor: '#000000' };

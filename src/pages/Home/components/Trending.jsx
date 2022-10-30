@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import styles from '../../../share/style'
 import { Heading, Product } from '../../../share/components'
 import { fire } from '../../../assets/images'
+import LoadingSmall from '../../../share/components/LoadingSmall/LoadingSmall'
 
 //** Third party components
 import { motion } from 'framer-motion'
@@ -55,57 +56,57 @@ const Trending = () => {
       >
         <Heading text={'Sản phẩm bán chạy'} icon={fire} />
       </motion.div>
-      <motion.div
-        initial={{ opacity: 0, y: '2vw' }}
-        whileInView={{
-          opacity: 1, y: 0, transition: {
-            duration: 0.8
-          }
-        }}
-        viewport={{ once: true, amount: 0.3 }}
-        className='flex'>
-        <Swiper
-          slidesPerView={1}
-          spaceBetween={0}
-          breakpoints={{
-            1200: {
-              slidesPerView: 5
-            },
-            1060: {
-              slidesPerView: 4,
-            },
-            768: {
-              slidesPerView: 3,
-            },
-            640: {
-              slidesPerView: 2,
-            },
-            480: {
-              slidesPerView: 2,
-            }
-          }}
-          grabCursor={true}
-          loop={true}
-          autoplay={{
-            delay: 3500,
-            disableOnInteraction: false,
-          }}
-          modules={[Autoplay]}
-          className='mySwiper py-[10px]'
-        >
-          {
-            trending ? trending?.map((product) => (
-              <SwiperSlide key={product?.productId}>
-                <Product data={product} />
-              </SwiperSlide>
-            ))
-              : data?.map((product) => (
-                <SwiperSlide key={product?.productId}>
-                  <Product data={product} />
-                </SwiperSlide>))
-          }
-        </Swiper>
-      </motion.div>
+      {
+        trending ?
+          <motion.div
+            initial={{ opacity: 0, y: '2vw' }}
+            whileInView={{
+              opacity: 1, y: 0, transition: {
+                duration: 0.8
+              }
+            }}
+            viewport={{ once: true, amount: 0.3 }}
+            className='flex'>
+            <Swiper
+              slidesPerView={1}
+              spaceBetween={0}
+              breakpoints={{
+                1200: {
+                  slidesPerView: 5
+                },
+                1060: {
+                  slidesPerView: 4,
+                },
+                768: {
+                  slidesPerView: 3,
+                },
+                640: {
+                  slidesPerView: 2,
+                },
+                480: {
+                  slidesPerView: 2,
+                }
+              }}
+              grabCursor={true}
+              loop={true}
+              autoplay={{
+                delay: 3500,
+                disableOnInteraction: false,
+              }}
+              modules={[Autoplay]}
+              className='mySwiper py-[10px]'
+            >
+              {
+                trending?.map((product) => (
+                  <SwiperSlide key={product?.productId}>
+                    <Product data={product} />
+                  </SwiperSlide>
+                ))
+              }
+            </Swiper>
+          </motion.div>
+          : <LoadingSmall />
+      }
     </section>
   )
 }

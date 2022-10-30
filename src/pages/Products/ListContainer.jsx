@@ -33,8 +33,8 @@ const ListContainer = () => {
     const [size, setSize] = useState(null)
     const [cateid, setCateId] = useState(null)
     const [sort, setSort] = useState('asc')
-    const [minPrice, setMinPrice] = useState(100000)
-    const [maxPrice, setMaxPrice] = useState(1000000)
+    const [minPrice, setMinPrice] = useState(10000)
+    const [maxPrice, setMaxPrice] = useState(2000000)
     const [categoryList, setCategoryList] = useState()
 
     // ** call search api
@@ -46,6 +46,7 @@ const ListContainer = () => {
             }
 
             const fetch = async () => {
+                dispatch(setProductList(undefined))
                 const res = await instances.get('/products/search', {
                     params: {
                         name: debounced,
@@ -63,6 +64,7 @@ const ListContainer = () => {
             fetch()
         } else {
             const fetch = async () => {
+                dispatch(setProductList(undefined))
                 const res = await instances.get('/products', {
                     params: {
                         page: page,
@@ -75,6 +77,7 @@ const ListContainer = () => {
                 })
                 if (res?.data?.result.length === 0 && (res?.data?.page > res?.data?.total_pages)) {
                     let pageValue = res?.data?.page - 1
+                    dispatch(setProductList(undefined))
                     const newRes = await instances.get('/products', {
                         params: {
                             page: pageValue,

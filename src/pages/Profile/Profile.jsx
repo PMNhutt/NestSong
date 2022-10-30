@@ -34,7 +34,6 @@ const Profile = ({ title }) => {
   useEffect(() => {
     //Close ava modal
     dispatch(setShowModal(false))
-    dispatch(deleteProductDetail())
   }, [])
 
 

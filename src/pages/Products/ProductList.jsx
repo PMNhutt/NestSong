@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import {deleteProductDetail} from '../../redux/actionSlice/productSlice'
+import { deleteProductDetail } from '../../redux/actionSlice/productSlice'
 
 import ListContainer from './ListContainer'
 
 // ** Third party components
 import { Navigate } from 'react-router-dom'
-import {useDispatch} from 'react-redux'
+import { useDispatch } from 'react-redux'
 import jwt_decode from "jwt-decode";
 
 const ProductList = ({ title }) => {
@@ -20,12 +20,6 @@ const ProductList = ({ title }) => {
     if (accessToken) {
         decoded_jwt = jwt_decode(accessToken)
     }
-    const dispatch = useDispatch()
-
-    //** remove productDetail localStorage */
-    useEffect(() => {
-        dispatch(deleteProductDetail())
-    }, [])
 
     if (accessToken) {
         if (Object.keys(decoded_jwt).length === 0

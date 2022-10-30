@@ -19,12 +19,6 @@ const Home = ({ title }) => {
   if (accessToken) {
     decoded_jwt = jwt_decode(accessToken)
   }
-  const dispatch = useDispatch()
-
-  //** remove productDetail localStore */
-  useEffect(() => {
-    dispatch(deleteProductDetail())
-  }, [])
 
   if (accessToken) {
     if (Object.keys(decoded_jwt).length === 0

@@ -23,7 +23,7 @@ const product_media = [
     { id: 4, url: productBig, url_thumb: product },
 ]
 
-const ProductSlider = () => {
+const ProductSlider = (props) => {
 
     //** State */
     const [thumbsSwiper, setThumbsSwiper] = useState(null);
@@ -62,8 +62,8 @@ const ProductSlider = () => {
                     }}
                 >
                     {
-                        productMedia?.length > 0 &&
-                        productMedia?.map((item, index) => {
+                        props.productMedia?.length > 0 &&
+                        props.productMedia?.map((item, index) => {
                             return (
                                 <SwiperSlide key={item.imageId}>
                                     {
@@ -115,8 +115,8 @@ const ProductSlider = () => {
                     }}
                 >
                     {
-                        productMedia?.length > 0 &&
-                        productMedia?.map((item, index) => {
+                        props.productMedia?.length > 0 &&
+                        props.productMedia?.map((item, index) => {
                             // const replaceMediaUrl = replaceUrlImage(item?.url)
                             return (
                                 <SwiperSlide key={item.imageId}>
