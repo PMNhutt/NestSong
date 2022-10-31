@@ -54,10 +54,8 @@ const ContinueSection = (props) => {
                 && (props?.deliveryInfo?.phone?.value !== '')
                 && (props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
-                dispatch(removeCart())
-                dispatch(getShoppingCart())
-                const res = await instances.post(`/orders/createorder/online`,
-                    {
+                toast.promise(
+                    instances.post('/orders/createorder/online', {
                         user: {
                             customerID: accountInfo?.accountId,
                             address: props?.deliveryInfo?.address?.value,
@@ -72,15 +70,43 @@ const ContinueSection = (props) => {
                                 salePrice: item.price
                             }
                         ))
+                    }).then(() => {
+                        setOpenModal(true)
+                        dispatch(removeCart())
+                        dispatch(getShoppingCart())
+                    }),
+                    {
+                        pending: 'Đang tạo đơn hàng',
+                        success: 'Đơn hàng đã được tiếp nhận! 👌',
+                        error: 'Đơn hàng chưa được tiếp nhận'
                     }
-                ).catch(function (err) {
-                    console.log(err);
-                })
-                if (res) {
-                    setOpenModal(true)
-                } else {
-                    setOpenErrorModal(true)
-                }
+                )
+                // dispatch(removeCart())
+                // const res = await instances.post(`/orders/createorder/online`,
+                //     {
+                //         user: {
+                //             customerID: accountInfo?.accountId,
+                //             address: props?.deliveryInfo?.address?.value,
+                //             agencyID: props?.deliveryInfo?.provinces?.value,
+                //             notes: props?.deliveryInfo?.note
+                //         },
+                //         cart: shoppingCart?.map((item) => (
+                //             {
+                //                 productId: item.id,
+                //                 quantityBuy: item.amount,
+                //                 productName: item.name,
+                //                 salePrice: item.price
+                //             }
+                //         ))
+                //     }
+                // ).catch(function (err) {
+                //     console.log(err);
+                // })
+                // if (res) {
+                //     setOpenModal(true)
+                // } else {
+                //     setOpenErrorModal(true)
+                // }
                 // console.log({
                 //     res,
                 //     user: {

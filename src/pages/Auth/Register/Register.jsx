@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import Button from '../../../share/components/Button'
 import { deleteProductDetail } from '../../../redux/actionSlice/productSlice'
+import instances from '../../../utils/plugin/axios'
 
 // ** images
 import { authImage1, authImage2, about2 } from '../../../assets/images'
@@ -50,16 +51,14 @@ const Register = ({ title }) => {
 
     const onSubmit = (data) => {
         console.log(data);
-        // toast.promise(
-        //     instances.post('/createnewuser', {
-
-        //     }),
-        //     {
-        //         pending: 'Đang tạo tài khoản',
-        //         success: 'Đã đăng ký thành công! 👌',
-        //         error: 'Đăng ký thất bại'
-        //     }
-        // )
+        toast.promise(
+            instances.post('/createnewuser', data),
+            {
+                pending: 'Đang tạo tài khoản',
+                success: 'Đã đăng ký thành công! 👌',
+                error: 'Đăng ký thất bại'
+            }
+        )
     };
     const {
         register,
@@ -131,39 +130,60 @@ const Register = ({ title }) => {
                             </FormControl>
 
                         </div>
+                        <div className='flex gap-2'>
+
+                            <FormControl variant="outlined">
+                                <TextField
+                                    id="phoneNumber"
+                                    label="Số điện thoại"
+                                    inputProps={{ style: inputStyle }}
+                                    type="number"
+                                    size="small"
+                                    className='ss:w-[20ch]'
+                                    {...register('phoneNumber', {
+                                        required: "Bạn cần sdt để đăng ký"
+                                    })}
+                                    error={!!errors?.phoneNumber}
+                                    helperText={errors?.phoneNumber ? errors.phoneNumber.message : " "}
+                                />
+                            </FormControl>
+                            <FormControl variant="outlined">
+                                <TextField
+                                    id="email"
+                                    label="Email"
+                                    inputProps={{ style: inputStyle }}
+                                    type="email"
+                                    size="small"
+                                    className='ss:w-[20ch]'
+                                    autoComplete='email'
+                                    {...register('email', {
+                                        required: "Bạn cần email để đăng ký", pattern: {
+                                            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                                            message: "Địa chỉ email không hợp lệ"
+                                        }
+                                    })}
+                                    error={!!errors?.email}
+                                    // helperText=" "
+                                    helperText={errors?.email ? errors.email.message : " "}
+                                />
+                            </FormControl>
+
+                        </div>
                         <FormControl variant="outlined">
                             <TextField
-                                id="phone"
-                                label="Số điện thoại"
+                                id="address"
+                                label="Địa chỉ"
                                 inputProps={{ style: inputStyle }}
-                                type="number"
+                                type="text"
                                 size="small"
                                 className='ss:w-[100%]'
-                                {...register('phone', {
-                                    required: "Bạn cần sdt để đăng ký"
+                                autoComplete='address'
+                                {...register('address', {
+                                    required: "Bạn cần địa chỉ để đăng ký"
                                 })}
-                                error={!!errors?.phone}
-                                helperText={errors?.phone ? errors.phone.message : " "}
-                            />
-                        </FormControl>
-                        <FormControl variant="outlined">
-                            <TextField
-                                id="email"
-                                label="Email"
-                                inputProps={{ style: inputStyle }}
-                                type="email"
-                                size="small"
-                                className='ss:w-[100%]'
-                                autoComplete='email'
-                                {...register('email', {
-                                    required: "Bạn cần email để đăng ký", pattern: {
-                                        value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                                        message: "Địa chỉ email không hợp lệ"
-                                    }
-                                })}
-                                error={!!errors?.email}
+                                error={!!errors?.address}
                                 // helperText=" "
-                                helperText={errors?.email ? errors.email.message : " "}
+                                helperText={errors?.address ? errors.address.message : " "}
                             />
                         </FormControl>
                         <FormControl variant="outlined">

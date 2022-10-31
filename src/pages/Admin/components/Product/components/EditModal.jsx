@@ -9,11 +9,14 @@ import CloseIcon from '@mui/icons-material/Close';
 
 const EditModal = (props) => {
     //** states **/
+    const [productAgencyList, setProductAgencyList] = useState()
     const [productDetail, setProductDetail] = useState()
     const [producMedia, setProductMedia] = useState()
     const [categoryList, setCategoryList] = useState('')
+    const [agencyList, setAgencyList] = useState('')
     const [percentValid, setPercentValid] = useState(false);
     const [categorySelect, setCategorySelect] = useState('')
+    const [agencySelect, setAgencySelect] = useState('')
     const [file, setFile] = useState('');
     const [showErrorThumb, setShowErrorThumb] = useState(false)
     const [fileList, setFileList] = useState([])
@@ -46,6 +49,7 @@ const EditModal = (props) => {
     const [thumgImg, setThumgImg] = useState('')
     const [detailImages, setDetailImages] = useState([])
     const [quantityInStock, setQuantityInStock] = useState('')
+    const [agencyId, setAgencyId] = useState('')
     const [updateInfor, setUpdateInfor] = useState({
         productId: '',
         categoryId: '',
@@ -85,7 +89,8 @@ const EditModal = (props) => {
         setCategory(productDetail?.categoryId || '')
         setCategorySelect(productDetail?.categoryName || '')
         setThumgImg(productDetail?.image || '')
-        setQuantityInStock(productDetail?.quantityInStock || '')
+        setQuantityInStock(0)
+        // setQuantityInStock(productDetail?.quantityInStock || '')
         setDetailImages(producMedia?.map((img) => (
             img.smallImage
         )))
@@ -110,7 +115,7 @@ const EditModal = (props) => {
                 error: false,
             },
             quantityInStock: {
-                value: productDetail?.quantityInStock,
+                value: 0,
                 error: false,
             },
             thumbNail: null,
@@ -133,6 +138,7 @@ const EditModal = (props) => {
             // console.log(res?.data);
             setProductDetail(res?.data?.productDetail)
             setProductMedia(res?.data?.productMedia)
+            setProductAgencyList(res.data.listAgencies)
         }
 
         fetch()
@@ -191,6 +197,19 @@ const EditModal = (props) => {
     //** handle select category */
     const handleCategoryChange = (e) => {
         setCategoryList(e.target.value)
+        setUpdateInfor(curr => ({
+            ...curr,
+            categoryId: e.target.value
+        }))
+    }
+
+    //** handle select agency */
+    const handleAgencyChange = (e) => {
+        setAgencyList(e.target.value)
+        setUpdateInfor(curr => ({
+            ...curr,
+            agencyId: e.target.value
+        }))
     }
 
     //** handle select thumbnail */
@@ -230,6 +249,10 @@ const EditModal = (props) => {
         if ((proName !== "") && (originalPrice !== "") && (discount !== "") &&
             (quantityInStock !== "") && (description !== "")) {
             if (updateInfor?.price?.value > 10000) {
+                if (updateInfor?.agencyId !== "") {
+                    formData.append("AgencyId", updateInfor?.agencyId)
+                    formData.append("QuantityInStock", updateInfor?.quantityInStock?.value)
+                }
                 formData.append("ProductId", updateInfor?.productId)
                 formData.append("CategoryId", updateInfor?.categoryId)
                 formData.append("ProductName", updateInfor?.productName?.value)
@@ -244,13 +267,13 @@ const EditModal = (props) => {
                 })
                 console.log([...formData])
                 // toast.promise(
-                //     instances.post('/products', formData, {
+                //     instances.put('/products', formData, {
                 //         headers: {
                 //             "Content-Type": "multipart/form-data",
                 //         }
                 //     }).then(() => {
                 //         props?.setUpdateTable(prev => !prev)
-                //         handleCloseCreateModal()
+                //         handleColseModal()
                 //     }),
                 //     {
                 //         pending: 'Đang cập nhật thông tin',
@@ -393,6 +416,7 @@ const EditModal = (props) => {
                                                         }
                                                     </Select>
                                                 </div>
+
                                                 <div className='w-[100%] mb-2'>
                                                     <div className=''>
                                                         <p className='text-gray-400 mb-2'>Tên sản phẩm</p>
@@ -414,7 +438,6 @@ const EditModal = (props) => {
                                                             focus:border-primary focus:outline-none`} />
                                                     </div>
                                                 </div>
-
 
                                                 <div className='w-full flex gap-4'>
 
@@ -489,6 +512,52 @@ const EditModal = (props) => {
 
                                                 </div>
 
+                                                <div className='gap-3 w-full md:flex-nowrap flex-wrap mb-2'>
+                                                    <p className='text-gray-400 mb-2'>Chi nhánh</p>
+                                                    <Select
+                                                        displayEmpty
+                                                        disableUnderline
+                                                        value={agencyList}
+                                                        onChange={handleAgencyChange}
+                                                        MenuProps={MenuProps}
+                                                        renderValue={
+                                                            agencySelect !== '' ? () => <p>{agencySelect}</p> : () => <p>Chọn chi nhánh</p>
+                                                        }
+                                                        variant="standard"
+                                                        className={`bg-white border 
+                                                border-gray-400
+                                                rounded px-3 w-full`}
+                                                    >
+                                                        {
+                                                            productAgencyList?.length > 0 ?
+                                                                productAgencyList?.map((cate) =>
+                                                                    <MenuItem
+                                                                        key={cate.agencyId}
+                                                                        value={cate.agencyId}
+                                                                        onClick={(e) => {
+                                                                            setAgencySelect(e.target.innerText)
+                                                                            setQuantityInStock(cate.quantityInStock)
+                                                                            setUpdateInfor(curr => ({
+                                                                                ...curr, 
+                                                                                quantityInStock: {
+                                                                                    value: cate.quantityInStock,
+                                                                                    error: false
+                                                                                }
+                                                                            }))
+                                                                        }}
+                                                                        className="menu-item">
+                                                                        <p className="item-label font-maven">
+                                                                            {cate.agencyName}
+                                                                        </p>
+                                                                    </MenuItem>
+                                                                ) :
+                                                                <MenuItem disabled value='' className="menu-item">
+                                                                    <em>Không tìm thấy dữ liệu</em>
+                                                                </MenuItem>
+                                                        }
+                                                    </Select>
+                                                </div>
+
                                                 <div className='w-[100%] mb-[20px]'>
                                                     <div className=''>
                                                         <p className='text-gray-400 '>Mô tả</p>
@@ -534,7 +603,7 @@ const EditModal = (props) => {
                                             <div className='mt-2 '>
                                                 <p className='text-gray-400 mb-2'>Ảnh chi tiết sản phẩm <span className='text-[14px]'>(Click vào để chọn ảnh mới)</span></p>
                                                 {showErrorLimitFile && <span className="text-redError text-[14px]">Chọn tối đa 4 ảnh mô tả!</span>}
-                                                <div className='max-h-[195px] scroll-bar overflow-x-hidden overflow-y-scroll'>
+                                                <div className='max-h-[269px] scroll-bar overflow-x-hidden overflow-y-scroll'>
                                                     <label htmlFor="fileList" className='cursor-pointer w-fit'>
                                                         <input
                                                             multiple

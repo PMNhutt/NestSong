@@ -53,11 +53,11 @@ const Dashboard = () => {
           name='Nhân viên'
           value={totalStaff}
         />
-        <Modal
+        {/* <Modal
           picture={dashboardCash}
           name='Doanh thu'
           value={10}
-        />
+        /> */}
       </div>
     </div>
   )
