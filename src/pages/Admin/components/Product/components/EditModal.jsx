@@ -19,7 +19,11 @@ const EditModal = (props) => {
     const [fileList, setFileList] = useState([])
     const [showErrorLimitFile, setShowErrorLimitFile] = useState(false)
     const [showErrorFileList, setShowErrorFileList] = useState(false)
+    const [priceValid, setPriceValid] = useState(false)
     const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
+        pauseOnHover: false,
+    });
+    const notifyPriceLimit = () => toast.warn("Giá phải nằm trong khoảng 10k - 2tr !", {
         pauseOnHover: false,
     });
     const ITEM_HEIGHT = 48;
@@ -41,6 +45,7 @@ const EditModal = (props) => {
     const [category, setCategory] = useState('')
     const [thumgImg, setThumgImg] = useState('')
     const [detailImages, setDetailImages] = useState([])
+    const [quantityInStock, setQuantityInStock] = useState('')
     const [updateInfor, setUpdateInfor] = useState({
         productId: '',
         categoryId: '',
@@ -80,6 +85,7 @@ const EditModal = (props) => {
         setCategory(productDetail?.categoryId || '')
         setCategorySelect(productDetail?.categoryName || '')
         setThumgImg(productDetail?.image || '')
+        setQuantityInStock(productDetail?.quantityInStock || '')
         setDetailImages(producMedia?.map((img) => (
             img.smallImage
         )))
@@ -88,23 +94,23 @@ const EditModal = (props) => {
             categoryId: productDetail?.categoryId,
             agencyId: '',
             productName: {
-                value: '',
+                value: productDetail?.productName,
                 error: false,
             },
             description: {
-                value: '',
+                value: productDetail?.description,
                 error: false,
             },
             price: {
-                value: '',
+                value: productDetail?.originalPrice,
                 error: false,
             },
             discount: {
-                value: '',
+                value: productDetail?.discount,
                 error: false,
             },
             quantityInStock: {
-                value: '',
+                value: productDetail?.quantityInStock,
                 error: false,
             },
             thumbNail: null,
@@ -139,7 +145,7 @@ const EditModal = (props) => {
             e.preventDefault();
         }
         if (percentVal) {
-            if (percentValid) {
+            if (percentValid || priceValid) {
                 if ((e.keyCode !== 8 && e.keyCode !== 46)) {
                     e.preventDefault();
                 }
@@ -165,6 +171,23 @@ const EditModal = (props) => {
         }
     }
 
+    //** handle sale price check */
+    const handleCheckPriceInput = (e) => {
+        var price = e.target.value
+        setOriginalPrice(price)
+        if (price.length === 7) {
+            setPriceValid(true)
+            if (price > 2000000) {
+                setOriginalPrice(2000000)
+            }
+            if (price <= 10000) {
+                setOriginalPrice(10000)
+            }
+        } else {
+            setPriceValid(false)
+        }
+    }
+
     //** handle select category */
     const handleCategoryChange = (e) => {
         setCategoryList(e.target.value)
@@ -174,6 +197,13 @@ const EditModal = (props) => {
     const handleSelectThumb = (e) => {
         setShowErrorThumb(false);
         setFile(e.target.files[0])
+        // setUpdateInfor(curr => ({
+        //     ...curr,
+        //     thumbNail: {
+        //         value: e.target.files[0],
+        //         error: false,
+        //     },
+        // }))
     }
 
     //** handle select list image */
@@ -195,7 +225,107 @@ const EditModal = (props) => {
 
     // ** handle update product
     const handleUpdateProduct = () => {
+        let formData = new FormData();
 
+        if ((proName !== "") && (originalPrice !== "") && (discount !== "") &&
+            (quantityInStock !== "") && (description !== "")) {
+            if (updateInfor?.price?.value > 10000) {
+                formData.append("ProductId", updateInfor?.productId)
+                formData.append("CategoryId", updateInfor?.categoryId)
+                formData.append("ProductName", updateInfor?.productName?.value)
+                formData.append("Description", updateInfor?.description?.value == '' ? 'Không có mô tả' : updateInfor?.description?.value)
+                formData.append("Price", parseInt(updateInfor?.price?.value))
+                formData.append("Discount", parseInt(updateInfor?.discount?.value))
+                if (file !== '') {
+                    formData.append("Thumbnail", file)
+                }
+                fileList.forEach((item, index) => {
+                    formData.append(`Image${index + 1}`, item)
+                })
+                console.log([...formData])
+                // toast.promise(
+                //     instances.post('/products', formData, {
+                //         headers: {
+                //             "Content-Type": "multipart/form-data",
+                //         }
+                //     }).then(() => {
+                //         props?.setUpdateTable(prev => !prev)
+                //         handleCloseCreateModal()
+                //     }),
+                //     {
+                //         pending: 'Đang cập nhật thông tin',
+                //         success: 'Đã cập nhật thành công! 👌',
+                //         error: 'Cập nhật sản phẩm thất bại'
+                //     }
+                // )
+                // console.log(
+                //     {
+                //         ProductId: updateInfor?.productId,
+                //         CategoryId: updateInfor?.categoryId,
+                //         AgencyId: '',
+                //         ProductName: updateInfor?.productName?.value,
+                //         Description: updateInfor?.description?.value,
+                //         Price: updateInfor?.price?.value,
+                //         Discount: updateInfor?.discount?.value,
+                //         QuantityInStock: updateInfor?.quantityInStock?.value,
+                //         Thumbnail: null,
+                //         Image1: null,
+                //         Image2: null,
+                //         Image3: null,
+                //         Image4: null,
+                //     }
+                // )
+            } else {
+                notifyPriceLimit()
+            }
+        } else {
+            notifyWarn()
+            if (proName === "") {
+                setUpdateInfor(curr => ({
+                    ...curr,
+                    productName: {
+                        value: '',
+                        error: true,
+                    },
+                }))
+            }
+            if (originalPrice === "") {
+                setUpdateInfor(curr => ({
+                    ...curr,
+                    price: {
+                        value: '',
+                        error: true,
+                    },
+                }))
+            }
+            if (discount === "") {
+                setUpdateInfor(curr => ({
+                    ...curr,
+                    discount: {
+                        value: '',
+                        error: true,
+                    },
+                }))
+            }
+            if (quantityInStock === "") {
+                setUpdateInfor(curr => ({
+                    ...curr,
+                    quantityInStock: {
+                        value: '',
+                        error: true,
+                    },
+                }))
+            }
+            if (description === "") {
+                setUpdateInfor(curr => ({
+                    ...curr,
+                    description: {
+                        value: '',
+                        error: true,
+                    },
+                }))
+            }
+        }
     }
 
     return (
@@ -270,8 +400,18 @@ const EditModal = (props) => {
                                                             type='text'
                                                             value={proName}
                                                             onChange={(e) => setProName(e.target.value)}
-                                                            className='w-full py-2 px-3 bg-white rounded border h-[40px] border-gray-400
-                                                focus:border-primary focus:outline-none'/>
+                                                            onBlur={(e) => {
+                                                                setUpdateInfor(curr => ({
+                                                                    ...curr,
+                                                                    productName: {
+                                                                        value: proName,
+                                                                        error: false,
+                                                                    },
+                                                                }))
+                                                            }}
+                                                            className={`w-full py-2 px-3 bg-white rounded border h-[40px]
+                                                            ${updateInfor.productName.error ? 'border-red-500' : 'border-gray-400'}
+                                                            focus:border-primary focus:outline-none`} />
                                                     </div>
                                                 </div>
 
@@ -282,12 +422,22 @@ const EditModal = (props) => {
                                                         <div className=''>
                                                             <p className='text-gray-400 mb-2'>Giá gốc</p>
                                                             <input
-                                                                onKeyDown={handleKeyDown}
+                                                                onKeyDown={(e) => handleKeyDown(e, true)}
                                                                 type='number'
                                                                 value={originalPrice}
-                                                                onChange={(e) => setOriginalPrice(e.target.value)}
-                                                                className='w-full py-2 px-3 bg-white rounded border h-[40px] border-gray-400
-                                                focus:border-primary focus:outline-none'/>
+                                                                onChange={handleCheckPriceInput}
+                                                                onBlur={(e) => {
+                                                                    setUpdateInfor(curr => ({
+                                                                        ...curr,
+                                                                        price: {
+                                                                            value: originalPrice,
+                                                                            error: false,
+                                                                        },
+                                                                    }))
+                                                                }}
+                                                                className={`w-full py-2 px-3 bg-white rounded border h-[40px]
+                                                            ${updateInfor.price.error ? 'border-red-500' : 'border-gray-400'}
+                                                            focus:border-primary focus:outline-none`} />
                                                         </div>
                                                     </div>
 
@@ -299,8 +449,41 @@ const EditModal = (props) => {
                                                                 type='number'
                                                                 value={discount}
                                                                 onChange={handleCheckValidDiscount}
-                                                                className='w-full py-2 px-3 bg-white rounded border h-[40px] border-gray-400
-                                                focus:border-primary focus:outline-none'/>
+                                                                onBlur={(e) => {
+                                                                    setUpdateInfor(curr => ({
+                                                                        ...curr,
+                                                                        discount: {
+                                                                            value: discount,
+                                                                            error: false,
+                                                                        },
+                                                                    }))
+                                                                }}
+                                                                className={`w-full py-2 px-3 bg-white rounded border h-[40px]
+                                                            ${updateInfor.discount.error ? 'border-red-500' : 'border-gray-400'}
+                                                            focus:border-primary focus:outline-none`} />
+                                                        </div>
+                                                    </div>
+
+                                                    <div className='w-[100%] mb-2'>
+                                                        <div className=''>
+                                                            <p className='text-gray-400 mb-2'>SL Kho</p>
+                                                            <input
+                                                                onKeyDown={(e) => handleKeyDown(e)}
+                                                                type='number'
+                                                                value={quantityInStock}
+                                                                onChange={(e) => setQuantityInStock(e.target.value)}
+                                                                onBlur={(e) => {
+                                                                    setUpdateInfor(curr => ({
+                                                                        ...curr,
+                                                                        quantityInStock: {
+                                                                            value: quantityInStock,
+                                                                            error: false,
+                                                                        },
+                                                                    }))
+                                                                }}
+                                                                className={`w-full py-2 px-3 bg-white rounded border h-[40px]
+                                                            ${updateInfor.quantityInStock.error ? 'border-red-500' : 'border-gray-400'}
+                                                            focus:border-primary focus:outline-none`} />
                                                         </div>
                                                     </div>
 
@@ -313,8 +496,19 @@ const EditModal = (props) => {
                                                             type='text'
                                                             value={description}
                                                             onChange={(e) => setDescription(e.target.value)}
-                                                            rows="4" className=" w-full mt-3 p-2.5 text-gray-900 bg-white rounded border
-                                                        border-gray-400 focus:outline-none focus:bg-white focus:border-primary resize-none"
+                                                            onBlur={(e) => {
+                                                                setUpdateInfor(curr => ({
+                                                                    ...curr,
+                                                                    description: {
+                                                                        value: description,
+                                                                        error: false,
+                                                                    },
+                                                                }))
+                                                            }}
+                                                            rows="4"
+                                                            className={` w-full mt-3 p-2.5 text-gray-900 bg-white rounded border
+                                                            ${updateInfor.description.error ? 'border-red-500' : 'border-gray-400'}
+                                                        focus:outline-none focus:bg-white focus:border-primary resize-none`}
                                                             placeholder="Mô tả sản phẩm..."
                                                         />
                                                     </div>

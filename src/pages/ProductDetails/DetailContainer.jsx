@@ -50,23 +50,24 @@ const DetailContainer = () => {
 
     return (
         <>
-            {
-                !loading ?
-                    <div className='text-black '>
-                        <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
-                        <div className='sm:px-16 px-6 mb-20'>
-                            <ProductTopSection
-                                detailData={detailData}
-                            />
-                            {/* <ProductMidSection /> */}
-                            <ProductBottomSection listFeedBack={detailData?.listFeedbakcs} />
-                            <RecommendSection recommend={detailData?.suggestedProduct} />
-                        </div>
-                    </div> :
-                    <div className='pt-[10%]'>
-                        <LoadingSmall />
+
+            <div className='text-black '>
+                <div className='w-full h-[180px] rotate-180 bg-cover' style={{ backgroundImage: `url(${footer})` }} />
+                {!loading ?
+                    <div className='sm:px-16 px-6 mb-20'>
+                        <ProductTopSection
+                            detailData={detailData}
+                        />
+                        {/* <ProductMidSection /> */}
+                        <ProductBottomSection listFeedBack={detailData?.listFeedbakcs} />
+                        <RecommendSection recommend={detailData?.suggestedProduct} />
                     </div>
-            }
+                    :
+                    <div className='pt-[10%] h-[100vh]'>
+                        <LoadingSmall />
+                    </div>}
+            </div>
+
         </>
     )
 }

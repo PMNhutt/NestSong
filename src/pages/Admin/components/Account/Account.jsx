@@ -17,7 +17,19 @@ const Account = () => {
     const [updateData, setUpdateData] = useState()
     const [listAgency, setListAgency] = useState()
     const [createInfo, setCreateInfo] = useState({
-        name: {
+        firstName: {
+            value: '',
+            error: false
+        },
+        lastName: {
+            value: '',
+            error: false
+        },
+        phoneNumber: {
+            value: '',
+            error: false
+        },
+        address: {
             value: '',
             error: false
         },
@@ -69,10 +81,37 @@ const Account = () => {
             }
         }))
     }
-    const handleInputName = (value) => {
+    const handleInputFirstName = (value) => {
         setCreateInfo(curr => ({
             ...curr,
-            name: {
+            firstName: {
+                value: value,
+                error: value ? false : true
+            }
+        }))
+    }
+    const handleInputLastName = (value) => {
+        setCreateInfo(curr => ({
+            ...curr,
+            lastName: {
+                value: value,
+                error: value ? false : true
+            }
+        }))
+    }
+    const handleInputAddress = (value) => {
+        setCreateInfo(curr => ({
+            ...curr,
+            address: {
+                value: value,
+                error: value ? false : true
+            }
+        }))
+    }
+    const handleInputPhoneNumber = (value) => {
+        setCreateInfo(curr => ({
+            ...curr,
+            phoneNumber: {
                 value: value,
                 error: value ? false : true
             }
@@ -113,9 +152,12 @@ const Account = () => {
                     setCreateInfo={setCreateInfo}
                     setShowCreateModal={setShowCreateModal}
                     handleAgencyChange={handleAgencyChange}
-                    handleInputName={handleInputName}
+                    handleInputFirstName={handleInputFirstName}
+                    handleInputLastName={handleInputLastName}
                     handleInputEmail={handleInputEmail}
                     handleInputPassword={handleInputPassword}
+                    handleInputAddress={handleInputAddress}
+                    handleInputPhoneNumber={handleInputPhoneNumber}
                 />
             }
             {

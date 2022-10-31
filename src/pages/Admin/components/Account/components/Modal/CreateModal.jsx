@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react'
 import { updateStaffList } from '../../../../../../redux/actionSlice/managementSlice'
+import instances from '../../../../../../utils/plugin/axios';
 
 import LibraryAddIcon from '@mui/icons-material/LibraryAdd';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import CloseIcon from '@mui/icons-material/Close';
 import { MenuItem, Select } from '@mui/material';
 import { toast } from 'react-toastify';
-import { useDispatch } from 'react-redux'; 
+import { useDispatch } from 'react-redux';
 
 const CreateModal = (props) => {
 
@@ -31,6 +32,21 @@ const CreateModal = (props) => {
     const [agencies, setAgencies] = useState('')
     const [agencyList, setAgencyList] = useState('')
 
+    //** validate number */
+    const handleKeyDown = (e, percentVal) => {
+        if (e.keyCode === 69 || e.keyCode === 190 || e.keyCode === 110
+            || e.keyCode === 189) {
+            e.preventDefault();
+        }
+        // if (percentVal) {
+        //     if (percentValid || priceValid) {
+        //         if ((e.keyCode !== 8 && e.keyCode !== 46)) {
+        //             e.preventDefault();
+        //         }
+        //     }
+        // }
+    }
+
     //** handle close modal **/
     const handleCloseCreateModal = () => {
         props?.setShowCreateModal(false)
@@ -46,18 +62,44 @@ const CreateModal = (props) => {
     //** handle create staff */
     const handleCreateStaff = async () => {
         if ((props?.createInfo?.agencyId?.value !== "") &&
-            (props?.createInfo?.name?.value !== "") &&
+            (props?.createInfo?.firstName?.value !== "") &&
+            (props?.createInfo?.lastName?.value !== "") &&
             (props?.createInfo?.email?.value !== "") &&
+            (props?.createInfo?.phoneNumber?.value !== "") &&
+            (props?.createInfo?.address?.value !== "") &&
             (props?.createInfo?.password?.value !== "")) {
 
-            console.log({
-                agencyId: props.createInfo.agencyId,
-                name: props.createInfo.name,
-                email: props.createInfo.email,
-                password: props.createInfo.password
-            })
-            handleCloseCreateModal()
-            dispatch(updateStaffList())
+            toast.promise(
+                instances.post('/admin/createstaff', {
+                    agencyID: props.createInfo.agencyId?.value,
+                    firstName: props.createInfo.firstName.value,
+                    lastName: props.createInfo.lastName.value,
+                    phoneNumber: props.createInfo.phoneNumber.value,
+                    address: props.createInfo.address.value,
+                    email: props.createInfo.email.value,
+                    password: props.createInfo.password.value
+                }).then(() => {
+                    // props?.setUpdateTable(prev => !prev)
+                    // handleCloseCreateModal()
+                    handleCloseCreateModal()
+                    dispatch(updateStaffList())
+                }),
+                {
+                    pending: 'Đang thêm nhân viên',
+                    success: 'Đã thêm thành công! 👌',
+                    error: 'Thêm thất bại'
+                }
+            )
+            // console.log({
+            //     agencyId: props.createInfo.agencyId,
+            //     firstName: props.createInfo.firstName,
+            //     lastName: props.createInfo.lastName,
+            //     phoneNumber: props.createInfo.phoneNumber,
+            //     address: props.createInfo.address,
+            //     email: props.createInfo.email,
+            //     password: props.createInfo.password
+            // })
+
         } else {
             notifyWarn()
             if (props?.createInfo?.agencyId?.value == "") {
@@ -69,10 +111,37 @@ const CreateModal = (props) => {
                     }
                 }))
             }
-            if (props?.createInfo?.name?.value == "") {
+            if (props?.createInfo?.firstName?.value == "") {
                 props?.setCreateInfo(curr => ({
                     ...curr,
-                    name: {
+                    firstName: {
+                        value: '',
+                        error: true
+                    }
+                }))
+            }
+            if (props?.createInfo?.lastName?.value == "") {
+                props?.setCreateInfo(curr => ({
+                    ...curr,
+                    lastName: {
+                        value: '',
+                        error: true
+                    }
+                }))
+            }
+            if (props?.createInfo?.phoneNumber?.value == "") {
+                props?.setCreateInfo(curr => ({
+                    ...curr,
+                    phoneNumber: {
+                        value: '',
+                        error: true
+                    }
+                }))
+            }
+            if (props?.createInfo?.address?.value == "") {
+                props?.setCreateInfo(curr => ({
+                    ...curr,
+                    address: {
                         value: '',
                         error: true
                     }
@@ -149,16 +218,59 @@ const CreateModal = (props) => {
                         </Select>
                     </div>
 
-                    <div className="mb-2 relative input-placeholer">
-                        <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.name.error ? 'border-red-500' : 'border-gray-400'}
+                    <div className='flex gap-3'>
+
+                        <div className="flex gap-2 mb-2 relative input-placeholer">
+                            <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.firstName.error ? 'border-red-500' : 'border-gray-400'}
                     rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
-                            required type="text"
-                            onBlur={(e) => props?.handleInputName(e.target.value)}
-                        />
-                        <div className='placeholder'>
-                            Tên nhân viên <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                                required type="text"
+                                onBlur={(e) => props?.handleInputFirstName(e.target.value)}
+                            />
+                            <div className='placeholder'>
+                                Họ <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                            </div>
                         </div>
+
+                        <div className="flex gap-2 mb-2 relative input-placeholer">
+                            <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.lastName.error ? 'border-red-500' : 'border-gray-400'}
+                    rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
+                                required type="text"
+                                onBlur={(e) => props?.handleInputLastName(e.target.value)}
+                            />
+                            <div className='placeholder'>
+                                Tên <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                            </div>
+                        </div>
+
                     </div>
+
+                    <div className='flex gap-3'>
+
+                        <div className="flex gap-2 mb-2 relative input-placeholer">
+                            <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.phoneNumber.error ? 'border-red-500' : 'border-gray-400'}
+                    rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
+                                required type="number"
+                                onKeyDown={handleKeyDown}
+                                onBlur={(e) => props?.handleInputPhoneNumber(e.target.value)}
+                            />
+                            <div className='placeholder'>
+                                SDT <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                            </div>
+                        </div>
+
+                        <div className="flex gap-2 mb-2 relative input-placeholer">
+                            <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.address.error ? 'border-red-500' : 'border-gray-400'}
+                    rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-primary`}
+                                required type="text"
+                                onBlur={(e) => props?.handleInputAddress(e.target.value)}
+                            />
+                            <div className='placeholder'>
+                                Địa chỉ <span className='text-redError  text-[25px] absolute right-[-13px] font-semibold'>*</span>
+                            </div>
+                        </div>
+
+                    </div>
+
 
                     <div className="mb-2 relative input-placeholer">
                         <input className={`bg-white appearance-none border-[1.5px] ${props?.createInfo?.email.error ? 'border-red-500' : 'border-gray-400'}

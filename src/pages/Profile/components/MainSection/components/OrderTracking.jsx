@@ -19,6 +19,8 @@ import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import EventNoteIcon from '@mui/icons-material/EventNote';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import Rating from '@mui/material/Rating';
+import { toast } from 'react-toastify';
 
 const OrderTracking = (props) => {
 
@@ -31,6 +33,8 @@ const OrderTracking = (props) => {
     const [openModalFeedback, setOpenModalFeedback] = useState(false)
     const [feedBack, setFeedBack] = useState('')
     const [error, setError] = useState(false)
+    const [stars, setStars] = useState(0)
+    const [proId, setProId] = useState('')
 
     const handleChange = (event, newValue) => {
         setStatus(newValue);
@@ -60,12 +64,40 @@ const OrderTracking = (props) => {
     //** confirm send feedBack */
     const handleConfirmFeedBack = (data) => {
         if (data !== '') {
+            toast.promise(
+                instances.post('/feedbacks', {
+                    customerID: accountID.accountId,
+                    productID: proId,
+                    comment: data,
+                    stars: stars
+                }),
+                {
+                    pending: 'Đang feedack',
+                    success: 'Đã gửi feedback thành công! 👌',
+                    error: 'Gửithất bại'
+                }
+            )
+            // console.log(
+            //     {
+            //         customerID: accountID.accountId,
+            //         productID: proId,
+            //         comment: data,
+            //         stars: stars
+            //     }
+            // );
             // await instances.put(`/changestatusorder/${props?.orderDetail?.orderID}?reason=${data}`)
             setOpenModalFeedback(false)
+            setStars(0)
             setError(false)
         } else {
             setError(true)
         }
+    }
+
+    //** handle open feed back modal **/
+    const handleOpenModalFeedBack = (productID) => {
+        setOpenModalFeedback(true)
+        setProId(productID)
     }
 
     //** handle Open detail 
@@ -82,11 +114,17 @@ const OrderTracking = (props) => {
                 openModalFeedback &&
                 <div>
                     <div
-                        onClick={() => setOpenModalFeedback(false)}
+                        onClick={() => {
+                            setOpenModalFeedback(false)
+                            setStars(0)
+                        }}
                         className='top-0 bottom-0 right-0 left-0 bg-[rgba(0,0,0,0.5)] fixed z-[995]' />
                     <div className='fixed left-[50%] translate-x-[-50%] top-[50%] translate-y-[-50%] 
                 z-[999] rounded shadow-lg bg-white px-3 py-4 w-[300px]'>
                         <p className='text-[18px] text-center font-semibold '>Nhập đánh giá</p>
+                        <div className='mt-4 flex justify-center'>
+                            <Rating value={stars} onChange={(e, value) => setStars(value)} precision={0.5} size="large" />
+                        </div>
                         <textarea
                             onBlur={(e) => setFeedBack(e.target.value)}
                             rows="4" className={`my-3 p-2.5 w-full text-gray-900 bg-white rounded border ${error ? 'border-red-500' : 'border-gray-500'}
@@ -140,7 +178,7 @@ const OrderTracking = (props) => {
 
                                                                     <div className='mt-3 flex gap-2'>
                                                                         <div
-                                                                            onClick={() => setOpenModalFeedback(true)}
+                                                                            onClick={() => handleOpenModalFeedBack(product.productId)}
                                                                             className='w-fit uppercase bg-primary rounded px-3 
                                                                         py-1 cursor-pointer text-center text-white text-[14px] font-medium'>Gửi đánh giá</div>
                                                                         <Link to={'/products/detail/' + product.productName}

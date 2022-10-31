@@ -18,6 +18,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import FormControl, { useFormControl } from '@mui/material/FormControl';
 import { useForm } from 'react-hook-form'
 import { useDispatch } from 'react-redux'
+import { toast } from 'react-toastify';
 
 const Register = ({ title }) => {
     useEffect(() => {
@@ -47,7 +48,19 @@ const Register = ({ title }) => {
 
     // ** handle submit form
 
-    const onSubmit = (data) => console.log(data);
+    const onSubmit = (data) => {
+        console.log(data);
+        // toast.promise(
+        //     instances.post('/createnewuser', {
+
+        //     }),
+        //     {
+        //         pending: 'Đang tạo tài khoản',
+        //         success: 'Đã đăng ký thành công! 👌',
+        //         error: 'Đăng ký thất bại'
+        //     }
+        // )
+    };
     const {
         register,
         handleSubmit,
@@ -72,7 +85,7 @@ const Register = ({ title }) => {
                 </div>
 
                 <div className={`auth_form_login ss:w-fit w-full bg-white shadow-lg rounded-[5px] 
-                 absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[10] py-5 px-8`}>
+                absolute top-[50%] translate-y-[-50%] left-[50%] translate-x-[-50%] z-[10] py-5 px-8`}>
                     <div className='text-center mb-4'>
                         <Link to='/'>
                             <div className='w-[50px] h-[50px] bg-contain bg-no-repeat m-auto' style={{ backgroundImage: `url(${nestLogo})` }} />
@@ -81,22 +94,43 @@ const Register = ({ title }) => {
                     </div>
                     <h1 className='font-bold text-[28px] text-black my-8'>Đăng ký </h1>
                     <form className='flex flex-col' onSubmit={handleSubmit(onSubmit)}>
-                        <FormControl variant="outlined">
-                            <TextField
-                                id="full_name"
-                                label="Họ và tên"
-                                inputProps={{ style: inputStyle }}
-                                type="text"
-                                size="small"
-                                className='ss:w-[40ch]'
-                                {...register('full_name', {
-                                    required: "Bạn cần họ và tên để đăng ký"
-                                })}
-                                error={!!errors?.full_name}
-                                // helperText=" "
-                                helperText={errors?.full_name ? errors.full_name.message : " "}
-                            />
-                        </FormControl>
+                        <div className='flex gap-2'>
+
+                            <FormControl variant="outlined">
+                                <TextField
+                                    id="firstName"
+                                    label="Họ"
+                                    inputProps={{ style: inputStyle }}
+                                    type="text"
+                                    size="small"
+                                    className='ss:w-[20ch]'
+                                    {...register('firstName', {
+                                        required: "Bạn cần họ và tên để đăng ký"
+                                    })}
+                                    error={!!errors?.firstName}
+                                    // helperText=" "
+                                    helperText={errors?.firstName ? errors.firstName.message : " "}
+                                />
+                            </FormControl>
+
+                            <FormControl variant="outlined">
+                                <TextField
+                                    id="lastName"
+                                    label="Tên"
+                                    inputProps={{ style: inputStyle }}
+                                    type="text"
+                                    size="small"
+                                    className='ss:w-[20ch]'
+                                    {...register('lastName', {
+                                        required: "Bạn cần họ và tên để đăng ký"
+                                    })}
+                                    error={!!errors?.lastName}
+                                    // helperText=" "
+                                    helperText={errors?.lastName ? errors.lastName.message : " "}
+                                />
+                            </FormControl>
+
+                        </div>
                         <FormControl variant="outlined">
                             <TextField
                                 id="phone"
@@ -104,7 +138,7 @@ const Register = ({ title }) => {
                                 inputProps={{ style: inputStyle }}
                                 type="number"
                                 size="small"
-                                className='ss:w-[40ch]'
+                                className='ss:w-[100%]'
                                 {...register('phone', {
                                     required: "Bạn cần sdt để đăng ký"
                                 })}
@@ -119,7 +153,7 @@ const Register = ({ title }) => {
                                 inputProps={{ style: inputStyle }}
                                 type="email"
                                 size="small"
-                                className='ss:w-[40ch]'
+                                className='ss:w-[100%]'
                                 autoComplete='email'
                                 {...register('email', {
                                     required: "Bạn cần email để đăng ký", pattern: {
