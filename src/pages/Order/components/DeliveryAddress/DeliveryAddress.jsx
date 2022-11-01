@@ -1,21 +1,28 @@
 import { useState, useEffect } from 'react'
 import LoadingSmall from '../../../../share/components/LoadingSmall/LoadingSmall';
+import instances from '../../../../utils/plugin/axios'
+
 //** icon */
 import { icPin } from '../../../../assets/images'
 
 //** Third party components*/
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { MenuItem, Select } from '@mui/material';
+import { useSelector } from 'react-redux'
 
 const DeliveryAddress = (props) => {
 
     //**Const */
+    const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
     let loggedUserName = `${props?.userInfo.firstName} ${props?.userInfo.lastName}`
     const [userName, setUserName] = useState(loggedUserName)
     const [userEmail, setUserEmail] = useState(props?.userInfo?.email)
     const [provinces, setProvinces] = useState('')
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
+
+    const [checkStockAgency, setCheckStockAgency] = useState(false)
+
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
     const MenuProps = {
@@ -30,9 +37,25 @@ const DeliveryAddress = (props) => {
         return <div className='text-gray-400'>{children} <span className='text-redError text-[18px] font-semibold'>*</span></div>;
     };
 
-    const handleProvincesChange = (e) => {
+    const handleProvincesChange = async (e) => {
         setProvinces(e.target.value)
         // props?.setProvinces(e.target.value);
+
+        //** get product detail -> compare quantityInStock */
+        // const res = await instances.get(`/products/id/{cateid}/{proid}`)
+
+        let productAmount = []
+        shoppingCart?.map((item) => (
+            productAmount.push(
+                {
+                    amount: item.amount,
+                    proId: item.id,
+                    name: item.name
+                }
+            )
+        ))
+        console.log(productAmount);
+        console.log('agencyId', e.target.value)
         props?.handleSelectProvinces(e.target.value)
     }
 
@@ -119,7 +142,7 @@ const DeliveryAddress = (props) => {
                                 Địa chỉ nhận hàng <span className='text-redError text-[25px] absolute right-[-13px] font-semibold'>*</span>
                             </div>
                         </div>
-                        <div className='flex mt-3 gap-3 w-full md:flex-nowrap flex-wrap'>
+                        <div className='flex flex-col mt-3 gap-3 w-full md:flex-nowrap flex-wrap'>
                             <Select
                                 displayEmpty
                                 disableUnderline
@@ -146,6 +169,11 @@ const DeliveryAddress = (props) => {
                                         </MenuItem>
                                 }
                             </Select>
+                            {
+                                checkStockAgency &&
+                                <span className='text-[14px] text-redError font-semibold'>Chi nhánh bạn chọn không đủ số lượng, vui lòng chọn chi nhánh khác</span>
+                            }
+
                             {/* <Select
                         displayEmpty
                         disableUnderline

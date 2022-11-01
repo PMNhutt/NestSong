@@ -266,21 +266,21 @@ const EditModal = (props) => {
                     formData.append(`Image${index + 1}`, item)
                 })
                 console.log([...formData])
-                // toast.promise(
-                //     instances.put('/products', formData, {
-                //         headers: {
-                //             "Content-Type": "multipart/form-data",
-                //         }
-                //     }).then(() => {
-                //         props?.setUpdateTable(prev => !prev)
-                //         handleColseModal()
-                //     }),
-                //     {
-                //         pending: 'Đang cập nhật thông tin',
-                //         success: 'Đã cập nhật thành công! 👌',
-                //         error: 'Cập nhật sản phẩm thất bại'
-                //     }
-                // )
+                toast.promise(
+                    instances.put('/products', formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        }
+                    }).then((res) => {
+                        props?.setUpdateTable(prev => !prev)
+                        handleColseModal()
+                    }),
+                    {
+                        pending: 'Đang cập nhật thông tin',
+                        success: 'Đã cập nhật thành công! 👌',
+                        error: 'Cập nhật sản phẩm thất bại'
+                    }
+                )
                 // console.log(
                 //     {
                 //         ProductId: updateInfor?.productId,

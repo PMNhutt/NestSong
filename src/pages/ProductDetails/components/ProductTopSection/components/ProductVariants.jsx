@@ -26,7 +26,8 @@ const ProductVariants = (props) => {
   //** State */
   const dispatch = useDispatch();
   let loading = useSelector((state) => state?.product?.loading)
-  // const productStore = useSelector((state) => state.product?.productDetail?.productDetail)
+  const [listAgency, setListAgency] = useState([])
+  const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
   const productStore = props.productDetail
   const productList = useSelector((state) => state?.cart?.productslist)
   const [productValue, setProductValue] = useState(1)
@@ -37,24 +38,6 @@ const ProductVariants = (props) => {
   const notifyWarnSoldOut = () => toast.warn("Sản phẩm này đã hết hàng !", {
     pauseOnHover: false,
   });
-
-  // ** handle buy now
-  const handleBuyNow = () => {
-    if (productStore?.quantityInStock === 0) {
-      notifyWarnSoldOut()
-    } else {
-      dispatch(addItemFromPeek({
-        id: productStore?.productId,
-        name: productStore?.productName,
-        price: productStore?.salePrice,
-        stock: productStore?.quantityInStock,
-        inputValue: productValue,
-        thumbImg: productStore?.image,
-        categoryName: productStore?.categoryName
-      }))
-      dispatch(getShoppingCart());
-    }
-  }
 
   const DelayedLink = ({ delay, replace, state, to, ...props }) => {
     const navigate = useNavigate();
@@ -91,6 +74,26 @@ const ProductVariants = (props) => {
     }
   }
 
+  // ** handle buy now
+  const handleBuyNow = () => {
+    if (productStore?.quantityInStock === 0) {
+      notifyWarnSoldOut()
+    } else {
+      dispatch(addItemFromPeek({
+        id: productStore?.productId,
+        name: productStore?.productName,
+        price: productStore?.salePrice,
+        stock: productStore?.quantityInStock,
+        inputValue: productValue,
+        thumbImg: productStore?.image,
+        categoryName: productStore?.categoryName
+      }))
+      dispatch(getShoppingCart());
+      // save list ageny of product to check stock when  order
+      // localStorage.setItem('LIST_AGENCIES', )
+    }
+  }
+
   // ** handle add to cart
   const handleAddToCart = () => {
     if (productStore?.quantityInStock === 0) {
@@ -107,8 +110,37 @@ const ProductVariants = (props) => {
         categoryName: productStore?.categoryName
       }))
       dispatch(getShoppingCart())
+
+      // save list ageny of product to check stock when  order
+      // if (listAgency.length > 0) {
+
+      // } else {
+      let arr = listAgency
+      arr.push(
+        ...arr, {
+        id: productStore?.productId,
+        list: props.listAgencies
+      })
+      setListAgency(arr)
+      // listAgency = [...listAgency, {
+      //   id: productStore?.productId,
+      //   list: props.listAgencies
+      // }]
+      // listAgency.push(
+      //   {
+      //     id: productStore?.productId,
+      //     list: props.listAgencies
+      //   }
+      // )
+      // }
+      console.log(shoppingCart);
     }
   }
+
+  useEffect(() => {
+      console.log(listAgency);
+
+  }, [listAgency])
 
   useEffect(() => {
     let added;

@@ -3,6 +3,7 @@ import Tooltip from '@mui/material/Tooltip';
 import EditIcon from '@mui/icons-material/Edit';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '@mui/icons-material/Delete';
+import RestoreFromTrashIcon from '@mui/icons-material/RestoreFromTrash';
 import { userColumns } from './tempUserData';
 import { Link } from 'react-router-dom'
 import LoadingSmall from '../../../../share/components/LoadingSmall/LoadingSmall'
@@ -29,7 +30,10 @@ function Datatable(props) {
                         <IconButton
                             onClick={() => props?.handleOpenDeleteModal(params.row)}
                             aria-label="remove">
-                            <DeleteIcon />
+                            {params.row.status == 'AVAILABLE'
+                                ? <DeleteIcon />
+                                : <RestoreFromTrashIcon />
+                            }
                         </IconButton>
                     </Tooltip>
                 </div>

@@ -33,7 +33,7 @@ const ListContainer = () => {
     const [size, setSize] = useState(null)
     const [cateid, setCateId] = useState(null)
     const [sort, setSort] = useState('asc')
-    const [minPrice, setMinPrice] = useState(10000)
+    const [minPrice, setMinPrice] = useState(1000)
     const [maxPrice, setMaxPrice] = useState(2000000)
     const [categoryList, setCategoryList] = useState()
 

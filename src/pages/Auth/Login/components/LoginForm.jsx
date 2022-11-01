@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import Button from '../../../../share/components/Button'
 import instances from '../../../../utils/plugin/axios'
-import {setAccountInfo} from '../../../../redux/actionSlice/accountSlice'
+import { setAccountInfo } from '../../../../redux/actionSlice/accountSlice'
 
 // ** images
 import { authImage1, authImage2, about2 } from '../../../../assets/images'
@@ -51,19 +51,28 @@ const LoginForm = () => {
     // ** handle submit form
 
     const onSubmit = async (data) => {
-
-        const res = await instances.post('/login', data)
-        if (res?.data.status === 401) {
-            notifyError()
-        } else {
-            dispatch(setAccountInfo(res?.data?.result))
-            localStorage.setItem('accessToken', res.data.token)
-            if (res?.data?.result?.authorizeRole === 'Staff' || res?.data?.result?.authorizeRole === 'Admin') {
-                navigate('/management')
-            } else {
-                navigate('/')
+        toast.promise(
+            instances.post('/login', data)
+                .then((res) => {
+                    if (res?.data.status === 401) {
+                        notifyError()
+                    } else {
+                        dispatch(setAccountInfo(res?.data?.result))
+                        localStorage.setItem('accessToken', res.data.token)
+                        if (res?.data?.result?.authorizeRole === 'Staff' || res?.data?.result?.authorizeRole === 'Admin') {
+                            navigate('/management')
+                        } else {
+                            navigate('/')
+                        }
+                    }
+                }),
+            {
+                pending: 'Đang kiểm tra thông tin...',
+                // success: 'Đăng nhập thành công! 👌',
+                error: 'Đăng nhập thất bại!'
             }
-        }
+        )
+        // const res = await instances.post('/login', data)
     };
     const {
         register,

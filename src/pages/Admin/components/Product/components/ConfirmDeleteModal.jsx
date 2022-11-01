@@ -5,7 +5,6 @@ import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import { toast } from 'react-toastify';
 
 const ConfirmDeleteModal = (props) => {
-
     //**  handle close modal  */
     const handleColseModal = () => {
         props?.setIsShowDeleteModal(false)
@@ -29,7 +28,23 @@ const ConfirmDeleteModal = (props) => {
                 error: 'Xóa sản phẩm thất bại'
             }
         )
+    }
 
+    //** handle confirm restore  */
+    const handleConfirmRestore = () => {
+        // console.log(props?.data.productId);
+        toast.promise(
+            instances.put(`/admin/changestatusproduct/${props?.data.productId}/true`)
+                .then(() => {
+                    props?.setUpdateTable(prev => !prev)
+                    handleColseModal()
+                }),
+            {
+                pending: 'Đang phục hồi sản phẩm',
+                success: 'Đã phục hồi thành công! 👌',
+                error: 'Phục hồi sản phẩm thất bại'
+            }
+        )
     }
 
     return (
@@ -58,9 +73,24 @@ const ConfirmDeleteModal = (props) => {
 
                     </div>
 
-                    <div
-                        onClick={() => handleConfirmDelete()}
-                        className='bg-redError px-4 py-2 text-center text-white rounded-[5px] cursor-pointer font-semibold mt-8'>Xác nhận</div>
+                    {
+                        props?.data.status === 'AVAILABLE' &&
+                        <div
+                            onClick={() => handleConfirmDelete()}
+                            className='bg-redError px-4 py-2 text-center text-white rounded-[5px] cursor-pointer font-semibold mt-8'>
+                            Xác nhận
+                        </div>
+                    }
+
+                    {
+                        props?.data.status === 'OUT_OF_STOCK' &&
+                        <div
+                            onClick={() => handleConfirmRestore()}
+                            className='bg-green-500 px-4 py-2 text-center text-white rounded-[5px] cursor-pointer font-semibold mt-8'>
+                            Phục hồi
+                        </div>
+                    }
+
                 </div>
             </div>
         </div>
