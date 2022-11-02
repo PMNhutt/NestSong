@@ -60,8 +60,7 @@ const Order = ({ title }) => {
             value: '',
             error: false,
         },
-        // district: '',
-        // ward: '',
+        compareStock: ''
     })
 
     //** get agencies */
@@ -154,6 +153,12 @@ const Order = ({ title }) => {
             ward: value
         }))
     }
+    const handleCompareStock = (value) => {
+        setDeliveryInfo(currVal => ({
+            ...currVal,
+            compareStock: value
+        }))
+    }
 
 
     if (accessToken) {
@@ -182,6 +187,7 @@ const Order = ({ title }) => {
                                     handleSelectProvinces={handleSelectProvinces}
                                     handleSelectDistrict={handleSelectDistrict}
                                     handleSelectWard={handleSelectWard}
+                                    handleCompareStock={handleCompareStock}
                                     deliveryInfo={deliveryInfo}
                                     userInfo={accountInfo}
                                     userPhone={userPhone}

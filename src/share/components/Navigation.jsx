@@ -24,7 +24,8 @@ const Navigation = () => {
   // const [showModalCart, setShowModalCart] = useState(false)
   const dispatch = useDispatch()
   const cartStore = useSelector((state) => state?.cart)
-  const accountInfo = useSelector((state) => state?.account?.accountInfo)
+  // const accountInfo = useSelector((state) => state?.account?.accountInfo)
+  const accountInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
 
   // ** Consts
   const menu = {

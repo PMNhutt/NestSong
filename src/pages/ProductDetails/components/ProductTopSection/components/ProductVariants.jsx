@@ -26,7 +26,6 @@ const ProductVariants = (props) => {
   //** State */
   const dispatch = useDispatch();
   let loading = useSelector((state) => state?.product?.loading)
-  const [listAgency, setListAgency] = useState([])
   const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
   const productStore = props.productDetail
   const productList = useSelector((state) => state?.cart?.productslist)
@@ -90,7 +89,7 @@ const ProductVariants = (props) => {
       }))
       dispatch(getShoppingCart());
       // save list ageny of product to check stock when  order
-      // localStorage.setItem('LIST_AGENCIES', )
+      handleSendListAgencies()
     }
   }
 
@@ -112,35 +111,36 @@ const ProductVariants = (props) => {
       dispatch(getShoppingCart())
 
       // save list ageny of product to check stock when  order
-      // if (listAgency.length > 0) {
-
-      // } else {
-      let arr = listAgency
-      arr.push(
-        ...arr, {
-        id: productStore?.productId,
-        list: props.listAgencies
-      })
-      setListAgency(arr)
-      // listAgency = [...listAgency, {
-      //   id: productStore?.productId,
-      //   list: props.listAgencies
-      // }]
-      // listAgency.push(
-      //   {
-      //     id: productStore?.productId,
-      //     list: props.listAgencies
-      //   }
-      // )
-      // }
-      console.log(shoppingCart);
+      handleSendListAgencies()
     }
   }
 
-  useEffect(() => {
-      console.log(listAgency);
-
-  }, [listAgency])
+  //** handle send list agency */
+  const handleSendListAgencies = () => {
+    let arr = []
+    let localList = JSON.parse(localStorage.getItem('LIST_AGENCIES'))
+    if (localList?.length > 0) {
+      arr = localList
+      let added = arr?.find(pro => {
+        return pro.id === productStore?.productId
+      })
+      if (!added) {
+        arr.push(
+          {
+            id: productStore?.productId,
+            list: props.listAgencies
+          })
+      }
+      localStorage.setItem('LIST_AGENCIES', JSON.stringify(arr))
+    } else {
+      arr.push(
+        {
+          id: productStore?.productId,
+          list: props.listAgencies
+        })
+      localStorage.setItem('LIST_AGENCIES', JSON.stringify(arr))
+    }
+  }
 
   useEffect(() => {
     let added;

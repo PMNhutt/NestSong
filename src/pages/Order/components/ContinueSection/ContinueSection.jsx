@@ -19,6 +19,9 @@ const ContinueSection = (props) => {
     const notifyWarn = () => toast.warn("Vui lòng điền đầy đủ thông tin cần thiết !", {
         pauseOnHover: false,
     });
+    const notifyStockNotEnough = () => toast.warn("Vui lòng chọn chi nhánh khác !", {
+        pauseOnHover: false,
+    });
     const [openModal, setOpenModal] = useState(false)
     const [openErrorModal, setOpenErrorModal] = useState(false)
 
@@ -54,76 +57,46 @@ const ContinueSection = (props) => {
                 && (props?.deliveryInfo?.phone?.value !== '')
                 && (props?.deliveryInfo?.provinces?.value !== "")
                 && (props?.deliveryInfo?.address?.value !== "")) {
-                toast.promise(
-                    instances.post('/orders/createorder/online', {
-                        user: {
-                            customerID: accountInfo?.accountId,
-                            address: props?.deliveryInfo?.address?.value,
-                            agencyID: props?.deliveryInfo?.provinces?.value,
-                            notes: props?.deliveryInfo?.note
-                        },
-                        cart: shoppingCart?.map((item) => (
+
+                if (props?.deliveryInfo?.compareStock !== "") {
+                    let compareResArr = props?.deliveryInfo?.compareStock
+                    if (compareResArr.some(item => item.compare === true)) {
+                        notifyStockNotEnough()
+                    } else {
+                        toast.promise(
+                            instances.post('/orders/createorder/online', {
+                                user: {
+                                    customerID: accountInfo?.accountId,
+                                    address: props?.deliveryInfo?.address?.value,
+                                    agencyID: props?.deliveryInfo?.provinces?.value,
+                                    notes: props?.deliveryInfo?.note
+                                },
+                                cart: shoppingCart?.map((item) => (
+                                    {
+                                        productId: item.id,
+                                        quantityBuy: item.amount,
+                                        productName: item.name,
+                                        salePrice: item.price
+                                    }
+                                ))
+                            }).then(() => {
+                                setOpenModal(true)
+                                dispatch(removeCart())
+                                dispatch(getShoppingCart())
+
+                                let localList = JSON.parse(localStorage.getItem('LIST_AGENCIES'))
+                                if (localList) {
+                                    localStorage.removeItem('LIST_AGENCIES')
+                                }
+                            }),
                             {
-                                productId: item.id,
-                                quantityBuy: item.amount,
-                                productName: item.name,
-                                salePrice: item.price
+                                pending: 'Đang tạo đơn hàng',
+                                success: 'Đơn hàng đã được tiếp nhận! 👌',
+                                error: 'Đơn hàng chưa được tiếp nhận'
                             }
-                        ))
-                    }).then(() => {
-                        setOpenModal(true)
-                        dispatch(removeCart())
-                        dispatch(getShoppingCart())
-                    }),
-                    {
-                        pending: 'Đang tạo đơn hàng',
-                        success: 'Đơn hàng đã được tiếp nhận! 👌',
-                        error: 'Đơn hàng chưa được tiếp nhận'
+                        )
                     }
-                )
-                // dispatch(removeCart())
-                // const res = await instances.post(`/orders/createorder/online`,
-                //     {
-                //         user: {
-                //             customerID: accountInfo?.accountId,
-                //             address: props?.deliveryInfo?.address?.value,
-                //             agencyID: props?.deliveryInfo?.provinces?.value,
-                //             notes: props?.deliveryInfo?.note
-                //         },
-                //         cart: shoppingCart?.map((item) => (
-                //             {
-                //                 productId: item.id,
-                //                 quantityBuy: item.amount,
-                //                 productName: item.name,
-                //                 salePrice: item.price
-                //             }
-                //         ))
-                //     }
-                // ).catch(function (err) {
-                //     console.log(err);
-                // })
-                // if (res) {
-                //     setOpenModal(true)
-                // } else {
-                //     setOpenErrorModal(true)
-                // }
-                // console.log({
-                //     res,
-                //     user: {
-                //         customerId: accountInfo?.accountId,
-                //         address: props?.deliveryInfo?.address?.value,
-                //         agencyId: props?.deliveryInfo?.provinces?.value,
-                //         notes: props?.deliveryInfo?.note
-                //     },
-                //     cart: shoppingCart?.map((item) => (
-                //         {
-                //             productId: item.id,
-                //             quantitybuy: item.amount,
-                //             productName: item.name,
-                //             salePrice: item.price
-                //         }
-                //     ))
-                // });
+                }
             } else {
                 notifyWarn()
                 if (props?.deliveryInfo?.name?.value == "") {
@@ -206,7 +179,7 @@ const ContinueSection = (props) => {
                 </div>
             </div>
             <div onClick={() => handleCompletePurchase()} className={`uppercase select-none text-white font-semibold mt-5 w-full text-center py-2 rounded-[5px]
-            ${shoppingCart?.length > 0 ? 'cursor-pointer bg-primary' : 'cursor-not-allowed bg-blue-200'}`}>tiếp tục thanh toán</div>
+            ${shoppingCart?.length > 0 ? 'cursor-pointer bg-primary' : 'cursor-not-allowed bg-blue-200'}`}>hoàn tất đặt hàng</div>
         </>
     )
 }

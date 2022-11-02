@@ -82,7 +82,7 @@ const PurchaseSection = () => {
                 </div>
                 <DelayedLink delay={0} to='/order'>
                     <div className={`uppercase select-none text-white font-semibold mt-5 w-full text-center py-2 rounded-[5px]
-            ${cartList?.length > 0 ? 'cursor-pointer bg-primary' : 'cursor-not-allowed bg-blue-200'}`}>Thanh toán ngay</div>
+            ${cartList?.length > 0 ? 'cursor-pointer bg-primary' : 'cursor-not-allowed bg-blue-200'}`}>Đặt hàng ngay</div>
                 </DelayedLink>
 
             </div>

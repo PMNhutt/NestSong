@@ -43,7 +43,6 @@ instances.interceptors.request.use(
 
 instances.interceptors.request.use(
     (config) => {
-        // const navigate = useNavigate()
         const accessToken = localStorage.getItem('accessToken')
         if (accessToken) {
             let currenDate = new Date()

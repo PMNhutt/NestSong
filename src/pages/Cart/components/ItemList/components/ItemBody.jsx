@@ -25,6 +25,17 @@ const ItemBody = (props) => {
   const handleRemoveItem = (id) => {
     dispatch(removeWholeItem(id))
     dispatch(getShoppingCart())
+
+    let localList = JSON.parse(localStorage.getItem('LIST_AGENCIES'))
+    let added = localList?.find(pro => {
+      return pro.id === id
+    })
+    if (added) {
+      let index = localList.indexOf(added)
+      localList.splice(index, 1)
+      localStorage.setItem('LIST_AGENCIES', JSON.stringify(localList))
+
+    }
   }
 
   //** handle increse value 

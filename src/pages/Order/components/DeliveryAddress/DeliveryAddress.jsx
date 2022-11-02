@@ -13,6 +13,8 @@ import { useSelector } from 'react-redux'
 const DeliveryAddress = (props) => {
 
     //**Const */
+    let nameArr = [];
+
     const shoppingCart = useSelector((state) => state.cart?.shoppingCart)
     let loggedUserName = `${props?.userInfo.firstName} ${props?.userInfo.lastName}`
     const [userName, setUserName] = useState(loggedUserName)
@@ -21,7 +23,7 @@ const DeliveryAddress = (props) => {
     const [district, setDistrict] = useState('')
     const [ward, setWard] = useState('')
 
-    const [checkStockAgency, setCheckStockAgency] = useState(false)
+    const [checkStockAgency, setCheckStockAgency] = useState([])
 
     const ITEM_HEIGHT = 48;
     const ITEM_PADDING_TOP = 8;
@@ -41,8 +43,8 @@ const DeliveryAddress = (props) => {
         setProvinces(e.target.value)
         // props?.setProvinces(e.target.value);
 
-        //** get product detail -> compare quantityInStock */
-        // const res = await instances.get(`/products/id/{cateid}/{proid}`)
+        //** get product list agency -> compare quantityInStock */
+        let localList = JSON.parse(localStorage.getItem('LIST_AGENCIES'))
 
         let productAmount = []
         shoppingCart?.map((item) => (
@@ -54,8 +56,37 @@ const DeliveryAddress = (props) => {
                 }
             )
         ))
-        console.log(productAmount);
-        console.log('agencyId', e.target.value)
+
+        //compare => 
+        let res = []
+        localList.map(item => {
+            let agencyStock = item.list.filter(agency => agency.agencyId === e.target.value)
+            productAmount.map((pro, i) => {
+                if (pro.proId === item.id) {
+                    let selectedAgency = item.list.find(agency => agency.agencyId === e.target.value)
+
+                    // console.log('localItem', {
+                    //     id: item.id,
+                    //     agency: selectedAgency,
+                    //     proAmount: pro.amount,
+                    //     quantityInStock: selectedAgency.quantityInStock,
+                    //     compare: pro.amount > selectedAgency.quantityInStock
+                    // })
+                    res.push({
+                        name: pro.name,
+                        id: item.id,
+                        agency: selectedAgency,
+                        proAmount: pro.amount,
+                        quantityInStock: selectedAgency.quantityInStock,
+                        compare: pro.amount > selectedAgency.quantityInStock
+                    })
+                }
+            })
+        });
+
+        setCheckStockAgency(res)
+        props?.handleCompareStock(res)
+
         props?.handleSelectProvinces(e.target.value)
     }
 
@@ -170,9 +201,18 @@ const DeliveryAddress = (props) => {
                                 }
                             </Select>
                             {
-                                checkStockAgency &&
-                                <span className='text-[14px] text-redError font-semibold'>Chi nhánh bạn chọn không đủ số lượng, vui lòng chọn chi nhánh khác</span>
+                                checkStockAgency?.length > 0 &&
+                                checkStockAgency.map(item => {
+                                    item.compare == true &&
+                                        nameArr.push(item.name)
+                                })
                             }
+                            {
+                                nameArr?.length > 0 &&
+                                <span className='text-[14px] text-redError font-semibold'>{`Chi nhánh bạn chọn không đủ số lượng cho ${nameArr}, vui lòng chọn chi nhánh khác`}</span>
+                            }
+
+
 
                             {/* <Select
                         displayEmpty
