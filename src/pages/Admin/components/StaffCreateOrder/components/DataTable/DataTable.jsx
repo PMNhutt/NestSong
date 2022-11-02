@@ -6,6 +6,7 @@ import AddIcon from '@mui/icons-material/Add';
 import IconButton from '@mui/material/IconButton';
 import { useDispatch, useSelector } from 'react-redux'
 import { toast } from 'react-toastify';
+import instances from '../../../../../../utils/plugin/axios';
 
 import { setAddedProduct, addItemToCart } from '../../../../../../redux/actionSlice/managementSlice'
 
@@ -43,6 +44,7 @@ const DataTable = (props) => {
     const [productId, setProductId] = useState()
     const dispatch = useDispatch()
     const productList = useSelector((state) => state.management.cartList)
+    const staffInfo = JSON.parse(localStorage.getItem('ACCOUNT_INFO'))
     const [inputValue, setInputValue] = useState(1)
     const notifyWarn = () => toast.warn("Bạn đã chọn tối đa !", {
         pauseOnHover: false,
@@ -70,9 +72,15 @@ const DataTable = (props) => {
     ];
 
     // ** handle add cart list **
-    const handleAdd = (value) => {
-        // console.log(value)
-        if (value?.quantityInStock === 0) {
+    const handleAdd = async (value) => {
+
+        //** get product list agency by get product detail... */
+        const res = await instances.get(`/products/id/${value?.categoryId}/${value?.productId}`)
+        const listAgencies = res?.data.listAgencies
+        const agencyDetail = listAgencies.find(item => item.agencyId === staffInfo?.agencyId)
+        const stockQuantity = agencyDetail.quantityInStock
+
+        if (stockQuantity === 0) {
             notifyWarnSoldOut()
         } else {
             dispatch(addItemToCart({
@@ -80,7 +88,7 @@ const DataTable = (props) => {
                 id: value?.productId,
                 name: value?.productName,
                 price: value?.salePrice,
-                stock: value?.quantityInStock,
+                stock: stockQuantity,
                 inputValue: inputValue,
                 categoryName: value?.categoryName
             }))

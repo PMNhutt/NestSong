@@ -7,11 +7,14 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch } from 'react-redux'
 import { removeWholeItem, setAddedProduct, addItemToCart, deleteItem } from '../../../../../../redux/actionSlice/managementSlice'
+import { toast } from 'react-toastify';
 
 const Item = (props) => {
     const dispatch = useDispatch()
     const [productValue, setProductValue] = useState(props?.item.amount)
-
+    const notifyWarn = () => toast.warn("Đã đạt số lượng tối đa trong kho!", {
+        pauseOnHover: false,
+    });
     // ** handle remove
     const handleRemoveItem = (id) => {
         dispatch(removeWholeItem(id))
